@@ -186,15 +186,17 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
   <button class="bp" onclick="startQuiz()">Begin Engineering Assessment &rarr;</button>
 
-  <!-- One-tap install button (shown only when the browser offers it) -->
-  <div id="install-wrap" style="margin-top:22px;display:none;justify-content:center">
+  <!-- Install button (always visible) -->
+  <div id="install-wrap" style="margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:9px">
     <button id="install-cta" onclick="handleInstall()" aria-label="Install the Cable Concrete app on your device" style="display:inline-flex;align-items:center;gap:16px;background:#0f1e30;border:1px solid rgba(74,222,128,.35);border-radius:18px;padding:14px 26px 14px 14px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='#22c55e';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(74,222,128,.35)';this.style.transform='none'">
       <img src="logo-mark.png" alt="" width="76" height="76" style="border-radius:16px;flex-shrink:0">
       <span style="text-align:left">
         <span style="display:block;font-size:16px;font-weight:800;color:#fff;line-height:1.2">Install the Cable Concrete® App</span>
-        <span style="display:block;font-size:12px;color:#86efac;margin-top:3px">⬇ One-tap install · works offline</span>
+        <span style="display:block;font-size:12px;color:#86efac;margin-top:3px">⬇ Tap to add to your phone · works offline</span>
       </span>
     </button>
+    <div style="font-size:11px;color:#6b7c93;text-align:center">IECS Africa · A subsidiary of IECS Global Inc. Canada</div>
+    <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
   </div>
 
   <!-- Resources on intro page -->
@@ -1296,32 +1298,44 @@ if('serviceWorker' in navigator){
   });
 }
 
-// ── PWA INSTALL (one-tap, browser-native) ─────────────────────────────────────
+// ── PWA INSTALL ───────────────────────────────────────────────────────────────
 let deferredPrompt=null;
 
 function isStandalone(){
   return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)
     || window.navigator.standalone===true;
 }
-function showInstall(on){
-  const w=document.getElementById('install-wrap');
-  if(w)w.style.display=on?'flex':'none';
+function isIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 }
-// One tap → the browser's own install prompt. No manual steps.
+// One tap → the browser's own install prompt. Falls back to a one-line hint
+// only on browsers that don't expose a programmatic install (e.g. iPhone).
 function handleInstall(){
-  if(!deferredPrompt)return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(){ deferredPrompt=null; showInstall(false); });
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });
+    return;
+  }
+  const hint=document.getElementById('install-hint');
+  if(hint){
+    hint.textContent=isIOS()
+      ? 'On iPhone: tap the Share button, then “Add to Home Screen”.'
+      : 'Open your browser menu (⋮) and tap “Install app” / “Add to Home screen”.';
+    hint.style.display='block';
+  }
 }
 
-// The button only appears when the browser actually offers a one-tap install
-// (Chrome, Edge, Android, desktop). Otherwise it stays hidden.
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault();
-  deferredPrompt=e;
-  if(!isStandalone())showInstall(true);
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
+window.addEventListener('appinstalled',function(){
+  deferredPrompt=null;
+  const w=document.getElementById('install-wrap');if(w)w.style.display='none';
 });
-window.addEventListener('appinstalled',function(){deferredPrompt=null;showInstall(false);});
+
+// Inside the already-installed app there's nothing to install — hide the button.
+if(isStandalone()){
+  const w=document.getElementById('install-wrap');if(w)w.style.display='none';
+}
 </script>
 </body>
 <!-- RESOURCE MODAL -->
