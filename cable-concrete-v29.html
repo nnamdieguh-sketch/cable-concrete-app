@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cable Concrete® Block Selection Tool — Erosion Control Africa | IECS Africa</title>
+<meta name="description" content="Free engineering tool for Cable Concrete® block selection across Sub-Saharan Africa. Get instant block recommendations, mat quantity calculations, hydraulic data and a quote from IECS Africa — Nigeria, Kenya, Ghana, Zambia and beyond.">
+<meta name="keywords" content="Cable Concrete, erosion control Africa, articulating concrete block, ACB revetment, gully erosion Nigeria, channel lining Kenya, slope protection Ghana, mat quantity calculator, IECS Africa, cable concrete block selection, erosion control engineer, hydraulic revetment Sub-Saharan Africa, concrete mattress, NEWMAP, ACReSAL, World Bank erosion control">
+<meta name="author" content="IECS Africa — A subsidiary of IECS Global Inc. Canada">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.cableconcrete.app">
+<!-- Open Graph (LinkedIn, WhatsApp, Facebook previews) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.cableconcrete.app">
+<meta property="og:title" content="Cable Concrete® Block Selection Tool — IECS Africa">
+<meta property="og:description" content="Find the right Cable Concrete® erosion control block for your project. Free engineering assessment, mat calculator, hydraulic data and instant quote. Serving 12+ countries across Sub-Saharan Africa.">
+<meta property="og:site_name" content="Cable Concrete® by IECS Africa">
+<!-- Twitter/X Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cable Concrete® Block Selection Tool — IECS Africa">
+<meta name="twitter:description" content="Free engineering tool: Cable Concrete® block selection, mat calculator, hydraulic data and instant quote for erosion control projects across Africa.">
+<meta name="twitter:url" content="https://www.cableconcrete.app">
+<!-- OneSignal Push Notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "301e7315-5e7a-4b04-9d6a-0bd9645f6e96",
+      safari_web_id: "web.onesignal.auto.2d55a779-27e1-4bb7-a896-7e19803bedb7",
+      notifyButton: { enable: true },
+    });
+  });
+</script>
+<meta name="theme-color" content="#14532d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cable Concrete®">
+<link rel="manifest" href="data:application/json,{
+  %22name%22:%22Cable%20Concrete%C2%AE%20Block%20Selection%20Tool%22,
+  %22short_name%22:%22Cable%20Concrete%C2%AE%22,
+  %22description%22:%22Engineering%20block%20selection%20and%20quote%20tool%20by%20IECS%20Africa%22,
+  %22start_url%22:%22/%22,
+  %22display%22:%22standalone%22,
+  %22background_color%22:%22%230a0e14%22,
+  %22theme_color%22:%22%2322c55e%22,
+  %22orientation%22:%22portrait%22,
+  %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Crect%20width='192'%20height='192'%20fill='%230a0e14'/%3E%3Cpolygon%20points='96,20%20172,62%20172,130%2096,172%2020,130%2020,62'%20fill='%2322c55e'/%3E%3Ctext%20x='96'%20y='112'%20text-anchor='middle'%20font-family='system-ui'%20font-weight='900'%20font-size='52'%20fill='white'%3ECC%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]
+}">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a0e14;color:#f1f5f9;font-size:15px;line-height:1.7;min-height:100vh}
+h1,h2,h3{letter-spacing:.01em;color:#f8fafc}
+.hdr{background:#0f1e30;border-bottom:1px solid #1e3a5f;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.hex{width:34px;height:34px;background:#4ade80;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;color:#fff;flex-shrink:0}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
+.page{display:none}.page.on{display:block}
+button{cursor:pointer;font-family:inherit;transition:all .15s}
+.bp{background:#22c55e;color:#fff;border:none;border-radius:10px;padding:14px 28px;font-size:16px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.bp:hover{background:#4ade80}.bp:disabled{opacity:.4;cursor:not-allowed}
+.bs{background:transparent;border:1px solid #1e3a5f;color:#cbd5e1;border-radius:8px;padding:10px 16px;font-size:14px}
+.bs:hover{border-color:#22c55e;color:#4ade80}
+.card{background:#111827;border:1px solid #1e3a5f;border-radius:14px;padding:20px;margin-bottom:18px}
+.opt{background:#111827;border:1px solid #1e3a5f;border-radius:10px;padding:14px 16px;text-align:left;width:100%;font-size:14px;color:#f1f5f9;line-height:1.5}
+.opt:hover{border-color:#22c55e;background:rgba(74,222,128,.08);color:#fff}
+.opt.sel{border-color:#22c55e;background:rgba(74,222,128,.1);color:#fff}
+.prog{display:flex;gap:5px;margin-bottom:24px}
+.ps{flex:1;height:5px;border-radius:3px;background:#1e2d42}
+.ps.done{background:#22c55e}.ps.cur{background:#4ade80}
+input,select,textarea{background:#0f172a;border:1px solid #1e3a5f;color:#f1f5f9;border-radius:8px;padding:11px 14px;font-size:15px;font-family:inherit;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
+input::placeholder,textarea::placeholder{color:#64748b}
+select option{background:#0f172a;color:#f1f5f9}
+.err{font-size:12px;color:#f87171;margin-top:4px;min-height:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lbl{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px}
+.pill{display:inline-flex;align-items:center;gap:4px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:3px 12px;border-radius:999px;font-size:12px}
+.pill.g{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#22c55e}
+.sbar{background:#1e2d42;border-radius:999px;height:8px;margin-top:4px}
+.sfill{height:8px;border-radius:999px;transition:width .8s}
+.sechdr{display:flex;align-items:center;gap:10px;margin:28px 0 16px;padding-bottom:10px;border-bottom:1px solid #1e3a5f}
+.sn{width:28px;height:28px;background:#22c55e;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.tabrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:#111827;border:1px solid #1e3a5f;color:#94a3b8;padding:6px 12px;border-radius:6px;font-size:13px}
+.tab:hover{border-color:#22c55e;color:#4ade80}
+.tab.on{border-color:#22c55e;color:#4ade80;background:rgba(74,222,128,.08)}
+.twrap{overflow-x:auto;border-radius:8px;border:1px solid #1e3a5f;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#1a2232;color:#94a3b8;padding:10px 12px;text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid #1e3a5f;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #1e2d42;color:#e2e8f0;font-family:monospace;font-size:12px}
+tr:last-child td{border-bottom:none}
+td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
+.ai{display:flex;gap:12px;background:#111827;border:1px solid #1e3a5f;border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.al{font-size:11px;color:#94a3b8;text-transform:uppercase;min-width:140px;flex-shrink:0;line-height:1.6;padding-top:2px}
+.zb{background:#0a0e14;border:1px solid #1e3a5f;border-radius:10px;padding:14px;margin-bottom:10px}
+.comp{background:#111827;border:1px solid #1e3a5f;border-radius:10px;padding:14px 18px;cursor:pointer;margin-bottom:10px}
+.comp:hover{border-color:#2a4f7a}
+@media(max-width:600px){
+  .g2{grid-template-columns:1fr}
+  .wrap{padding:0 12px 80px}
+  .hdr{padding:10px 12px}
+  body{font-size:14px}
+  .bp{font-size:15px;padding:13px 20px;width:100%}
+  .opt{font-size:14px;padding:13px 14px}
+  input,select,textarea{font-size:16px}
+  .card{padding:16px}
+  .al{min-width:110px;font-size:10px}
+  .ai{flex-direction:column;gap:4px}
+  .al{min-width:unset}
+  table{font-size:11px}
+  th{font-size:10px;padding:8px}
+  td{padding:7px 8px;font-size:11px}
+}
+@media print{
+  .hdr,.no-print{display:none!important}
+  body{background:#fff!important;color:#000!important;font-size:12px}
+  .card{background:#fff!important;border:1px solid #ccc!important;break-inside:avoid}
+  .wrap{padding:0!important;max-width:100%!important}
+  *{color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes gradshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:12px">
+    <img src="data:image/png;base64,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" alt="Cable Concrete Logo" style="height:32px;width:auto;filter:brightness(1.1) saturate(1.2);flex-shrink:0">
+    <div style="border-left:1px solid #1e2d42;padding-left:12px">
+      <div style="font-size:10px;color:#4ade80;letter-spacing:.1em;text-transform:uppercase">IECS Africa</div>
+      <div style="font-size:9px;color:#64748b;letter-spacing:.04em;text-transform:uppercase">Subsidiary · IECS Global Inc. Canada</div>
+    </div>
+  </div>
+  <div id="hdr-sub" style="font-size:12px;color:#64748b">Block Selection Tool</div>
+  <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+    <div style="position:relative">
+      <button onclick="document.getElementById('install-menu').style.display=document.getElementById('install-menu').style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:5px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:5px 11px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Install
+      </button>
+      <div id="install-menu" style="display:none;position:absolute;right:0;top:36px;background:#0f1e30;border:1px solid #1e2d42;border-radius:10px;padding:14px;width:240px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.5)">
+        <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Install on Your Device</div>
+        <div id="pwa-install-btn" style="display:none;margin-bottom:10px">
+          <button onclick="installPWA()" style="width:100%;background:#4ade80;color:#fff;border:none;border-radius:6px;padding:9px;font-size:13px;font-weight:700;cursor:pointer">⬇ Install App Now (Android)</button>
+        </div>
+        <div style="font-size:12px;color:#94a3b8;line-height:1.8;border-top:1px solid #1e2d42;padding-top:10px">
+          <strong style="color:#cbd5e1;display:block;margin-bottom:4px">📱 iPhone / iPad:</strong>
+          1. Open in <strong style="color:#86efac">Safari</strong><br>
+          2. Tap the <strong style="color:#86efac">Share ⬆</strong> button<br>
+          3. Tap <strong style="color:#86efac">Add to Home Screen</strong><br>
+          4. Tap <strong style="color:#86efac">Add</strong> ✅
+        </div>
+        <div style="font-size:12px;color:#94a3b8;line-height:1.8;border-top:1px solid #1e2d42;padding-top:10px;margin-top:8px">
+          <strong style="color:#cbd5e1;display:block;margin-bottom:4px">🤖 Android:</strong>
+          1. Open in <strong style="color:#86efac">Chrome</strong><br>
+          2. Tap menu <strong style="color:#86efac">⋮</strong> (top right)<br>
+          3. Tap <strong style="color:#86efac">Add to Home Screen</strong><br>
+          4. Tap <strong style="color:#86efac">Add</strong> ✅
+        </div>
+        <a href="index.html" download="CableConcrete-BlockTool.html" style="display:block;margin-top:10px;text-align:center;font-size:11px;color:#64748b;text-decoration:none;border-top:1px solid #1e2d42;padding-top:10px" onmouseover="this.style.color='#86efac'" onmouseout="this.style.color='#64748b'">⬇ Download HTML file for desktop</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ── INTRO ── -->
+<div class="page on" id="pg-intro" style="padding:44px 0 32px;text-align:center">
+  <div class="pill" style="margin-bottom:16px;font-size:14px;padding:6px 18px;font-weight:700;letter-spacing:.06em">Block Selection &amp; Quote Tool · v8.0</div>
+  <h1 style="font-size:clamp(26px,5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px">
+    Find the Right <span style="color:#4ade80">Cable Concrete®</span> Block
+  </h1>
+  <p style="font-size:15px;color:#94a3b8;max-width:500px;margin:0 auto 24px;line-height:1.7">
+    5 engineering questions. Full recommendation with hydraulic data, university test results, mat calculator, and a quote from IECS Africa — sent directly to your email.
+  </p>
+  <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
+  <button class="bp" onclick="startQuiz()">Begin Engineering Assessment &rarr;</button>
+
+  <!-- Resources on intro page -->
+  <div style="margin-top:36px;border-top:1px solid #1e2d42;padding-top:28px">
+    <div style="font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">📂 Cable Concrete® Resources — Open Free</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+      <a href="#" onclick="openModal('brochure');return false;" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;padding:11px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 4px 12px rgba(74,222,128,.35)">
+        📄 Product Brochure
+      </a>
+      <a href="#" onclick="openModal('presentation');return false;" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:11px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 4px 12px rgba(34,197,94,.35)">
+        📊 Engineering Presentation
+      </a>
+      <a href="https://drive.google.com/uc?export=download&id=1d9F3XW2LgXn3I43FqvvO2xBuzXszPzsf" target="_blank" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;padding:11px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 4px 12px rgba(139,92,246,.35)">
+        🎙️ Audio Discussion
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── QUIZ ── -->
+<div class="page" id="pg-quiz" style="padding-top:24px">
+  <div class="prog" id="prog"></div>
+  <div id="qnum" style="font-size:11px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px"></div>
+  <h2 id="qtxt" style="font-size:22px;font-weight:700;color:#fff;margin-bottom:18px"></h2>
+  <div id="qopts" class="g2" style="gap:8px"></div>
+  <div id="qscores" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"></div>
+  <div style="display:flex;justify-content:space-between;margin-top:24px">
+    <button class="bs" onclick="qBack()">← Back</button>
+    <button class="bp" id="qnext" onclick="qNext()" disabled>Next →</button>
+  </div>
+  <div style="margin-top:12px;text-align:center">
+    <button onclick="resetApp()" style="background:none;border:none;color:#64748b;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+  </div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div class="page" id="pg-contact" style="padding-top:24px">
+  <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:28px 24px;margin-bottom:20px;text-align:center">
+    <div style="width:54px;height:54px;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px">⬡</div>
+    <h2 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:8px">Your Recommendation is Ready</h2>
+    <p style="font-size:14px;color:#94a3b8;max-width:430px;margin:0 auto;line-height:1.7">
+      We've matched your project to the optimal Cable Concrete® block — with full hydraulic data, university test results, mat calculator, and a tailored IECS Africa quote.
+    </p>
+    <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;flex-wrap:wrap;font-size:12px;color:#86efac">
+      <span>⬡ Block recommendation</span><span>📐 Mat calculator</span><span>📊 Hydraulic tables</span><span>📄 Printable report</span>
+    </div>
+    <p style="font-size:12px;color:#64748b;margin-top:12px">Complete the form below — free of charge.</p>
+  </div>
+  <div class="card">
+    <h3 style="font-size:19px;font-weight:700;color:#fff;margin-bottom:4px">Your Details</h3>
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;line-height:1.6">
+      Your full report is emailed to you instantly. IECS Africa receives your quote request and will follow up directly.
+    </p>
+    <div class="g2">
+      <div><label class="lbl">Full Name *</label><input id="f-name" type="text" placeholder="Engr. John Okafor"><div class="err" id="e-name"></div></div>
+      <div><label class="lbl">Firm / Organisation *</label><input id="f-firm" type="text" placeholder="FMWR Engineering Division"><div class="err" id="e-firm"></div></div>
+      <div><label class="lbl">Professional Email *</label><input id="f-email" type="email" placeholder="engr.john@ministry.gov.ng"><div class="err" id="e-email"></div></div>
+      <div>
+        <label class="lbl">Country *</label>
+        <select id="f-country" onchange="chkPriority()">
+          <option value="">— Select Country —</option>
+          <optgroup label="★ Priority Markets" id="ssa-opts"></optgroup>
+          <optgroup label="Other Countries" id="other-opts"></optgroup>
+        </select>
+        <div class="err" id="e-country"></div>
+        <div id="pri-badge" style="display:none;margin-top:5px"><span class="pill g">★ Priority Response — 24hr target</span></div>
+      </div>
+      <div><label class="lbl">Phone / WhatsApp *</label><input id="f-phone" type="tel" placeholder="Select country first"><div class="err" id="e-phone"></div></div>
+      <div></div>
+      <div style="grid-column:1/-1">
+        <label class="lbl">Project Scope &amp; Description *</label>
+        <textarea id="f-scope" rows="3" placeholder="e.g. 2.4 km gully erosion control, Anambra State — 4.5m channel, 3:1 slope, high seasonal flow velocity..."></textarea>
+        <div class="err" id="e-scope"></div>
+      </div>
+      <div style="grid-column:1/-1">
+        <label class="lbl">How did you find us? <span style="color:#475569;font-size:9px">(optional)</span></label>
+        <select id="f-source">
+          <option value="">— Select one —</option>
+          <option value="Google Search">Google Search</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="Colleague / Referral">Colleague / Referral</option>
+          <option value="World Bank / ACReSAL / NEWMAP">World Bank / ACReSAL / NEWMAP</option>
+          <option value="IECS Africa directly">IECS Africa directly</option>
+          <option value="Engineering association">Engineering association (NSE, ASCE etc.)</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <button class="bp" id="btn-sub" onclick="submitForm()" style="width:100%;margin-top:18px;font-size:16px">
+      UNLOCK MY RECOMMENDATION &amp; REQUEST QUOTE →
+    </button>
+    <p style="font-size:11px;color:#64748b;text-align:center;margin-top:10px">
+      Your report is emailed to you instantly. IECS Africa receives your quote request and will respond directly.
+    </p>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap">
+    <button class="bs" onclick="show('quiz')">← Back to Questions</button>
+    <button onclick="resetApp()" style="background:none;border:none;color:#64748b;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+  </div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div class="page" id="pg-results" style="padding-top:24px"></div>
+
+</div><!-- end wrap -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const B={
+  CCG2:{name:"CC G2",sub:"Permeable Paving & Gentle Slopes",h:"80–88 mm",wt:"25–28 lbs/sf",vel:"4.0 m/s (good)",oa:"40%",ms:"2.44m × 6.1m",ma:14.88,c:"#4ade80",sh:"182 N/m²",nc:"0.019–0.022",nb:"0.03–0.035",bh:'2.5"',cb:"302/304 SS or polyester braided"},
+  CC35:{name:"CC 35",sub:"Channel Lining & Moderate Slopes",h:'114–127 mm (4.5")',wt:"37–40 lbs/sf",vel:"5.2 m/s (good) / 2.7 (poor)",oa:"20%",ms:"2.44m × 4.88m",ma:11.9,c:"#60a5fa",sh:"325 N/m²",nc:"0.022–0.027",nb:"0.03–0.035",bh:'4.5"',cb:'SS 1×19 5/32"/4mm'},
+  CC45:{name:"CC 45",sub:"Steep Slopes & High Velocity",h:'140–152 mm (5.5")',wt:"45–52 lbs/sf",vel:"6.1 m/s (good) / 3.5 (poor)",oa:"20%",ms:"2.44m × 4.88m",ma:11.9,c:"#f59e0b",sh:"390 N/m²",nc:"0.024–0.029",nb:"0.03–0.035",bh:'5.5"',cb:'SS 1×19 5/32"/4mm'},
+  CC70:{name:"CC 70",sub:"Shoreline, Coastal & Extreme Flow",h:'216–229 mm (8.5")',wt:"70–78 lbs/sf",vel:"7.6 m/s (good) / 4.0 (poor)",oa:"20%",ms:"2.44m × 4.88m",ma:11.9,c:"#f87171",sh:"625 N/m²",nc:"0.028–0.033",nb:"0.03–0.035",bh:'8.5"',cb:'SS 1×19 3/16"/4.8mm'},
+};
+const QS=[
+  {q:"What is the primary application type?",opts:[
+    {t:"Permeable paving / pedestrian pathway",s:{CCG2:3,CC35:0,CC45:0,CC70:0}},
+    {t:"Channel lining or drainage",s:{CCG2:0,CC35:2,CC45:2,CC70:1}},
+    {t:"Slope / embankment protection",s:{CCG2:0,CC35:2,CC45:2,CC70:1}},
+    {t:"Shoreline / coastal / wave action",s:{CCG2:0,CC35:1,CC45:2,CC70:3}}]},
+  {q:"What is the slope ratio?",opts:[
+    {t:"Gentle — 3:1 or flatter (bed slope < 1%)",s:{CCG2:3,CC35:2,CC45:1,CC70:0}},
+    {t:"Moderate — 2:1 to 3:1 (bed slope < 5%)",s:{CCG2:0,CC35:3,CC45:2,CC70:1}},
+    {t:"Steep — 1.5:1 to 2:1",s:{CCG2:0,CC35:1,CC45:3,CC70:2}},
+    {t:"Very steep — greater than 1.5:1",s:{CCG2:0,CC35:0,CC45:1,CC70:3}}]},
+  {q:"What is the design flow velocity?",opts:[
+    {t:"Up to 4 m/sec (13 ft/sec)",s:{CCG2:3,CC35:2,CC45:1,CC70:0}},
+    {t:"4–6 m/sec (13–20 ft/sec)",s:{CCG2:0,CC35:3,CC45:2,CC70:1}},
+    {t:"6–7 m/sec (20–23 ft/sec)",s:{CCG2:0,CC35:1,CC45:3,CC70:2}},
+    {t:"Above 7 m/sec (23+ ft/sec)",s:{CCG2:0,CC35:0,CC45:1,CC70:3}}]},
+  {q:"Describe the subgrade soil conditions:",opts:[
+    {t:"Stable, sandy or gravelly",s:{CCG2:3,CC35:2,CC45:1,CC70:0}},
+    {t:"Mixed clay-sand",s:{CCG2:1,CC35:3,CC45:2,CC70:1}},
+    {t:"Soft or expansive clay",s:{CCG2:0,CC35:1,CC45:3,CC70:2}},
+    {t:"Unstable or underwater subgrade",s:{CCG2:0,CC35:0,CC45:2,CC70:3}}]},
+  {q:"What are the environmental conditions?",opts:[
+    {t:"Vegetation regrowth desired",s:{CCG2:3,CC35:0,CC45:0,CC70:0}},
+    {t:"Inland / sheltered",s:{CCG2:1,CC35:3,CC45:1,CC70:0}},
+    {t:"Freeze-thaw cycles expected",s:{CCG2:1,CC35:2,CC45:3,CC70:1}},
+    {t:"Coastal / extreme exposure",s:{CCG2:0,CC35:0,CC45:1,CC70:3}}]},
+];
+const SSA=["Nigeria","Ghana","Kenya","Tanzania","Ethiopia","Uganda","Zambia","Mozambique"];
+const OTHERS=["South Africa","Egypt","Angola","Cameroon","Senegal","Ivory Coast","Rwanda","Botswana","Namibia","Zimbabwe","Canada","United States","United Kingdom","Australia","UAE","Other"];
+const MILD=[{b:"CCG2",bm:"2.1",am:"4.0",bf:"7",af:"13"},{b:"CC35",bm:"2.7",am:"5.2",bf:"9",af:"17"},{b:"CC45",bm:"3.5",am:"6.1",bf:"11",af:"20"},{b:"CC70",bm:"4.0",am:"7.6",bf:"13",af:"25"}];
+const STEEP=[{b:"CCG2",bm:"2.0",am:"3.7",bf:"6.5",af:"12.1"},{b:"CC35",bm:"2.5",am:"4.9",bf:"8.4",af:"15.8"},{b:"CC45",bm:"3.3",am:"5.7",bf:"10.2",af:"18.6"},{b:"CC70",bm:"3.7",am:"7.1",bf:"12.1",af:"23.3"}];
+const MN={CCG2:[{v:"1–3",d:"0.3–1",c:"0.019–0.022",cb:"0.019–0.021",bg:"0.030–0.035"},{v:"1–4",d:"1.0–2",c:"0.018–0.021",cb:"0.018–0.020",bg:"0.030–0.035"},{v:"1–6",d:">2",c:"0.017–0.020",cb:"0.017–0.019",bg:"0.030–0.035"}],CC35:[{v:"1–3",d:"0.3–1",c:"0.023–0.027",cb:"0.020–0.022",bg:"0.030–0.035"},{v:"1–4",d:"1.0–2",c:"0.022–0.025",cb:"0.020–0.021",bg:"0.030–0.035"},{v:"1–6",d:">2",c:"0.021–0.024",cb:"0.020–0.021",bg:"0.030–0.035"}],CC45:[{v:"1–3",d:"0.3–1",c:"0.026–0.029",cb:"0.020–0.024",bg:"0.030–0.035"},{v:"1–4",d:"1.0–2",c:"0.024–0.026",cb:"0.020–0.022",bg:"0.030–0.035"},{v:"1–6",d:">2",c:"0.023–0.025",cb:"0.020–0.021",bg:"0.030–0.035"}],CC70:[{v:"1–3",d:"0.3–1",c:"0.028–0.033",cb:"0.020–0.025",bg:"0.030–0.035"},{v:"1–4",d:"1.0–2",c:"0.028–0.033",cb:"0.020–0.025",bg:"0.030–0.035"},{v:"1–6",d:">2",c:"0.028–0.033",cb:"0.020–0.025",bg:"0.030–0.035"}]};
+const SAFL35=[{r:1,o:"1.0 ft",d:24,v:15.3,sh:"~20 lb/ft²"},{r:2,o:"2.0 ft",d:78,v:18.4,sh:"~30 lb/ft²"},{r:3,o:"3.0 ft",d:152,v:19.0,sh:"38.5 lb/ft²"},{r:4,o:"3.5 ft",d:198,v:19.1,sh:"38.5 lb/ft²"}];
+const SAFL45=[{r:5,o:"1.0 ft",d:26.5,v:16.8,sh:"~18 lb/ft²"},{r:6,o:"2.0 ft",d:74,v:18.0,sh:"~28 lb/ft²"},{r:7,o:"3.0 ft",d:147,v:18.9,sh:"34.9 lb/ft²"},{r:8,o:"3.5 ft",d:185,v:19.2,sh:"34.9 lb/ft²"}];
+const ANCHORS=[["Anchor type","Duckbill™ or equivalent — driven to undisturbed soil (typically 4 ft deep)"],["3:1 slope, poor soil","4 ft centres"],["3:1 slope, good soil","8 ft centres"],["Steeper slopes / poor subsoil","4 ft centres + mid-slope anchors for long slopes"],["Subcritical flow (standard)","Clamps @ 4–8 ft; 1 anchor per 16 ft centre; 1–2 per 8 ft side edge"],["Mat placement","Start downstream → work upstream. Upstream mat overlaps downstream filter cloth."],["Clamping","Min. 3 locations on long side, 1 on short side per adjoining mat"],["Leading edge","Block must be flush with channel invert; anchors at leading edge are essential"],["Slope > 1%","Expert advice required. Reduce velocities 25% at abrupt transitions."],["Velocity warning","Velocities > 5 m/s may abrade geotextile. Velocities > 8 m/s NOT recommended."]];
+const COMPS=[["vs Angular Rock Rip-Rap","Rip-rap requires large-stone quarries largely unavailable in SSA and shifts unpredictably under high velocity. Cable Concrete® is factory-engineered with defined shear resistance up to 625 N/m² (CC 70). Superior installation rate, no quarry logistics dependency."],["vs Hand-Placed Concrete","Monolithic concrete cracks under differential settlement and thermal cycling — common in Nigerian and East African expansive soils. Cable Concrete® articulates to follow ground movement while maintaining full erosion protection. No formwork or curing time."],["vs Gabion Baskets","Gabion wire corrodes in 5–15 years in tropical and coastal environments. Cable Concrete® uses 302/304 stainless steel cable with breaking strength up to 4,700 lbs (CC 70). No basket distortion under sustained flow."],["vs Stone Pitching","Stone pitching mortar joints erode at velocities above 3 m/s. Cable Concrete® CC 45 handles up to 6.1 m/s with good placement. University-tested by Minnesota SAFL and University of Windsor."]];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let answers=Array(5).fill(null), curQ=0, eng=null;
+let zones=[{id:1,type:"flat",label:"Zone 1 — Flat / Channel Bed",l:"",w:""}];
+let dtab="selection", mtab="CC35", stab="cc35", openComp=null;
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+[...SSA.map(m=>"★ "+m),"South Africa","Angola","Cameroon","Senegal"].forEach(m=>{
+  const sp=document.createElement('span');
+  Object.assign(sp.style,{background:m.includes("★")?"rgba(74,222,128,.1)":"#111827",border:"1px solid "+(m.includes("★")?"rgba(74,222,128,.3)":"#1e2d42"),color:m.includes("★")?"#86efac":"#94a3b8",padding:"3px 10px",borderRadius:"999px",fontSize:"11px"});
+  sp.textContent=m;
+  document.getElementById('mkt').appendChild(sp);
+});
+SSA.forEach(c=>{const o=new Option("★ "+c+" (Priority)",c);document.getElementById('ssa-opts').appendChild(o);});
+OTHERS.forEach(c=>{document.getElementById('other-opts').appendChild(new Option(c,c));});
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function show(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+page).classList.add('on');
+  document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report"}[page]||"";
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function scores(){
+  const s={CCG2:0,CC35:0,CC45:0,CC70:0};
+  answers.forEach((a,i)=>{if(a!==null)Object.keys(s).forEach(k=>s[k]+=QS[i].opts[a].s[k]);});
+  return s;
+}
+function winner(s){return Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];}
+function ranked(s){const mx=Math.max(...Object.values(s));return Object.entries(s).map(([k,v])=>({id:k,name:B[k].name,pct:mx>0?Math.round(v/mx*100):0,color:B[k].c})).sort((a,b)=>b.pct-a.pct);}
+
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+function startQuiz(){answers=Array(5).fill(null);curQ=0;renderQ();show('quiz');}
+function renderQ(){
+  const q=QS[curQ];
+  document.getElementById('hdr-sub').textContent="Question "+(curQ+1)+" of 5";
+  document.getElementById('qnum').textContent="Question "+(curQ+1)+" / "+QS.length;
+  document.getElementById('qtxt').textContent=q.q;
+  document.getElementById('prog').innerHTML=QS.map((_,i)=>`<div class="ps${i<curQ?' done':i===curQ?' cur':''}"></div>`).join('');
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<button class="opt${answers[curQ]===i?' sel':''}" onclick="pick(${i})">${o.t}</button>`).join('');
+  const btn=document.getElementById('qnext');
+  btn.disabled=answers[curQ]===null;
+  btn.textContent=curQ<4?"Next →":"Get My Recommendation →";
+  renderScorePills();
+}
+function pick(i){answers[curQ]=i;renderQ();}
+function renderScorePills(){
+  const s=scores(),r=ranked(s);
+  document.getElementById('qscores').innerHTML=answers.some(a=>a!==null)?r.map(b=>`<div class="pill" style="background:${b.color}18;border-color:${b.color}44;color:${b.color};gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:${b.color};display:inline-block"></span>${b.name} <span style="font-family:monospace">${s[b.id]}pts</span></div>`).join(''):'';
+}
+function qNext(){if(answers[curQ]===null)return;if(curQ<4){curQ++;renderQ();}else show('contact');}
+
+// ── CONTACT ───────────────────────────────────────────────────────────────────
+// ── PHONE PREFIXES ────────────────────────────────────────────────────────────
+const PHONE_PREFIX={
+  "Nigeria":"+234","Ghana":"+233","Kenya":"+254","Tanzania":"+255",
+  "Ethiopia":"+251","Uganda":"+256","Zambia":"+260","Mozambique":"+258",
+  "South Africa":"+27","Egypt":"+20","Angola":"+244","Cameroon":"+237",
+  "Senegal":"+221","Ivory Coast":"+225","Rwanda":"+250","Botswana":"+267",
+  "Namibia":"+264","Zimbabwe":"+263","Canada":"+1","United States":"+1",
+  "United Kingdom":"+44","Australia":"+61","UAE":"+971"
+};
+
+function chkPriority(){
+  const c=document.getElementById('f-country').value;
+  document.getElementById('pri-badge').style.display=SSA.includes(c)?'block':'none';
+  // Auto-set phone prefix — always update if field is empty or only contains a prefix
+  const phoneEl=document.getElementById('f-phone');
+  const prefix=PHONE_PREFIX[c];
+  if(!prefix)return;
+  const currentVal=phoneEl.value.trim();
+  // Update if empty, or if current value is just a prefix (no actual number typed yet)
+  const isJustPrefix=Object.values(PHONE_PREFIX).some(p=>currentVal===p||currentVal===p+' '||currentVal==='');
+  if(isJustPrefix){
+    phoneEl.value=prefix+' ';
+    phoneEl.focus();
+    phoneEl.setSelectionRange(phoneEl.value.length,phoneEl.value.length);
+  }
+}
+function submitForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const firm=document.getElementById('f-firm').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const country=document.getElementById('f-country').value;
+  const scope=document.getElementById('f-scope').value.trim();
+  const source=document.getElementById('f-source').value||'Not specified';
+  const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const phoneOk=phone.replace(/\D/g,'').length>=7;
+  let ok=true;
+  [['e-name',name,'Name is required'],
+   ['e-firm',firm,'Organisation is required'],
+   ['e-email',emailOk?email:'','Valid email required'],
+   ['e-phone',phoneOk?phone:'','Valid phone number required'],
+   ['e-country',country,'Please select a country'],
+   ['e-scope',scope,'Please describe your project']
+  ].forEach(([id,v,msg])=>{
+    const el=document.getElementById(id);
+    el.textContent=v?'':msg;
+    el.style.color='#ef4444';
+    if(!v)ok=false;
+  });
+  if(!ok)return;
+  eng={name,firm,email,phone,country,scope,source};
+  const btn=document.getElementById('btn-sub');
+  btn.disabled=true;
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block"></span>Sending your request...</span>';
+  const s=scores(),w=winner(s),bl=B[w];
+  const isPri=SSA.includes(country);
+
+  function doShowResults(){
+    if(doShowResults.done)return;
+    doShowResults.done=true;
+    btn.textContent='✓ Submitted!';
+    btn.style.background='#22c55e';
+    setTimeout(()=>{buildResults();show('results');},300);
+  }
+  doShowResults.done=false;
+
+  // Always show results after 6 seconds max (mobile network safety net)
+  const safetyTimer=setTimeout(()=>doShowResults(),6000);
+
+  sendToSheets({
+    name:name, firm:firm, email:email, phone:phone,
+    country:country, priority:isPri?'PRIORITY — 24hr Response':'Standard',
+    scope:scope, source:source,
+    block:bl.name+' — '+bl.sub,
+    velocity:bl.vel,
+    shear:bl.sh,
+    mat_size:bl.ms,
+    block_height:bl.h,
+    cable_spec:bl.cb,
+    terms:'Submitted — awaiting terms confirmation'
+  },function(){
+    clearTimeout(safetyTimer);
+    doShowResults();
+  });
+}
+
+// ── CALC ──────────────────────────────────────────────────────────────────────
+// ── SIMPLIFIED MAT CALCULATOR ─────────────────────────────────────────────────
+// Based on Cable Concrete® Engineering Binder:
+//   CCG2 mat = 2.44m × 6.10m = 14.88 m²
+//   CC35/CC45/CC70 mat = 2.44m × 4.88m = 11.90 m²
+// Slope face area = channel length × (side slope face width)
+// Side slope face width = bank height × √(Z²+1) where Z = H:V ratio
+// Bed area = channel length × bed width
+// Total mats = ceil( total area × 1.10 / mat area )  [10% wastage per binder]
+
+const SLOPE_RATIOS=[
+  {label:"1H:1V (very steep — stiff clay)",Z:1},
+  {label:"1.5H:1V (firm clay)",Z:1.5},
+  {label:"2H:1V (mixed clay-sand)",Z:2},
+  {label:"3H:1V (standard — sandy earth)",Z:3},
+  {label:"4H:1V (gentle — sandy loam)",Z:4},
+];
+const BANK_HEIGHTS=[0.5,0.75,1.0,1.25,1.5,1.75,2.0,2.5,3.0,3.5,4.0,4.5,5.0,6.0,7.0,8.0,9.0,10.0,12.0,15.0,20.0];
+const CHAN_LENGTHS=[10,20,30,50,75,100,150,200,300,500,750,1000,1500,2000,3000,5000,7500,10000,15000,20000,30000,50000];
+const BED_WIDTHS=[1,2,3,4,5,6,7,8,10,12,15,20,25,30,40,50,60,75,100];
+
+let calc={length:100,bedWidth:6,bankHeight:1.5,slopeZ:3,sides:2};
+
+function renderCalc(){
+  const w=winner(scores()),bl=B[w],ma=bl.ma;
+  // Engineering calculation (per binder)
+  const L=calc.length, bw=calc.bedWidth, bh=calc.bankHeight, Z=calc.slopeZ, sides=calc.sides;
+  const slopeFaceWidth = bh * Math.sqrt(Z*Z + 1);           // true slope face width
+  const bedArea   = L * bw;                                  // flat bed area
+  const slopeArea = sides * L * slopeFaceWidth;              // both side slopes
+  const totalArea = bedArea + slopeArea;
+  const totalWithWastage = totalArea * 1.10;
+  const totalMats = Math.ceil(totalWithWastage / ma);
+  const bedMats   = Math.ceil(bedArea   * 1.10 / ma);
+  const slopeMats = Math.ceil(slopeArea * 1.10 / ma);
+
+  const el=document.getElementById('calc-z');if(!el)return;
+  el.innerHTML=`
+  <div style="font-size:11px;color:#64748b;margin-bottom:10px;padding:7px 10px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:6px">
+    💡 Select from dropdown <strong style="color:#94a3b8">or</strong> type a custom value in the box on the right
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+
+    <div>
+      <label class="lbl">Channel / Gully Length</label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select style="flex:1" onchange="if(this.value){calc.length=+this.value;const ci=document.getElementById('ci-length');if(ci)ci.value='';renderCalc();}">
+          ${CHAN_LENGTHS.map(v=>`<option value="${v}"${calc.length===v?' selected':''}>${v} m</option>`).join('')}
+        </select>
+        <input id="ci-length" type="number" min="1" placeholder="m" style="width:64px;padding:9px 6px;text-align:center" onchange="if(+this.value>0){calc.length=+this.value;renderCalc();}">
+      </div>
+    </div>
+
+    <div>
+      <label class="lbl">Bed / Channel Width</label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select style="flex:1" onchange="if(this.value){calc.bedWidth=+this.value;const ci=document.getElementById('ci-bed');if(ci)ci.value='';renderCalc();}">
+          ${BED_WIDTHS.map(v=>`<option value="${v}"${calc.bedWidth===v?' selected':''}>${v} m</option>`).join('')}
+        </select>
+        <input id="ci-bed" type="number" min="0.1" step="0.1" placeholder="m" style="width:64px;padding:9px 6px;text-align:center" onchange="if(+this.value>0){calc.bedWidth=+this.value;renderCalc();}">
+      </div>
+    </div>
+
+    <div>
+      <label class="lbl">Bank Height (vertical)</label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select style="flex:1" onchange="if(this.value){calc.bankHeight=+this.value;const ci=document.getElementById('ci-bank');if(ci)ci.value='';renderCalc();}">
+          ${BANK_HEIGHTS.map(v=>`<option value="${v}"${calc.bankHeight===v?' selected':''}>${v} m</option>`).join('')}
+        </select>
+        <input id="ci-bank" type="number" min="0.1" step="0.1" placeholder="m" style="width:64px;padding:9px 6px;text-align:center" onchange="if(+this.value>0){calc.bankHeight=+this.value;renderCalc();}">
+      </div>
+    </div>
+
+    <div>
+      <label class="lbl">Side Slope Ratio</label>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select style="flex:1" onchange="calc.slopeZ=+this.value;renderCalc()">
+          ${SLOPE_RATIOS.map(r=>`<option value="${r.Z}"${calc.slopeZ===r.Z?' selected':''}>${r.label}</option>`).join('')}
+        </select>
+        <input id="ci-slope" type="number" min="0.5" step="0.5" placeholder="Z" style="width:64px;padding:9px 6px;text-align:center" title="Enter custom H:V ratio (e.g. 2.5)" onchange="if(+this.value>0){calc.slopeZ=+this.value;renderCalc();}">
+      </div>
+    </div>
+
+    <div style="grid-column:1/-1">
+      <label class="lbl">Sides to Protect</label>
+      <select onchange="calc.sides=+this.value;renderCalc()">
+        <option value="1"${calc.sides===1?' selected':''}>1 side only</option>
+        <option value="2"${calc.sides===2?' selected':''}>Both sides</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:10px;padding:14px;margin-bottom:12px;font-size:12px;color:#64748b;line-height:1.9">
+    <strong style="color:#94a3b8">How this is calculated (per Engineering Binder):</strong><br>
+    Bed area = ${L} m × ${bw} m = <strong style="color:#86efac">${bedArea.toFixed(1)} m²</strong><br>
+    Slope face width = ${bh} m bank × √(${Z}²+1) = <strong style="color:#f59e0b">${slopeFaceWidth.toFixed(2)} m</strong> along slope surface<br>
+    Slope area = ${sides} side(s) × ${L} m × ${slopeFaceWidth.toFixed(2)} m = <strong style="color:#f59e0b">${slopeArea.toFixed(1)} m²</strong><br>
+    Total protected area = ${totalArea.toFixed(1)} m² + 10% wastage = <strong style="color:#e2e8f0">${totalWithWastage.toFixed(1)} m²</strong>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+    <div style="text-align:center;padding:12px 8px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px">
+      <div style="font-size:26px;font-weight:900;color:#60a5fa">${bedMats}</div>
+      <div style="font-size:11px;color:#64748b;margin-top:2px">Bed mats<br>${bedArea.toFixed(1)} m²</div>
+    </div>
+    <div style="text-align:center;padding:12px 8px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px">
+      <div style="font-size:26px;font-weight:900;color:#f59e0b">${slopeMats}</div>
+      <div style="font-size:11px;color:#64748b;margin-top:2px">Slope mats<br>${slopeArea.toFixed(1)} m²</div>
+    </div>
+    <div style="text-align:center;padding:12px 8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px">
+      <div style="font-size:32px;font-weight:900;color:#4ade80">${totalMats}</div>
+      <div style="font-size:12px;color:#e2e8f0;font-weight:600">TOTAL MATS</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#64748b;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
+    Mat size: ${bl.ms} (${ma} m² per mat) · Block: <strong style="color:${bl.c}">${bl.name}</strong> · 10% wastage per Cable Concrete® Engineering Binder
+  </div>`;
+}
+
+// ── DATA TABS ─────────────────────────────────────────────────────────────────
+function switchDT(t){dtab=t;document.querySelectorAll('#dt-tabs .tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));renderDT();}
+function switchMT(t){mtab=t;renderDT();}
+function switchST(t){stab=t;document.querySelectorAll('#st-tabs .tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));renderST();}
+function renderDT(){
+  const el=document.getElementById('dt-content');if(!el)return;
+  if(dtab==="selection"){
+    el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Table 4-1 — Mild Slopes (&lt;1%)</h3>
+    <div style="font-size:11px;color:#64748b;margin-bottom:8px">Engineering Binder Part 5 · University of Windsor (1991) · Vel A = Good placement · Vel B = Poor placement</div>
+    <div class="twrap"><table><thead><tr><th>Block</th><th>Vel B m/s</th><th>Vel A m/s</th><th>Vel B ft/s</th><th>Vel A ft/s</th></tr></thead><tbody>
+    ${MILD.map(r=>`<tr><td class="hi">${r.b}</td><td>${r.bm}</td><td class="hi">${r.am}</td><td>${r.bf}</td><td class="hi">${r.af}</td></tr>`).join('')}</tbody></table></div>
+    <h3 style="font-size:15px;font-weight:700;color:#fff;margin:16px 0 4px">Table 4-2 — Moderately Steep Slopes (&lt;5%)</h3>
+    <div class="twrap"><table><thead><tr><th>Block</th><th>Vel B m/s</th><th>Vel A m/s</th><th>Vel B ft/s</th><th>Vel A ft/s</th></tr></thead><tbody>
+    ${STEEP.map(r=>`<tr><td class="hi">${r.b}</td><td>${r.bm}</td><td class="hi">${r.am}</td><td>${r.bf}</td><td class="hi">${r.af}</td></tr>`).join('')}</tbody></table></div>`;
+  }else if(dtab==="mannings"){
+    el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Manning's n (Subcritical — Froude &lt; 1)</h3>
+    <div class="tabrow">${["CCG2","CC35","CC45","CC70"].map(id=>`<button class="tab${mtab===id?' on':''}" onclick="switchMT('${id}')">${id}</button>`).join('')}</div>
+    <div class="twrap"><table><thead><tr><th>Vel m/s</th><th>Depth m</th><th>n Clean</th><th>n Clean+Backfill</th><th>n Backfill+Grass</th></tr></thead><tbody>
+    ${(MN[mtab]||MN.CC35).map(r=>`<tr><td class="hi">${r.v}</td><td>${r.d}</td><td>${r.c}</td><td>${r.cb}</td><td class="wa">${r.bg}</td></tr>`).join('')}</tbody></table></div>`;
+  }else if(dtab==="bridge"){
+    el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Bridge Pier Scour Protection</h3>
+    <div style="font-size:11px;color:#64748b;margin-bottom:8px">McCorquodale et al. · ASCE Hydraulic Engineering 1993</div>
+    <div class="twrap"><table><thead><tr><th>Block</th><th>Shear N/m²</th><th>Shear lb/ft²</th><th>Vel m/s</th><th>Vel ft/s</th><th>Manning n</th><th>Ht in</th></tr></thead><tbody>
+    <tr><td class="hi">CCG2</td><td>182</td><td>3.8</td><td class="hi">4.0</td><td class="hi">13.0</td><td>0.017–0.02</td><td>2.5</td></tr>
+    <tr><td class="hi">CC35</td><td>325</td><td>4.9</td><td class="hi">5.2</td><td class="hi">17.0</td><td>0.02–0.025</td><td>4.5</td></tr>
+    <tr><td class="hi">CC45</td><td>390</td><td>8.2</td><td class="hi">6.1</td><td class="hi">20.0</td><td>0.023–0.029</td><td>5.5</td></tr>
+    <tr><td class="hi">CC70</td><td>625</td><td>13.0</td><td class="hi">7.6</td><td class="hi">25.0</td><td>0.028–0.033</td><td>8.5</td></tr>
+    </tbody></table></div>
+    <div style="font-size:12px;color:#94a3b8;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px">Width W = 2.5d_s + D · Upstream X₁ = 1.25d_s · Downstream X₂ = 3d_s</div>`;
+  }else{
+    el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px">Side Slope Guide by Soil Type</h3>
+    <div class="twrap"><table><thead><tr><th>Soil Type</th><th>Recommended Z:1</th></tr></thead><tbody>
+    <tr><td class="hi">Stiff Clay</td><td class="wa">1H:1V (special anchoring req'd)</td></tr>
+    <tr><td class="hi">Firm Clay</td><td>1.5:1 to 2:1</td></tr>
+    <tr><td class="hi">Soft Clay</td><td>3:1</td></tr>
+    <tr><td class="hi">Sandy Earth</td><td>2:1 to 3:1</td></tr>
+    <tr><td class="hi">Sandy Loam</td><td>3:1 to 4:1</td></tr>
+    </tbody></table></div>
+    <div style="font-size:12px;color:#94a3b8;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px;line-height:1.8">
+    <strong style="color:#fff">Drainage:</strong> Good subgrade drainage prevents piping. For supercritical flow: perforated pipe + granular fill + geotextile essential.<br><br>
+    <strong style="color:#fff">Surface Treatment:</strong> Backfill with soil + seed + mulch, or gravel/crushed stone, or grout geotextile for UV protection.</div>`;
+  }
+}
+function renderST(){
+  const rows=stab==='cc35'?SAFL35:SAFL45;
+  const el=document.getElementById('st-content');if(!el)return;
+  el.innerHTML=`<div class="twrap"><table><thead><tr><th>Run</th><th>Overtopping</th><th>Discharge cfs</th><th>Max Vel fps</th><th>Peak Shear</th><th>Result</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td class="hi">Run ${r.r}</td><td>${r.o}</td><td>${r.d}</td><td class="hi">${r.v}</td><td>${r.sh}</td><td class="ok">STABLE</td></tr>`).join('')}</tbody></table></div>`;
+}
+function toggleComp(i){
+  openComp=openComp===i?null:i;
+  document.querySelectorAll('.comp-body').forEach((el,idx)=>el.style.display=idx===openComp?'block':'none');
+  document.querySelectorAll('.comp-arr').forEach((el,idx)=>el.textContent=idx===openComp?'▴':'▾');
+}
+
+// ── SIMULATOR ────────────────────────────────────────────────────────────────
+let simPct=50, simPhase=0, simTimer=null;
+
+function initBA(col){
+  const el=document.getElementById('ba-wrap');if(!el)return;
+  if(simTimer)clearInterval(simTimer);
+
+  const drawBA=()=>{
+    const svg=document.getElementById('ba-svg');if(!svg)return;
+    const p=simPct;
+    svg.innerHTML=`<defs>
+      <clipPath id="clb"><rect x="0" y="0" width="${p*6.9}" height="180"/></clipPath>
+      <clipPath id="cla"><rect x="${p*6.9}" y="0" width="${(100-p)*6.9}" height="180"/></clipPath>
+    </defs>
+    <g clip-path="url(#clb)">
+      <rect width="690" height="180" fill="#0e1825"/>
+      <path d="M0,180 L0,68 L85,68 L100,92 L125,72 L155,104 L180,82 L200,144 L240,132 L275,148 L315,138 L345,144 L395,138 L430,148 L460,132 L500,144 L520,82 L545,104 L575,72 L590,92 L605,68 L690,68 L690,180 Z" fill="#7c4a1a"/>
+      <path d="M200,130 Q260,122 315,128 Q370,122 430,128 Q460,122 500,130" fill="none" stroke="rgba(100,180,255,.55)" stroke-width="2"/>
+      <text x="345" y="17" text-anchor="middle" fill="#ef4444" font-size="12" font-family="system-ui" font-weight="bold">BEFORE — Active Erosion</text>
+    </g>
+    <g clip-path="url(#cla)">
+      <rect width="690" height="180" fill="#0d1520"/>
+      <path d="M0,180 L0,68 L85,68 L200,144 L390,144 L500,112 L605,68 L690,68 L690,180 Z" fill="#4a3010"/>
+      <path d="M85,68 L200,144 L390,144 L500,112" fill="none" stroke="rgba(200,180,80,.4)" stroke-width="2" stroke-dasharray="5,4"/>
+      ${Array.from({length:16},(v,i)=>{const f=(i+.5)/16,x=85+f*415,y=i<5?68+f*76:i<10?144:144-(i-10)/6*28,r=i<5?-24:i<10?0:24;return`<g transform="translate(${x},${y}) rotate(${r})"><rect x="-11" y="-5" width="22" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/><line x1="-11" y1="0" x2="11" y2="0" stroke="rgba(160,185,255,.4)" stroke-width=".7"/></g>`;}).join('')}
+      ${[160,285,415].map(ax=>`<line x1="${ax}" y1="144" x2="${ax}" y2="134" stroke="#facc15" stroke-width="2"/><line x1="${ax-4}" y1="139" x2="${ax+4}" y2="139" stroke="#facc15" stroke-width="2"/>`).join('')}
+      <path d="M200,136 Q260,139 315,137 Q370,141 430,137 Q460,139 500,136" fill="none" stroke="rgba(56,189,248,.4)" stroke-width="1.5"/>
+      ${[35,50,65,535,550,565].map(gx=>[0,1,2].map(b=>`<path d="M${gx+b*7},66 Q${gx+b*7+3},57 ${gx+b*7+5},60" fill="none" stroke="#22c55e" stroke-width="1.2"/>`).join('')).join('')}
+      <text x="345" y="17" text-anchor="middle" fill="#22c55e" font-size="12" font-family="system-ui" font-weight="bold">AFTER — Cable Concrete® Protected</text>
+    </g>
+    <line x1="${p*6.9}" y1="0" x2="${p*6.9}" y2="180" stroke="rgba(255,255,255,.85)" stroke-width="2"/>
+    <circle cx="${p*6.9}" cy="90" r="18" fill="white"/>
+    <text x="${p*6.9}" y="95" text-anchor="middle" font-size="15" font-family="Arial" font-weight="bold" fill="#0a0e14">&#8596;</text>`;
+  };
+
+  drawBA();
+  const mv=e=>{const r=el.getBoundingClientRect();simPct=Math.max(5,Math.min(95,(e.clientX-r.left)/r.width*100));drawBA();};
+  el.onclick=mv;
+  el.onmousemove=e=>{if(e.buttons===1)mv(e);};
+  el.ontouchmove=e=>{e.preventDefault();const r=el.getBoundingClientRect();simPct=Math.max(5,Math.min(95,(e.touches[0].clientX-r.left)/r.width*100));drawBA();};
+}
+
+function drawCrossSection(col){
+  const svg=document.getElementById('cs-svg');if(!svg)return;
+  const ph=simPhase;
+  const LABELS=["⚠ Active Erosion — Unprotected Channel","⚙ Installing — Crane Placing Mats","✓ Fully Protected — Cable Concrete® in Service"];
+  const LCOLS=["#ef4444","#f59e0b","#22c55e"];
+  const showMats=ph>=1, showCrane=ph===1, showAnchors=ph===2, showGrass=ph===2;
+  const mats=Array.from({length:17},(v,i)=>{
+    let x,y,r;
+    if(i<5){const f=(i+.5)/5;x=90+f*110;y=137-30+f*30-4;r=-25;}
+    else if(i<12){const f=(i-5+.5)/7;x=200+f*200;y=163;r=0;}
+    else{const f=(i-12+.5)/5;x=400+f*110;y=163-f*28;r=25;}
+    return {x,y,r};
+  });
+  svg.innerHTML=`
+    <defs>
+      <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1a2e"/><stop offset="100%" stop-color="#112233"/></linearGradient>
+      <linearGradient id="soil2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${ph===0?'#7c4a1a':'#5a3a10'}"/><stop offset="100%" stop-color="#2a1808"/></linearGradient>
+    </defs>
+    <rect width="700" height="210" fill="url(#sky2)"/>
+    ${ph===0
+      ?`<path d="M0,210 L0,108 L90,108 L100,130 L120,112 L140,140 L160,118 L200,165 L220,158 L250,168 L280,160 L350,165 L420,160 L450,168 L480,158 L500,165 L540,118 L560,140 L580,112 L600,130 L610,108 L700,108 L700,210 Z" fill="url(#soil2)"/>`
+      :`<path d="M0,210 L0,108 L90,108 L90,138 L200,165 L400,165 L510,138 L610,108 L700,108 L700,210 Z" fill="url(#soil2)"/>`
+    }
+    ${showMats?`<path d="M90,138 L200,165 L400,165 L510,138" fill="none" stroke="rgba(200,180,80,.5)" stroke-width="2" stroke-dasharray="5,4"/>`:''}
+    ${showMats?mats.map(m=>`<g transform="translate(${m.x},${m.y}) rotate(${m.r})"><rect x="-13" y="-5" width="26" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/><line x1="-13" y1="0" x2="13" y2="0" stroke="rgba(160,185,255,.5)" stroke-width=".8"/></g>`).join(''):''}
+    ${showCrane?`
+      <line x1="645" y1="210" x2="645" y2="18" stroke="#8ca0b8" stroke-width="4"/>
+      <line x1="645" y1="34" x2="520" y2="22" stroke="#94a3b8" stroke-width="3"/>
+      <line x1="645" y1="34" x2="678" y2="55" stroke="#64748b" stroke-width="2"/>
+      <line x1="520" y1="22" x2="480" y2="140" stroke="#facc15" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <rect x="467" y="133" width="26" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/>
+      <circle cx="480" cy="133" r="3" fill="#facc15"/>
+    `:''}
+    ${showAnchors?[168,300,445].map(ax=>`
+      <line x1="${ax}" y1="165" x2="${ax}" y2="153" stroke="#facc15" stroke-width="2"/>
+      <line x1="${ax-4}" y1="158" x2="${ax+4}" y2="158" stroke="#facc15" stroke-width="2"/>
+      <circle cx="${ax}" cy="170" r="3.5" fill="rgba(250,204,21,.3)" stroke="#facc15" stroke-width="1.2"/>
+    `).join(''):''}
+    ${showGrass?[35,50,65,555,570,585].map(gx=>[0,1,2].map(b=>`<path d="M${gx+b*7},106 Q${gx+b*7+3},97 ${gx+b*7+5},100" fill="none" stroke="#22c55e" stroke-width="1.4"/>`).join('')).join(''):''}
+    ${ph===0||ph===2?`<path d="M200,${ph===0?150:157} Q260,${ph===0?143:153} 300,${ph===0?148:155} Q350,${ph===0?145:157} 400,${ph===0?150:157}" fill="none" stroke="${ph===0?'rgba(100,180,255,.65)':'rgba(56,189,248,.5)'}" stroke-width="2"/>`:''}
+    <text x="350" y="18" text-anchor="middle" fill="${LCOLS[ph]}" font-size="12" font-family="system-ui" font-weight="bold">${LABELS[ph]}</text>
+    ${["Eroded","Installing","Protected"].map((l,i)=>`
+      <circle cx="${290+i*60}" cy="200" r="4" fill="${i===ph?LCOLS[i]:'#334155'}"/>
+      <text x="${290+i*60}" y="210" text-anchor="middle" font-size="9" fill="${i===ph?'#e2e8f0':'#64748b'}" font-family="system-ui">${l}</text>
+    `).join('')}
+  `;
+}
+
+// ── BUILD RESULTS PAGE ────────────────────────────────────────────────────────
+function buildResults(){
+  const s=scores(),w=winner(s),bl=B[w],rk=ranked(s);
+  const isPri=eng&&SSA.includes(eng.country);
+  document.getElementById('pg-results').innerHTML=`
+
+  <!-- ── SCROLL GUIDANCE BANNER ── -->
+  <div style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(239,68,68,.06));border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px">
+    <span style="font-size:20px;flex-shrink:0">📋</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:4px">How to Get Your Report — Read This First</div>
+      <div style="font-size:12px;color:#e2e8f0;line-height:1.8">
+        Your full engineering report is below. Here's what to do:<br>
+        <span style="color:#86efac">①</span> <strong style="color:#fff">Review</strong> your recommended block and hydraulic data<br>
+        <span style="color:#4ade80">②</span> <strong style="color:#4ade80">⚡ Use the Mat Calculator</strong> — scroll down just below this card to calculate your exact mat quantities<br>
+        <span style="color:#86efac">③</span> <strong style="color:#fff">Scroll all the way down</strong> to Section 08 — Disclaimer &amp; Terms<br>
+        <span style="color:#86efac">④</span> <strong style="color:#fff">Tick all 5 agreement checkboxes</strong> at the bottom to unlock the report<br>
+        <span style="color:#86efac">⑤</span> <strong style="color:#fff">Click "Print Report &amp; Request Quote"</strong> — your report is sent to IECS Africa and a copy to your email
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:10px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Recommended Block for Your Project</div>
+    <div style="font-size:48px;font-weight:900;color:${bl.c};line-height:1">${bl.name}</div>
+    <div style="font-size:15px;color:#cbd5e1;margin-top:3px">${bl.sub}</div>
+    ${isPri?`<div style="margin-top:8px"><span class="pill g">★ PRIORITY — IECS Africa will contact you within 24 hours</span></div>`:''}
+    ${eng?`<div style="margin-top:14px;padding:12px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:8px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px;margin-bottom:8px">
+        ${[["Engineer",eng.name],["Firm",eng.firm],["Email",eng.email],["Phone",eng.phone],["Country",eng.country]].map(([l,v])=>`<div><div class="lbl">${l}</div><div style="font-size:12px;color:#e2e8f0">${v}</div></div>`).join('')}
+      </div>
+      <div class="lbl">Project Scope</div>
+      <div style="font-size:12px;color:#cbd5e1;line-height:1.5;margin-top:2px">${eng.scope}</div>
+    </div>`:''}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:18px">
+      ${[["Block Height",bl.h],["Mat Weight",bl.wt],["Max Velocity",bl.vel],["Open Area",bl.oa],["Mat Size",bl.ms],["Shear Resistance",bl.sh],["Manning n Clean",bl.nc],["Manning n Backfill",bl.nb],["Cable Spec",bl.cb],["Block Thickness",bl.bh]].map(([l,v])=>`<div><div class="lbl">${l}</div><div style="font-size:13px;font-weight:700;color:#fff;font-family:monospace">${v}</div></div>`).join('')}
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:12px">Suitability Analysis — All Blocks</h3>
+    ${rk.map(r=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:${r.id===w?'#fff':'#94a3b8'};font-weight:${r.id===w?600:400}">${r.name}</span><span style="font-family:monospace;font-size:11px;color:${r.color}">${r.pct}%</span></div><div class="sbar"><div class="sfill" style="width:${r.pct}%;background:${r.color}"></div></div></div>`).join('')}
+  </div>
+
+  <!-- MAT CALCULATOR SECTION - ENHANCED -->
+  <div style="margin:24px 0 8px;padding:3px;background:linear-gradient(135deg,#22c55e,#16a34a,#22c55e);border-radius:16px;background-size:200% 200%;animation:gradshift 3s ease infinite">
+    <div style="background:#0f1a0f;border-radius:14px;padding:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="background:#22c55e;border-radius:8px;padding:6px 12px;font-size:20px;line-height:1">📐</div>
+        <div>
+          <div style="font-size:19px;font-weight:900;color:#4ade80;line-height:1">Mat Quantity Calculator</div>
+          <div style="font-size:12px;color:#86efac;margin-top:2px">⚡ Calculate exactly how many mats your project needs</div>
+        </div>
+      </div>
+      <div style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:13px;color:#f1f5f9;line-height:1.7;font-weight:600">Enter your project dimensions below — the calculator gives you bed mats, slope mats, and total mats including 10% wastage per the Cable Concrete® Engineering Binder.</div>
+        <div style="font-size:12px;color:#86efac;margin-top:6px">💡 Select from the dropdown <strong>or</strong> type a custom value in the box on the right</div>
+      </div>
+      <div id="calc-z"></div>
+    </div>
+  </div>
+
+  <!-- ── RESOURCES SECTION ── -->
+  <div style="background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(34,197,94,.05));border:1px solid rgba(74,222,128,.25);border-radius:12px;padding:20px;margin-bottom:24px">
+    <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">IECS Africa · Cable Concrete® Resources</div>
+    <h3 style="font-size:17px;font-weight:700;color:#fff;margin-bottom:14px">Technical Documents &amp; Audio Discussions</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+      <a href="#" onclick="openModal('brochure');return false;" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#4ade80,#16a34a);border-radius:8px;padding:12px 14px;text-decoration:none;box-shadow:0 4px 12px rgba(74,222,128,.3)">
+        <span style="font-size:22px">📄</span>
+        <div><div style="font-size:13px;font-weight:700;color:#fff">Product Brochure</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px">PDF — Technical Overview</div></div>
+      </a>
+      <a href="#" onclick="openModal('presentation');return false;" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:8px;padding:12px 14px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.3)">
+        <span style="font-size:22px">📊</span>
+        <div><div style="font-size:13px;font-weight:700;color:#fff">Engineering Presentation</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px">Interactive Slides</div></div>
+      </a>
+      <a href="https://drive.google.com/uc?export=download&id=1d9F3XW2LgXn3I43FqvvO2xBuzXszPzsf" target="_blank" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-radius:8px;padding:12px 14px;text-decoration:none;box-shadow:0 4px 12px rgba(139,92,246,.3)">
+        <span style="font-size:22px">🎙️</span>
+        <div><div style="font-size:13px;font-weight:700;color:#fff">Discussions on Cable Concrete</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px">AI Audio Podcast</div></div>
+      </a>
+    </div>
+    <p style="font-size:11px;color:#64748b;margin-top:12px;line-height:1.6">Documents open in a new tab. For direct assistance contact <a href="mailto:contact@iecsafrica.com" style="color:#86efac;text-decoration:none">contact@iecsafrica.com</a></p>
+  </div>
+
+  <div class="sechdr"><div class="sn">01</div><h2 style="font-size:18px;font-weight:700;color:#fff">Gully Erosion Simulation</h2></div>
+  <div class="card">
+    <div class="tabrow" id="sim-tabs">
+      <button class="tab on" onclick="setSimTab('cs',this)">Cross-Section (Phases)</button>
+      <button class="tab" onclick="setSimTab('ba',this)">Before &amp; After Slider</button>
+    </div>
+    <div id="sim-cs">
+      <svg id="cs-svg" viewBox="0 0 700 210" style="width:100%;display:block;border-radius:8px"></svg>
+      <p style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">Auto-cycles every 3 seconds: erosion → crane installation → protected</p>
+    </div>
+    <div id="sim-ba" style="display:none">
+      <div id="ba-wrap" style="cursor:ew-resize;user-select:none">
+        <svg id="ba-svg" viewBox="0 0 690 180" style="width:100%;display:block;border-radius:8px"></svg>
+      </div>
+      <p style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">Click or drag to compare before / after</p>
+    </div>
+  </div>
+
+  <div class="sechdr"><div class="sn">02</div><h2 style="font-size:18px;font-weight:700;color:#fff">Hydraulic Design Data</h2></div>
+  <div id="dt-tabs" class="tabrow">
+    <button class="tab on" data-t="selection" onclick="switchDT('selection')">Block Selection</button>
+    <button class="tab" data-t="mannings" onclick="switchDT('mannings')">Manning's n</button>
+    <button class="tab" data-t="bridge" onclick="switchDT('bridge')">Bridge Pier</button>
+    <button class="tab" data-t="drainage" onclick="switchDT('drainage')">Drainage Notes</button>
+  </div>
+  <div id="dt-content"></div>
+
+  <div class="sechdr"><div class="sn">03</div><h2 style="font-size:18px;font-weight:700;color:#fff">Anchoring &amp; Field Installation</h2></div>
+  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Source: Cable Concrete® Engineering Binder Part 6, Fact Sheet 6</p>
+  ${ANCHORS.map(([l,s])=>`<div class="ai"><div class="al">${l}</div><div style="font-size:12px;color:#cbd5e1;line-height:1.5">${s}</div></div>`).join('')}
+
+  <div class="sechdr"><div class="sn">04</div><h2 style="font-size:18px;font-weight:700;color:#fff">University Laboratory Test Data</h2></div>
+  <div style="background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(34,197,94,.04));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:18px;margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+      <div><div style="font-size:16px;font-weight:700;color:#4ade80">University of Minnesota — St. Anthony Falls Laboratory</div>
+      <div style="font-size:11px;color:#64748b;margin-top:2px">Project Report No. 434 · March 1999 · Independent university test</div></div>
+      <span class="pill g">✓ University Verified</span>
+    </div>
+    <div style="font-size:12px;color:#cbd5e1;background:rgba(0,0,0,.2);border-radius:6px;padding:10px;margin-bottom:10px;line-height:1.7">Both CC 35 and CC 45 OS systems performed well up to maximum facility capability (3.5 ft overtopping head). Failure was not induced — the test facility reached its limit before the blocks failed.</div>
+    ${["Both systems stable up to 3.5 ft overtopping — failure not induced","CC 35 peak shear: 38.5 lb/ft² at 19.0 ft/sec — system intact","CC 45 OS peak shear: 34.9 lb/ft² at 18.9 ft/sec — system intact","Geotextile (6.1 oz/yd² non-woven polypropylene) essential for subgrade retention","Vertical interblock offset consistently less than 1/4 inch","Always apply adequate factor of safety for site variability"].map(f=>`<div style="display:flex;gap:8px;font-size:12px;color:#cbd5e1;margin-bottom:4px"><span style="color:#22c55e;flex-shrink:0">✓</span>${f}</div>`).join('')}
+  </div>
+  <div id="st-tabs" class="tabrow">
+    <button class="tab on" data-t="cc35" onclick="switchST('cc35')">CC 35 Test Runs (1–4)</button>
+    <button class="tab" data-t="cc45" onclick="switchST('cc45')">CC 45 OS Test Runs (5–8)</button>
+  </div>
+  <div id="st-content"></div>
+  <div style="font-size:11px;color:#64748b;margin-top:6px">2:1 downstream slope · Silty clay (CL) · Non-woven 6.1 oz/yd² polypropylene geotextile</div>
+
+  <div class="sechdr"><div class="sn">05</div><h2 style="font-size:18px;font-weight:700;color:#fff">Why Cable Concrete®</h2></div>
+  ${COMPS.map(([n,body],i)=>`<div class="comp" onclick="toggleComp(${i})">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:15px;font-weight:700;color:#e2e8f0">${n}</div>
+      <span class="comp-arr" style="color:#64748b">▾</span>
+    </div>
+    <div class="comp-body" style="display:none;font-size:12px;color:#cbd5e1;line-height:1.6;margin-top:8px">${body}</div>
+  </div>`).join('')}
+
+  <!-- ── SECTION 06: INSTALLATION PROCESS ── -->
+  <div class="sechdr"><div class="sn">06</div><h2 style="font-size:18px;font-weight:700;color:#fff">Installation Process Guide</h2></div>
+  <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <span style="font-size:16px">⚠</span>
+      <strong style="font-size:13px;color:#f59e0b">This guide is for reference only. Improper installation voids all performance warranties.</strong>
+    </div>
+    <p style="font-size:12px;color:#94a3b8;line-height:1.7">Cable Concrete® mats must be installed by trained and experienced personnel. IECS Africa strongly recommends engaging our certified installation teams for all projects. See Section 07 for details.</p>
+  </div>
+
+  <!-- Cable & Rope Specification Table -->
+  <h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px">Cable &amp; Rope Specifications — Per Engineering Binder</h3>
+  <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#94a3b8;line-height:1.7">
+    <strong style="color:#f59e0b">Critical:</strong> Only use the cable grade specified for the block type. Substituting lower-grade wire rope or polyester rope for stainless steel in high-velocity or coastal applications significantly reduces system strength and corrosion resistance. Never splice or join cables on site — all cable must run continuously from mat edge to mat edge as factory-supplied.
+  </div>
+  <div class="twrap" style="margin-bottom:20px">
+    <table>
+      <thead>
+        <tr>
+          <th>Block</th>
+          <th>Cable Type</th>
+          <th>Specification</th>
+          <th>Diameter</th>
+          <th>Breaking Strength</th>
+          <th>Environment</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="hi">CC G2</td>
+          <td>302/304 Stainless Steel <em>or</em> Polyester Braided Rope</td>
+          <td>1×19 or braided</td>
+          <td>4 mm (5/32")</td>
+          <td>~1,800 lbs (SS) / ~1,200 lbs (polyester)</td>
+          <td style="color:#4ade80">Inland / low exposure</td>
+          <td style="color:#94a3b8;font-size:10px">Polyester acceptable for permeable paving &amp; gentle slope applications only. Use SS in all channel applications.</td>
+        </tr>
+        <tr>
+          <td class="hi">CC 35</td>
+          <td>302/304 Stainless Steel Wire Rope</td>
+          <td>1×19 strand</td>
+          <td>4 mm (5/32")</td>
+          <td>3,300 lbs (1,500 kg)</td>
+          <td style="color:#60a5fa">Inland / moderate</td>
+          <td style="color:#94a3b8;font-size:10px">Do NOT use galvanised wire rope — chloride pitting in tropical soils. Stainless steel mandatory.</td>
+        </tr>
+        <tr>
+          <td class="hi">CC 45</td>
+          <td>302/304 Stainless Steel Wire Rope</td>
+          <td>1×19 strand</td>
+          <td>4 mm (5/32")</td>
+          <td>3,300 lbs (1,500 kg)</td>
+          <td style="color:#f59e0b">Steep / high velocity</td>
+          <td style="color:#94a3b8;font-size:10px">Inspect cable tension after first high-flow event. Re-tension any slack before backfill.</td>
+        </tr>
+        <tr>
+          <td class="hi">CC 70</td>
+          <td>302/304 Stainless Steel Wire Rope</td>
+          <td>1×19 strand</td>
+          <td>4.8 mm (3/16")</td>
+          <td>4,700 lbs (2,130 kg)</td>
+          <td style="color:#f87171">Coastal / extreme</td>
+          <td style="color:#94a3b8;font-size:10px">Larger diameter cable — do not substitute 4mm. Coastal applications: inspect annually for crevice corrosion at clamp points.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+    <div style="background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px">
+      <div style="font-size:11px;color:#4ade80;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Clamping Hardware</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.7">Use only 302/304 stainless steel cable clamps (bulldog grips) at all mat-to-mat connections. Minimum 2 clamps per connection point. Torque to manufacturer specification — over-tightening crushes the 1×19 strand and reduces breaking strength by up to 30%.</div>
+    </div>
+    <div style="background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px">
+      <div style="font-size:11px;color:#4ade80;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Field Cutting</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.7">Cut cable only with an angle grinder or approved cable cutter — never with bolt cutters, which crush and fray the strand. Immediately cap all cut ends with stainless steel ferrules or cable end caps to prevent unravelling and corrosion ingress.</div>
+    </div>
+  </div>
+
+  <!-- Installation Steps -->
+  <h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:14px">Step-by-Step Installation Sequence</h3>
+  ${[
+    ["1","Site Preparation","Clear all vegetation, debris, and loose material from the channel bed and side slopes. Compact the subgrade to achieve uniform bearing. All rills, gullies, and voids must be filled and compacted before geotextile placement. Check for any subsurface drainage issues — address before proceeding."],
+    ["2","Geotextile Filter Placement","Install non-woven polypropylene geotextile (minimum 6.1 oz/yd²) across the full channel profile — bed and both slopes. Overlap adjacent sheets by a minimum of 600mm (2 ft). Secure edges with staples or pins at 1m centres. The geotextile prevents subgrade piping and is critical to long-term system performance — never omit or substitute."],
+    ["3","Cable & Rope Inspection","Before placement, inspect all cable on every mat. Verify the correct cable grade for the block type (see specification table above). Check for kinks, broken strands, or factory splices. Any mat with compromised cable must be set aside and reported to IECS Africa — do not install."],
+    ["4","Mat Placement Sequence","Begin at the downstream end and work upstream. Each upstream mat must overlap the top edge of the downstream mat by a minimum of 150mm. On side slopes, start at the toe (channel invert) and work up the slope. Never place mats top-down — flow will lift the leading edge."],
+    ["5","Mat Orientation","Roll mats parallel to the channel flow direction. The cable direction (long axis of blocks) must run perpendicular to flow. This orientation presents the block faces to the flow and locks the mats against hydrodynamic lift. Incorrect orientation can reduce allowable velocity by up to 40%."],
+    ["6","Anchorage Installation","Drive Duckbill™ anchors (or IECS-approved equivalent) to undisturbed soil — typically 1.2m (4 ft) minimum depth. Anchor rods must be driven at 15° offset from vertical into the slope face. Spacing per binder specification: 1.2m centres on 3H:1V side slopes in poor soil; 2.4m centres in stiff clay. Install additional anchors at all mat edges, transitions, bends, and curves."],
+    ["7","Clamping and Cable Continuity","Clamp adjacent mats at a minimum of 3 locations on the long side and 1 location on the short side. Use stainless steel clamps only — see hardware specification above. Verify cable continuity across all mat joints by visual check and light hand tension. The interconnected cable system is the primary structural mechanism — any break in continuity is a critical defect."],
+    ["8","Leading and Trailing Edge Termination","Terminate the leading (upstream) edge with an anchor trench: excavate 300mm deep × 300mm wide, fold the mat and geotextile into the trench, backfill with compacted granular fill. Repeat at the downstream trailing edge. Secure both edges with a continuous row of anchors at 600mm centres. This prevents undermining and flow-induced uplift at the critical transition points."],
+    ["9","Backfill and Surface Finish","Vegetated finish: fill block openings with topsoil, seed with locally appropriate grass species (consult local agronomist), apply light straw mulch at 1–2 t/ha. Protect from flow for a minimum of 30 days until vegetation is established — install temporary flow diversion if required. Gravel finish: fill with clean 10–20mm crushed aggregate flush with block tops. Grouted finish: apply cement grout by brush, remove excess before set."],
+    ["10","Post-Installation Inspection & Handover","Walk the full installation and verify: (a) all anchors are flush or countersunk, (b) no mats are bridging voids, (c) geotextile is not exposed at any edge, (d) cable is continuous and properly tensioned, (e) all mat joints are clamped and secured, (f) edge termination trenches are compacted. Document with photographs and complete the IECS Africa Site Inspection Checklist before handover. Submit signed checklist to IECS Africa to activate the installation warranty."],
+  ].map(([num,title,body])=>`
+    <div style="background:#111827;border:1px solid #1e3a5f;border-radius:12px;padding:16px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff">${num}</div>
+        <div style="font-size:15px;font-weight:700;color:#4ade80">Step ${num} — ${title}</div>
+      </div>
+      <div style="font-size:14px;color:#cbd5e1;line-height:1.8;padding-left:2px">${body}</div>
+    </div>`).join('')}
+
+  <!-- ── RESOURCES DOWNLOAD BAR ── -->
+  <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:20px;margin:24px 0">
+    <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">IECS Africa Resources</div>
+    <div style="font-size:12px;color:#64748b;margin-bottom:16px">Product brochure, engineering presentation, and audio discussion — opens in a new tab.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <a href="#" onclick="openModal('brochure');return false;" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">
+        📄 Download Product Brochure
+      </a>
+      <a href="#" onclick="openModal('presentation');return false;" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">
+        📊 View Engineering Presentation
+      </a>
+      <a href="https://drive.google.com/uc?export=download&id=1d9F3XW2LgXn3I43FqvvO2xBuzXszPzsf" target="_blank" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:#a78bfa;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">
+        🎙️ Discussions on Cable Concrete
+      </a>
+    </div>
+    <div style="font-size:11px;color:#64748b;margin-top:12px;line-height:1.6">
+      All resources hosted at <strong style="color:#94a3b8">www.cableconcrete.app</strong> · Update the brochure and presentation links in your website admin to point to the correct files.
+    </div>
+  </div>
+
+  <!-- ── SECTION 07: IECS AFRICA INSTALLATION SERVICES ── -->
+  <div class="sechdr"><div class="sn">07</div><h2 style="font-size:18px;font-weight:700;color:#fff">Professional Installation by IECS Africa</h2></div>
+  <div style="background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(34,197,94,.05));border:2px solid rgba(74,222,128,.3);border-radius:12px;padding:22px;margin-bottom:16px">
+    <div style="font-size:19px;font-weight:700;color:#fff;margin-bottom:8px">We strongly recommend engaging IECS Africa as your installation contractor.</div>
+    <p style="font-size:13px;color:#cbd5e1;line-height:1.7;margin-bottom:14px">
+      Cable Concrete® mat performance is critically dependent on correct installation. IECS Africa is the authorised distributor and installation specialist for Cable Concrete® systems across Sub-Saharan Africa, with teams trained directly to the Cable Concrete® Engineering Binder specification.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px">
+      ${[
+        ["✓ Warranty-backed installation","All IECS Africa-installed projects carry a formal installation warranty. Performance guarantees are only possible with IECS Africa as installer."],
+        ["✓ Trained & certified crews","Our site teams are trained to Cable Concrete® Binder specification — anchor depths, cable continuity, edge termination, and backfill standards."],
+        ["✓ Full project accountability","IECS Africa takes full legal and professional responsibility for projects we design, supply, and install — from site preparation through to handover certificate."],
+        ["✓ Mobilisation across SSA","We mobilise to Nigeria, Ghana, Kenya, Tanzania, Uganda, Zambia, Mozambique, Ethiopia, and beyond. Priority response for urgent erosion control situations."],
+      ].map(([h,b])=>`<div style="background:rgba(0,0,0,.2);border-radius:8px;padding:12px">
+        <div style="font-size:13px;font-weight:600;color:#22c55e;margin-bottom:4px">${h}</div>
+        <div style="font-size:11px;color:#cbd5e1;line-height:1.6">${b}</div>
+      </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div style="font-size:13px;color:#e2e8f0;font-weight:600">Contact IECS Africa for an installation quote:</div>
+      <div style="font-size:13px;color:#86efac">contact@iecsafrica.com</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 08: DISCLAIMER & LIABILITY ── -->
+  <div class="sechdr"><div class="sn">08</div><h2 style="font-size:18px;font-weight:700;color:#fff">Disclaimer &amp; Limitation of Liability</h2></div>
+  <div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:18px;margin-bottom:16px;font-size:12px;color:#cbd5e1;line-height:1.9">
+    <p style="margin-bottom:10px"><strong style="color:#e2e8f0">1. Engineering Responsibility.</strong> This report and the block recommendation contained herein are generated from a generalised assessment tool and do not constitute a certified engineering design. All recommendations must be reviewed, verified, and approved by a qualified registered civil or geotechnical engineer licensed in the relevant jurisdiction prior to procurement or construction.</p>
+    <p style="margin-bottom:10px"><strong style="color:#e2e8f0">2. Installation Responsibility.</strong> IECS Africa and IECS Global Inc. Canada accept no liability whatsoever for the performance, failure, or consequences of any Cable Concrete® installation that is not carried out by IECS Africa or an IECS-approved and supervised contractor. This includes, without limitation, damage to property, loss of life, flooding, slope failure, or erosion resulting from incorrect installation, incorrect anchor depth, incorrect mat orientation, incorrect geotextile specification, or any deviation from the Cable Concrete® Engineering Binder.</p>
+    <p style="margin-bottom:10px"><strong style="color:#e2e8f0">3. Product Performance.</strong> Cable Concrete® products perform to the hydraulic specifications stated in the Engineering Binder only when correctly installed and maintained. Product performance warranties apply exclusively to materials supplied by IECS Africa and installed under IECS Africa supervision or by an IECS Africa-certified crew.</p>
+    <p style="margin-bottom:10px"><strong style="color:#e2e8f0">4. IECS Africa Installed Projects.</strong> For projects where IECS Africa acts as the design, supply, and installation contractor, IECS Africa assumes full professional responsibility for the installed system for the duration of the agreed project warranty period, subject to the terms of the signed project contract.</p>
+    <p style="margin-bottom:0"><strong style="color:#e2e8f0">5. Accuracy of Assessment.</strong> This tool provides a preliminary block selection based on user-supplied inputs. IECS Africa makes no representations as to the accuracy or completeness of the recommendation where inputs are estimated or where site conditions differ materially from those described. A full site investigation, hydraulic study, and certified design are required before construction.</p>
+  </div>
+
+  <!-- ── TERMS OF AGREEMENT CHECKBOX ── -->
+  <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div style="font-size:13px;color:#e2e8f0;font-weight:600">⬇ Almost there — tick all 5 boxes below to unlock your report</div>
+    <div style="font-size:11px;color:#64748b">Then click "Print Report & Request Quote"</div>
+  </div>
+  <div style="background:#111827;border:2px solid rgba(74,222,128,.3);border-radius:12px;padding:20px;margin-bottom:20px" id="terms-box">
+    <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">Terms of Agreement — Required</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:14px;line-height:1.7">By printing or sharing this report, the recipient acknowledges and agrees to the following terms:</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      ${[
+        ["terms1","I have read and understood the Disclaimer & Limitation of Liability (Section 08) above."],
+        ["terms2","I acknowledge that this report is a preliminary assessment tool and not a certified engineering design."],
+        ["terms3","I understand that IECS Africa and IECS Global Inc. Canada bear no liability for installations not carried out by IECS Africa or an IECS-approved contractor."],
+        ["terms4","I agree to engage a qualified registered engineer to review, certify, and stamp any design derived from this report before construction commences."],
+        ["terms5","I have noted IECS Africa's recommendation to use their installation services, and understand that product performance warranties are conditional on IECS Africa installation."],
+      ].map(([id,text])=>`
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+          <input type="checkbox" id="${id}" onchange="checkTerms()" style="width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:#4ade80">
+          <span style="font-size:12px;color:#e2e8f0;line-height:1.6">${text}</span>
+        </label>`).join('')}
+    </div>
+    <div id="terms-status" style="font-size:12px;color:#64748b;padding:10px;background:rgba(0,0,0,.2);border-radius:6px;text-align:center">
+      ☐ Please confirm all five terms above before printing or sharing this report.
+    </div>
+  </div>
+
+  <!-- ── WATERMARK / FOOTER ── -->
+  <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 12px">
+    <button class="bp" onclick="printReport()" style="font-size:13px;padding:10px 20px;text-transform:none;letter-spacing:0">⎙ Print Report &amp; Request Quote</button>
+    <button class="bs" onclick="resetApp()">↺ Start New Assessment</button>
+    <button class="bs" onclick="show('contact')">← Back to Contact Form</button>
+    <button class="bs" onclick="show('quiz')">← Adjust Answers</button>
+  </div>
+  <div class="no-print" style="font-size:11px;color:#64748b;text-align:center;line-height:1.8;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:8px;padding:10px;margin-bottom:20px">
+    Confirm all five Terms of Agreement above before printing. Report will be sent to IECS Africa and a copy to ${eng?eng.email:"your email"}.
+  </div>
+  <div style="border-top:1px solid #1e2d42;padding-top:16px;margin-top:8px;text-align:center">
+    <div style="font-size:11px;color:#64748b;line-height:1.9">
+      <strong style="color:#94a3b8;display:block;font-size:12px;margin-bottom:4px">
+        IECS Africa · A subsidiary of IECS Global Inc. Canada
+      </strong>
+      www.cableconcrete.app · contact@iecsafrica.com<br>
+      Cable Concrete® is a registered trademark of International Erosion Control Systems LLC.<br>
+      Data sourced from Cable Concrete® Engineering Binder Parts 1–6 · University of Windsor ASCE 1993 · University of Minnesota SAFL Report No. 434 (1999)<br>
+      <span style="color:#334155">Report generated: ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} · Cable Concrete® Block Selection Tool v8.0</span>
+    </div>
+  </div>`;
+
+  // init all sub-components
+  renderCalc();
+  renderDT();
+  renderST();
+  drawCrossSection(bl.c);
+  if(simTimer) clearInterval(simTimer);
+  simTimer = setInterval(()=>{simPhase=(simPhase+1)%3;drawCrossSection(bl.c);},3000);
+  initBA(bl.c);
+}
+
+function checkTerms(){
+  const all=['terms1','terms2','terms3','terms4','terms5'].every(id=>{
+    const el=document.getElementById(id);return el&&el.checked;
+  });
+  const st=document.getElementById('terms-status');
+  const box=document.getElementById('terms-box');
+  if(st){
+    st.textContent=all
+      ? '✓ All terms confirmed. You may now print or share this report.'
+      : '☐ Please confirm all five terms above before printing or sharing this report.';
+    st.style.color=all?'#22c55e':'#64748b';
+    st.style.background=all?'rgba(34,197,94,.08)':'rgba(0,0,0,.2)';
+  }
+  if(box) box.style.borderColor=all?'rgba(34,197,94,.4)':'rgba(74,222,128,.3)';
+}
+
+function setSimTab(t,btn){
+  document.getElementById('sim-cs').style.display=t==='cs'?'block':'none';
+  document.getElementById('sim-ba').style.display=t==='ba'?'block':'none';
+  document.querySelectorAll('#sim-tabs .tab').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+}
+
+function printReport(){
+  const all=['terms1','terms2','terms3','terms4','terms5'].every(id=>{
+    const el=document.getElementById(id);return el&&el.checked;
+  });
+  if(!all){
+    alert('Please tick all five Terms of Agreement before submitting.');
+    document.getElementById('terms-box')?.scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  // Update button only — lead already captured at form submission
+  if(eng){
+    // Terms confirmed — no need to send again, already in sheet
+  }
+
+  // Update button
+  const btn=document.querySelector('button[onclick="printReport()"]');
+  if(btn){btn.textContent='✓ Quote Request Sent!';btn.style.background='#22c55e';btn.disabled=true;}
+
+  // Remove old panel if exists
+  const old=document.getElementById('report-confirm');if(old)old.remove();
+
+  // Build confirmation panel
+  const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const panel=document.createElement('div');
+  panel.id='report-confirm';
+  panel.style.cssText='background:#111827;border:2px solid #22c55e;border-radius:12px;padding:22px;margin:16px 0;text-align:center';
+  panel.innerHTML=`
+    <div style="font-size:32px;margin-bottom:10px">✅</div>
+    <div style="font-size:17px;font-weight:700;color:#22c55e;margin-bottom:8px">Quote Request Submitted!</div>
+    <div style="font-size:13px;color:#e2e8f0;line-height:1.8;margin-bottom:18px">
+      IECS Africa has received your project details.<br>
+      You will be contacted at <strong style="color:#86efac">${eng?eng.email:''}</strong> with a formal quote.
+    </div>
+    <div style="border-top:1px solid #1e2d42;padding-top:16px;">
+      <div style="font-size:13px;color:#94a3b8;margin-bottom:14px">Save a copy of your full engineering report:</div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:center;width:100%">
+        <button onclick="window.print()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:320px">
+          🖨 Save Full Report as PDF
+        </button>
+        <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:14px 16px;width:100%;max-width:320px;text-align:left">
+          <div style="font-size:13px;font-weight:700;color:#4ade80;margin-bottom:10px">📱 How to save on your phone:</div>
+          <div style="font-size:13px;color:#f1f5f9;line-height:2.2">
+            <div style="margin-bottom:8px"><strong style="color:#86efac;display:block;margin-bottom:2px">iPhone / Safari:</strong>Tap the button above → tap Share icon ⬆ at bottom → tap Print → <strong>pinch outward</strong> on the preview → tap Share → Save to Files</div>
+            <div><strong style="color:#86efac;display:block;margin-bottom:2px">Android / Chrome:</strong>Tap the button above → tap the 3 dots ⋮ at top right → tap Print → tap the dropdown at top → select <strong>Save as PDF</strong> → tap Save</div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('report-confirm').remove()" style="background:transparent;border:1px solid #1e3a5f;color:#64748b;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;width:100%;max-width:320px">
+          Close
+        </button>
+      </div>
+  `;
+  const btnRow=document.querySelector('.no-print');
+  if(btnRow&&btnRow.parentNode)btnRow.parentNode.insertBefore(panel,btnRow.nextSibling);
+  else document.getElementById('pg-results').appendChild(panel);
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetApp(){
+  answers=Array(5).fill(null);
+  curQ=0;
+  eng=null;
+  calc={length:100,bedWidth:6,bankHeight:1.5,slopeZ:3,sides:2};
+  if(simTimer)clearInterval(simTimer);
+  simPhase=0;
+  // Clear all form fields
+  ['f-name','f-firm','f-email','f-phone','f-scope'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.value='';
+  });
+  const country=document.getElementById('f-country');
+  if(country)country.value='';
+  const source=document.getElementById('f-source');
+  if(source)source.value='';
+  // Clear error messages
+  ['e-name','e-firm','e-email','e-phone','e-country','e-scope'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent='';
+  });
+  // Re-enable and reset submit button
+  const btn=document.getElementById('btn-sub');
+  if(btn){
+    btn.disabled=false;
+    btn.textContent='UNLOCK MY RECOMMENDATION & REQUEST QUOTE →';
+    btn.style.background='';
+    btn.innerHTML='UNLOCK MY RECOMMENDATION &amp; REQUEST QUOTE →';
+  }
+  // Hide priority badge
+  const badge=document.getElementById('pri-badge');
+  if(badge)badge.style.display='none';
+  // Remove confirmation panel if present
+  const panel=document.getElementById('report-confirm');
+  if(panel)panel.remove();
+  show('intro');
+}
+// ── CONSOLE TEST: open browser console and type testSheets() ─────────────────
+function testSheets(){
+  console.log('Sending test to Google Sheets...');
+  sendToSheets({
+    name:'Test Engineer',firm:'Test Firm Nigeria',
+    email:'contact@iecsafrica.com',phone:'+234 800 000 0000',
+    country:'Nigeria',priority:'PRIORITY — 24hr Response',
+    scope:'Test from cableconcrete.app browser console',
+    block:'CC 45 — Steep Slopes & High Velocity',terms:'Test'
+  },function(ok){
+    console.log(ok?'✅ Sent — check sheet and email':'❌ Failed — check errors above');
+  });
+}
+function qBack(){
+  if(curQ>0){curQ--;renderQ();}
+  else{answers=Array(5).fill(null);show('intro');}
+}
+// ── GOOGLE SHEETS CONNECTOR ───────────────────────────────────────────────────
+var GS_URL='https://script.google.com/macros/s/AKfycbzXzZJ_t-9GjxPmacEj9L5Aj0h47fQI0Zl--SP9JxkBdSXu4P_Lm3DJFUq1jahtXUmwPA/exec';
+
+function sendToSheets(payload,onDone){
+  payload.submitted=new Date().toLocaleString();
+  var params=Object.keys(payload).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(payload[k]||'');
+  }).join('&');
+  fetch(GS_URL+'?'+params+'&t='+Date.now(),{
+    method:'GET',
+    mode:'no-cors'
+  }).then(function(){
+    onDone&&onDone(true);
+  }).catch(function(err){
+    console.warn('Sheets error:',err);
+    onDone&&onDone(false);
+  });
+}
+
+// ── PWA SERVICE WORKER ────────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  const swCode=`
+    const CACHE='cc-tool-v1';
+    const ASSETS=['/'];
+    self.addEventListener('install',e=>{
+      e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
+    });
+    self.addEventListener('activate',e=>{
+      e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+    });
+    self.addEventListener('fetch',e=>{
+      e.respondWith(caches.match(e.request).then(cached=>{
+        const fresh=fetch(e.request).then(res=>{
+          if(res&&res.status===200){
+            const clone=res.clone();
+            caches.open(CACHE).then(c=>c.put(e.request,clone));
+          }
+          return res;
+        }).catch(()=>cached);
+        return cached||fresh;
+      }));
+    });
+  `;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const swUrl=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+
+// ── PWA INSTALL BANNER ────────────────────────────────────────────────────────
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  const banner=document.getElementById('pwa-banner');
+  if(banner)banner.style.display='flex';
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn)btn.style.display='block';
+});
+window.addEventListener('appinstalled',()=>{
+  const banner=document.getElementById('pwa-banner');
+  if(banner)banner.style.display='none';
+  deferredPrompt=null;
+});
+function installPWA(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{
+    deferredPrompt=null;
+    const banner=document.getElementById('pwa-banner');
+    if(banner)banner.style.display='none';
+  });
+}
+</script>
+<!-- ── PWA INSTALL BANNER ── -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#0f1e30;border-top:1px solid rgba(74,222,128,.3);padding:12px 18px;align-items:center;justify-content:space-between;gap:12px;z-index:999;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:36px;height:36px;background:#4ade80;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;color:#fff;flex-shrink:0">CC</div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff">Install Cable Concrete® App</div>
+      <div style="font-size:11px;color:#64748b">IECS Africa · Subsidiary of IECS Global Inc. Canada</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="installPWA()" style="background:#4ade80;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer">Install App</button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748b;border:1px solid #1e2d42;border-radius:6px;padding:8px 12px;font-size:13px;cursor:pointer">✕</button>
+  </div>
+</div>
+</body>
+<!-- RESOURCE MODAL -->
+<div id="res-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column" onclick="if(event.target===this)closeModal()">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0f1e30;border-bottom:1px solid #1e3a5f;flex-shrink:0">
+    <div id="modal-title" style="font-size:15px;font-weight:700;color:#4ade80"></div>
+    <button onclick="closeModal()" style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer">✕ Close</button>
+  </div>
+  <div style="flex:1;overflow:hidden;position:relative">
+    <iframe id="modal-frame" src="" style="width:100%;height:100%;border:none;background:#fff"></iframe>
+  </div>
+  <div style="padding:10px 16px;background:#0f1e30;border-top:1px solid #1e3a5f;text-align:center">
+    <a id="modal-external" href="#" target="_blank" style="color:#86efac;font-size:12px;text-decoration:none">↗ Open in new tab if not loading</a>
+  </div>
+</div>
+<script>
+function openModal(type){
+  var modal=document.getElementById('res-modal');
+  var frame=document.getElementById('modal-frame');
+  var title=document.getElementById('modal-title');
+  var ext=document.getElementById('modal-external');
+  if(type==='brochure'){
+    title.textContent='📄 Cable Concrete® Product Brochure';
+    frame.src='https://drive.google.com/file/d/1fXTKNUxFHmmjKh4AjEy7yyAen8vvvYFN/preview';
+    ext.href='https://drive.google.com/file/d/1fXTKNUxFHmmjKh4AjEy7yyAen8vvvYFN/view?usp=sharing';
+  } else if(type==='presentation'){
+    title.textContent='📊 Cable Concrete® Engineering Presentation';
+    frame.src='https://docs.google.com/presentation/d/1SAw6p8lRmBOYfhfEp2J8zXqdtGqMXQIDo5QdHk7mL9Q/embed?start=false&loop=false&delayms=3000';
+    ext.href='https://docs.google.com/presentation/d/1SAw6p8lRmBOYfhfEp2J8zXqdtGqMXQIDo5QdHk7mL9Q/view?usp=sharing';
+  }
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  var modal=document.getElementById('res-modal');
+  document.getElementById('modal-frame').src='';
+  modal.style.display='none';
+  document.body.style.overflow='';
+}
+</script>
+</html>
