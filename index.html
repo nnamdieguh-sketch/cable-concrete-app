@@ -68,11 +68,11 @@ button{cursor:pointer;font-family:inherit;transition:all .15s}
 .ps.done{background:#22c55e}.ps.cur{background:#4ade80}
 input,select,textarea{background:#0f172a;border:1px solid #1e3a5f;color:#f1f5f9;border-radius:8px;padding:11px 14px;font-size:15px;font-family:inherit;width:100%;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
-input::placeholder,textarea::placeholder{color:#6b7c93}
+input::placeholder,textarea::placeholder{color:#9aa9bd}
 select option{background:#0f172a;color:#f1f5f9}
 .err{font-size:12px;color:#f87171;margin-top:4px;min-height:16px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.lbl{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px}
+.lbl{font-size:11px;color:#b9c4d4;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px}
 .pill{display:inline-flex;align-items:center;gap:4px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:3px 12px;border-radius:999px;font-size:12px}
 .pill.g{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#22c55e}
 .sbar{background:#1e2d42;border-radius:999px;height:8px;margin-top:4px}
@@ -80,17 +80,17 @@ select option{background:#0f172a;color:#f1f5f9}
 .sechdr{display:flex;align-items:center;gap:10px;margin:28px 0 16px;padding-bottom:10px;border-bottom:1px solid #1e3a5f}
 .sn{width:28px;height:28px;background:#22c55e;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
 .tabrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.tab{background:#111827;border:1px solid #1e3a5f;color:#94a3b8;padding:6px 12px;border-radius:6px;font-size:13px}
+.tab{background:#111827;border:1px solid #1e3a5f;color:#b9c4d4;padding:6px 12px;border-radius:6px;font-size:13px}
 .tab:hover{border-color:#22c55e;color:#4ade80}
 .tab.on{border-color:#22c55e;color:#4ade80;background:rgba(74,222,128,.08)}
 .twrap{overflow-x:auto;border-radius:8px;border:1px solid #1e3a5f;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{background:#1a2232;color:#94a3b8;padding:10px 12px;text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid #1e3a5f;white-space:nowrap}
+th{background:#1a2232;color:#b9c4d4;padding:10px 12px;text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid #1e3a5f;white-space:nowrap}
 td{padding:9px 12px;border-bottom:1px solid #1e2d42;color:#e2e8f0;font-family:monospace;font-size:12px}
 tr:last-child td{border-bottom:none}
 td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 .ai{display:flex;gap:12px;background:#111827;border:1px solid #1e3a5f;border-radius:10px;padding:12px 16px;margin-bottom:8px}
-.al{font-size:11px;color:#94a3b8;text-transform:uppercase;min-width:140px;flex-shrink:0;line-height:1.6;padding-top:2px}
+.al{font-size:11px;color:#b9c4d4;text-transform:uppercase;min-width:140px;flex-shrink:0;line-height:1.6;padding-top:2px}
 .zb{background:#0a0e14;border:1px solid #1e3a5f;border-radius:10px;padding:14px;margin-bottom:10px}
 .comp{background:#111827;border:1px solid #1e3a5f;border-radius:10px;padding:14px 18px;cursor:pointer;margin-bottom:10px}
 .comp:hover{border-color:#2a4f7a}
@@ -166,10 +166,10 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABpAV0DASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAUHBAYIAwECCf/EAFIQAAEDAwICBgIMCQkFCQAAAAECAwQABREGBxIhCBMxQVFhItEUFRdTVnGBkZOUodIWIzJCUlSSscEkNFVXYpWy4eIYN3N0oiUzNThjdYKEwv/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDmWlKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUClKUCvqQVKCUgknkAK+V0H0XdqWb24NWX+MVQ2l/yRpY5OKH5x8QOdBrm1OxOodXNt3G5KNrtqiCCtP4xweQ7vlFdC6Z2W270zFCpMBuY4nmZExeD9mBUnuPr2NpQMWe0wvbC9yRwxYLQxgeJ8B2VrsDbnUeqnUXPcHUMnhPMW6G4Wm0DwJTgk0GyvXjbK0ERy/YkcPLhTwLx++vx+GG2X63ZvoUeqsEWbaTSSS1Jas7Su/2Th5Xyk5Nfj8JNlvf9N/VE/coJH8MNsv1qzfQo9VPww2y/WrN9Cj1VHfhJst7/pv6mn7lPwk2W9/039TT9ygkfww2y/WrN9Cj1Voe9W6GjbPpR5jTbdtlXSSChpTbCT1X9rs+KpjVGtdnbVYpc6KzYZr7TZLbDUNHEtXcOaRXHupbqu9XuVc1sMxy+sqDTKAlCBnkABQYDzinXVOLOVKOTX4pSgUpSgUpSgUr0jsPSHkssNLdcUcJSkZJrcrdtTuDcGA/G0xNU2oZCjwjPzmg0mlWB7jW5PwXl/tJ9dajqKx3PT9zXbbvGMaUgAqbJBIz8VBG0r2hRZE2U3FiMreecUEoQkZKia2fU+3OsdN2tu5XiyyI8VePxhwQM+ODQalSlZFuhS7jNahQWFvyHVcLbaBzUaDHpW/jZvcggEaXl4Pmn11+Xtn9x2my4vS8zAGTgp9dBoVKkhYrv7dt2VUB5FwcXwJYUMKJ8KldVaB1bpeCibfbM/CjrVwpWsjBPyGg1ilKl9L6cvOp7gqBY4LkySlHGW0Yzjszz+OgiKVYHuNbk/BeX+0n109xrcn4Ly/2k+ugr+lSmpLDddO3E2+8RVRZQGS2ogkfNUXQKUpQKUpQKUpQKUpQKUpQZdniGfdocFP5Uh9DQ/8AkoD+Nf0ItEaJpPQTLTTaWmYELiKQMDiCcn5zXA+g8DXNgJ7PbONn6VNd5boBa9u70Gs5MQ4x8lBo+wVr9vF3Dca7JU7cLk+tMYuDJZYBPCkHwxj5q0zpK7yTrZcXdJaYklh5rlLkoV6ST+iMdhH8atvZN1lzaexqjFJAhIBx+kEjP21xNucuS5uBe1y89eZauPPjQQEuS/LkLkSXlvPLOVrWclR868qV9SCogAEk9gFB8r6AScAZNXTtFsLeNVstXS+LXbbavmlJGHVjyB7PlFdF6f27290PETJEKCwptOFSpawCfjJwKDiC36bv9wAMG0TJAPvbZNSPufa2+C90+gNdj3Hdbbq2P9QiYiQ54Q4xd/wA14+7Lon3i7f3U992g4+9z7W3wXun1c09z7W3wXun1c12D7suifeLt/dT33ae7Lon3i7f3U992g4+9z7W3wXun1c09z7W3wXun1c12D7suifeLt/dT33a1bcnfrTUHTklqwplG7uJ4WUvxFtcOfzvSA7KDki4Q5VvluRJrDkeQ2cLbWMKSfMVj17z5b86a9MkuFx55ZWtR7ya8KDqfoiaGtf4POaznMNvyluqRHKk56oJ7SPM8qwdfdJKfCv8iBp62sGNHWUda6cleO/GOVY3RS3LtlrgOaOvchuMhThciuuHhTlX5QJPId1T2sujjbb7eX7tY74iKzJUXC2ocaRn9EjuoNFf6S+sXGVoTDhIUpJAUE9nnVL3i4zLvc5FxnPKekyFla1HvJOa6FX0XJKEFa9UxkpSMklk4A+etX212jYvm5b0BicLhZbW4PZUpKClK1j8wZ7eeeflQbr0U9sgw0jXF7ZwVDMFC09g7eP92Piq3bdqTSW5Ua+acYdRKQwSw8k458h6SfiJ7fEVB7pXSTLXG210gpLE6W3wyHED0YrHYScd+M/NWt7abH33ROqGb3E1Swvnh9stKw4k9o7aDnTdrRE7QurZFqkoJjqUVxnO5aD2c/LOK2bo8WrVT15k3nStpgTpUMJTxSlYDZVnBHI8+VdM777fxtdaSdbbSlNyipLkZzHPI/N+Ltqs+hjEkQH9Tw5jSmX2XWkOIWMFJHHkUG3e2m/H9B2T6X/TU1oufuy9qBhvU1ptbFsOetWy7lQ5HGBjxxXnq7Ru4Vyv8mbZ9wHLbCcVlqMGshseFfrRujtf2u/x5t7185c4TZPWRi3gL5Edvx86CtN7Jlqk9IXSTULgMtlwCUpPiccIPyZqf6Zf+7yF/wAyP4Vgb5y7M9vXopmGtlye2+evLZBIHLAVjvqx96dAubhabYtTU9EMtuBzjUkqz2eqg4Kq7Oh1/vNf/wCSV/iTWzHotygCTqiMAO09SfXXn0fbBA0zvhNs8K7N3PqISkuOtpISFcScgUF46+f3EanMjR8S2vRuH8YZLnCQfLka1d+Zvp1K/wDs+wI9E+l13Z5/k1se4emtY3uey9pzWCrIyhOFthvi4j41qMzbjc+TEdjyN0FllxBS4CzjKSMGg5N1wu4r1XcFXaY3Mml49c625xpKvAHy7PkqFraNaabbtmrXbJa7h7buJWUrebQQFL7SB499YD2mL4yYgct7yPZilJYykjj4Tg4oIalZRt80RUyjGc6layhKuE4UoYyB49oqQiaXvkqO3IZgPFtxCnEq4TzSM5V8XI/NQQtKkBZ7ipEZaIrihKKgxgZ4+E4OPixXhGgypMv2JHZU69zAQjmVHwGO2gxqVIxrLcpCWlNRXFB1ZbRgdqx+b8flX26WO62xzq50F5lecFKkEEHGcEfFzoI2lZ8az3GS/GZjxXHVyc9SEDPHjtA8T5VktabvL0RuUzBdcacVwJUlJPpfo/H5UEPSv2806yrhdbUg8xhQx2HFfigyLbJVCuMaYj8th5DqfjSQf4V/QbTE+Hq/b2NIZcDrU2F1aj/a4eFX25r+eNXr0Yt1G9Mzfwavj6hbZK/xDilcmVnu8gefymgtno+XMWCXdduLnliXb5K1xOsPN5oqOCPs+eq+6Tm0lxF5kawsEZUliQeOWy3zUhXerHgfLwq3d1NA/hOqNqjTMtMPUMRPFGkIOA6P0VEd3IVD6V3g9gPpsW48Fyx3NAwXnE/iXB+lnljNBxg806y4W3m1trHalScEVePRb22j6iuStTXlCVQIa8MtrPJ1fj8Qwa6Ff0ptrq5PtgLdaJnW8y82hOVfLisy16I0va4giW0uxI4JIbZklKQTzPIUGFubrxjSUaNbbRETcL1MPVw4TZAGfE9gA5itcs+2crUDvtxuNenLg85hQgtvFDDXeAQnGcVtzmhNKOXNNzWHFTUJ4UvmR6YHhntrMVpeyqSUqmSyCMEGYef20Gt3bUm0uiiiJJcs0ZxIwlKGAtXzhJqLO9W1Gf51F+rf6amXdpNuHXFOu2mOtajlSisEk1pu7GlNrNEaWeuKrJGemL9CKwFDLiz2fJQTPu1bUfrUX6t/pp7tW1H61F+rf6a1raPZDTbmmkXLVsVK58w9Z1Ic4Qyk9ifjrc/cU2y/otH01BE3Le/a9iA87GVHfeSglDaY2Co+HMVyZrnUcrVWpJV5lJQ2Xleg2hICUJ7gMV19dtoNsYUNTotIUvsSA72muWt4dO2zTmqnItrfSppY4+qzkteVBpVKUoNj0jaLHcm3l3bUbNoW2R1YWhZK+3JHCk1usZFtjNhtjdx1CAMABb+B/wBNTHR32cY1nHXqC/qcRa218DTaORdI7efcB/GrVusrYPTMlVrlxLO4+yeFaeoQtST4EnvoKVWuCtCkL3edKVDBBW/zH7NY1thWO2oWiBumIyVq4lhrrk8R8ThHOrhuGsdgGITzrFotTzqUEobENv0jjkKqLbXR6d2NxZTois2y0tkrcRGbCUoRn0UgDHPHf5UH4ZiWZuc5Na3VxKcGFujruNQ8M8Gayy5FHbu8+PjW/wDdq6b5E2Q236u23WBBdloQD1bjSXnceJzUdG11sDc3kxnLPAjhXLjegtpSPlzQVN1sP+t979t/7tYsSHZosh+RF3U6l188Ty0dcCs+JIRzqy97NldPuaUd1ZowcHA2Hiy2cocQe9Ph2ipXoyaF0reNrRNutniTJEh9xCnHWgpQA7ACeztoKp66H/XA9+2/92vinISkkHd97B/tv/drK342Ym6PkOXeyNuSrMs5OBlTHkfLzrcOiZpXTt+0jeZF5s0Kc61K4UKfZSspHADgZFBWJsWljOE5W5TKpQPEHlJeKwfHPBmpXrYf9b737b/3a/ehtrzrjdW9wUJ9iWeDNdDqm04CQFnCB4cv3VdV2tGx+gEt2y7xbaqSlIJQ+hLjpHic0FIqchKSUnd94gjB9N/7tR0Cz6agS1y4e5rTEheeJxtLwUcnJyQiruOrOj2AT7W2k/8A026oXXF30xqncJpMCHEsliQ51fGyylGUDtUcYyTj7aCe62H/AFvvftv/AHa+KchKSUq3edIIwRxv/dq1LTqDo9wLaxDMW3SC0gJLrsVClqx3knvrKGquj2ohPtfaBnlkxG+VBpW0Vw2u0s5KGo9Sxrs24vrmVIZXxocIwTkpHLGeXnVm3Dc7YqbIt7r0r+YR1sMJDSsJCsZV2dvo1D7l7QaJ1Hol7UWk22orqGC8yuPybcA7RgfLWJ0XdHaXvO2QnXixQJkgSXAXHmEqVgKPLJFBkxdWdH9iJa4/sxSxbypSOJpWFrOPSIxjPIVPRt0tiY0FUNl9KG1Rlxh+KV6KFEk45cuajUdcLzsPBmvQ5NmtiXmVFCx7BRyIrHOpdgAMm02wDzgooPU642DEmC61L4BChLiMoDJwOIglfZ+Vy+2sCy6l6Pdpj2lMaUfZNufQ+JBaVxulPaFcuw17/hX0e/6OtP1Nut4tWlNr7np5F/h6btK4DjXWpc9io5pxnPZQaezrjYBlLiW5JSFXFNwThpXoOApOBy7Dwisy87kbDXWdKmy30rfkOBwqLJPCQjg5DH6NRi9UdHxC1IVbbSCk4P8AI2+2to0PbNodZNSHbBYLTJTHUEuH2IgYNBqlk1bsJaU2wRrg5m2z1TGFFpWRxEng7Ozn9lTzG6OxLEZcdt5KW1TxOADKhwuAgjHLs5DlWJfLhsdZbo/bZ9ktjclhRStIhIODWv6n1fsjCscmRa9OW6ZNSg9S0IKMKVjlnyzQUXvXerLfNfTZGnEITaEqxFCU45Hmf+oqrSKyLlI9lz35IZbZDiyoNtpwlPkBWPQK+gkHIOCK+UoLa2o3w1Fo1LcCbm52tPINLV6aB/ZPd81X7adztrNwIohXRUVtak+m1OSEAeQUcZriivoJByCQaDtlva3a2cvrbdJS2k88RJieH+Ne/uOaE/Xbh9cHqrilm5XFkYZnymx/ZeUP411nsBadI620GxMlxHVXBglqSPZr2cgkBRHH34zQbJ7juhP1yf8AWx6q++49oT9bnfWx6q0VOn7NpfeSTZNSNyF2W7YXbnly3QhlWT+LzxeY7anN4NnVXGypmaIlyocxkFRZEtwpeHgCVHnQZ+oNtduLHZpV0nTZiGI6CtR9ljn5dlV3s9tjB17c5mpLqzLa0+FqRAjOL9JXPkrJHl4d9UtdIOqYFyFv1CLq00lwB9LpWpOM8/I10Xp/d3Qdls0W1xJb6GYzaW0gNL7hjwoN8GzejAMBM4Af+v8A5V+H9odFMsqdc9nBKRkkyP8AKtV93HRn6/I+iX6q8Z29mjHYjiPZshRKeQ6tXM+HZQaLua4vbm9tXfTz6jBkJLK4z7vEc9ygOXh9tURdZ8q5z3p0x0uPvKKlqPeantxdTzdWX92a6lxMdJKWG8ckp9da11bn6CvmoPxSvpBBwRg18oOzOitc4dz2k9qoz6US47jiXEg808XYflxXO2uNq9dWrUMlpyzTJwWsqS9HaU4lQJ8Rmta0Xqy+aRuqbjZJq47g/KSPyVjwIq5IHSg1C2wES7Bb3lgflAr5/bQVJ7n+tfgvdvqi/VV4dDtZs1+vdgujS4lxcCHEtOp4VYAweR+MVGTek9enojrTOn4TTi0FKVgqykkdvbVKRtT3yNqRWoWLg8i4qcLheB5kk5+byoLa6SO3erXNwpt6h22VcYcxXG2phsrKOZ9EgdnbVZwNv9aTZTcdrTN0SpagkFcVaUj4yRyq17B0m9RRmUM3Wzw5vCMFwZClefbipOZ0opPVH2FpmOlzuLhOPsNBbDcc6I2IXFvr6S5HgkOZPersT8mfsqA6Nri2thFONqKVpcfII7jyrnHcrdTVGuyGrk+liGk5EZnkjPn3mp/b/eufpLQqtLM2iNIbJWetWVZ9L5aC2NmN6IWolOaT1kWhJWpTbb7v5Dw7OFWe/wDfmrV0Tou06PbuvtMCiNPd6/q88kHhA5eXKv5+LeWZKn0KKFlZWCk4IOc1c2iOkJqKw6ZXZ50VFxWlsojvuE8Sfj5jOKCzejffIDOutbWJ1aUTH7m482D+clK1A/vFV10iNtNZO6/uF7iW6Rcoc10raLCStSBn8kgdlVE1qG7Makc1BElrjz1vKeLjZx6ROT8lXFYukzqmHEQxcLVBnKSMF1XEFK8zggUFXe5/rX4L3b6ov1VPbW6Idk7m2ixartUqMzKUctPNlBUAD2ZFWKelHdsctNwf2lfeqtI+6F5O5rOuJraJL7LhU2wongSnGAkUHRmoNq9mrAtpF5DEFToJbD0hKOLHbjI868bHtvsheZwiWt6HMkY4g03JQokDyFc+by7nS9x5FvdlW9mGYSVhIbJPFxY8SfCtN0/eJ9iu8e6W2QtmQwsKSpJ7cdx8qDr3fzVzO3WhEaes1pdSiUyWWnUpIaZB7cnGM9vLPfTohHG0gVjP8qdOPH0jVS6i6QT+otPLs150vb5TbjfApSirPFj8oc+RqM2t3vm6D04bJDs0eSz1y3EqcUrI4iTjkaC6bzuTcIt1kxk7TXWUltwpDyWzhfmPQrSd0da6r1Dph222jbe52jrM9e+uOVHg7wMJGKxv9qO6/BuD+0r71QeuekPf9RaeftMa2xrd144VvNE8XD3gZJoKTcQpC1IWClSSQQe412/tZ/5eoP8A7Z/+RXD6iVEqUSSeZJ76uXTO/Fwsmg2NKN2WK601H6gOqUriIxjPbQVBO/nz/wDxFfvrpzoRf+FX/wD46f8ACK5feWXXluEYK1FWPjNWPs3uvM24jTmItsYmCWsLJcJHDgAdxHhQdFau3CnWzUMuC3tfc7klpZSJLaMpc59o9A1qGs9wtUXTT0mBZdrbnb5byeASFxyvgB7SAEjnUL/tR3b4Nwf2lfeqP1B0lr9cbPJhRbNEhuvNlAeQVcSMjtGT20FFzm5DMx1uWhSHws9YlQwQe/NeFekh52Q+t95ZW44oqUo9pJrzoFKUoFKUoFb/ALJ7hy9AanRJ5uW98hMprPaPEeYrQKUHfOoLVpbdrRaOplJcacHHHktf94yrHb/lWj2rVWuds3E2rWNseu9kb5M3KMOJaU9wUDjPz1zRoHX2pdEzfZFknFCCfTYXktr+MV0bo7pI6ZuTCI2pYLsF0pwpaR1iFH5hig3yJr/bTUsdKpM+2uqI5tS2gVJ8iCDX0ubSk5LOm/q6PVUC5ctiL7mTKc04Vr5kvqQlX2mvz7A6P3v2kvp2/XQT/HtJ7zpv6uj1U49pPedN/V0eqoH2F0f/AH7SX07frr6IfR/HY9pH6dv10E9x7S+86b+ro9VQWutQbUad01KubFtsEx9tOGWG4yCVr7h2dleUtvYCPGcf4tKOcCSrgQ6gqV5AZrlHce82u96pkyrJbGLbbgeFhlpOBwg8ifOgiL7cFXS7ybgplpkvuFXVtICUpHgAOQrCpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSgUpSg//9k=" alt="Cable Concrete Logo" style="height:32px;width:auto;filter:brightness(1.1) saturate(1.2);flex-shrink:0">
     <div style="border-left:1px solid #1e2d42;padding-left:12px">
       <div style="font-size:10px;color:#4ade80;letter-spacing:.1em;text-transform:uppercase">IECS Africa</div>
-      <div class="hdr-tagline" style="font-size:9px;color:#6b7c93;letter-spacing:.04em;text-transform:uppercase">A subsidiary of IECS Global Inc. Canada</div>
+      <div class="hdr-tagline" style="font-size:9px;color:#9aa9bd;letter-spacing:.04em;text-transform:uppercase">A subsidiary of IECS Global Inc. Canada</div>
     </div>
   </div>
-  <div id="hdr-sub" style="font-size:12px;color:#6b7c93">Block Selection Tool</div>
+  <div id="hdr-sub" style="font-size:12px;color:#9aa9bd">Block Selection Tool</div>
 </div>
 
 <div class="wrap">
@@ -180,7 +180,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <h1 style="font-size:clamp(26px,5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px">
     Find the Right <span style="color:#4ade80">Cable Concrete®</span> Block
   </h1>
-  <p style="font-size:15px;color:#94a3b8;max-width:500px;margin:0 auto 24px;line-height:1.7">
+  <p style="font-size:15px;color:#b9c4d4;max-width:500px;margin:0 auto 24px;line-height:1.7">
     5 engineering questions. Full recommendation with hydraulic data, university test results and a mat calculator — shown instantly on-screen, ready to print or save as PDF, with a quote request sent to IECS Africa.
   </p>
   <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
@@ -195,7 +195,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
         <span style="display:block;font-size:12px;color:#86efac;margin-top:3px">⬇ Tap to add to your phone · works offline</span>
       </span>
     </button>
-    <div style="font-size:11px;color:#6b7c93;text-align:center">IECS Africa · A subsidiary of IECS Global Inc. Canada</div>
+    <div style="font-size:11px;color:#9aa9bd;text-align:center">IECS Africa · A subsidiary of IECS Global Inc. Canada</div>
     <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
   </div>
 
@@ -219,7 +219,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 <!-- ── QUIZ ── -->
 <div class="page" id="pg-quiz" style="padding-top:24px">
   <div class="prog" id="prog"></div>
-  <div id="qnum" style="font-size:11px;color:#6b7c93;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px"></div>
+  <div id="qnum" style="font-size:11px;color:#9aa9bd;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px"></div>
   <h2 id="qtxt" style="font-size:22px;font-weight:700;color:#fff;margin-bottom:18px"></h2>
   <div id="qopts" class="g2" style="gap:8px"></div>
   <div id="qscores" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"></div>
@@ -228,7 +228,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <button class="bp" id="qnext" onclick="qNext()" disabled>Next →</button>
   </div>
   <div style="margin-top:12px;text-align:center">
-    <button onclick="resetApp()" style="background:none;border:none;color:#6b7c93;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+    <button onclick="resetApp()" style="background:none;border:none;color:#9aa9bd;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
   </div>
 </div>
 
@@ -237,17 +237,17 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:28px 24px;margin-bottom:20px;text-align:center">
     <div style="width:54px;height:54px;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px">⬡</div>
     <h2 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:8px">Your Recommendation is Ready</h2>
-    <p style="font-size:14px;color:#94a3b8;max-width:430px;margin:0 auto;line-height:1.7">
+    <p style="font-size:14px;color:#b9c4d4;max-width:430px;margin:0 auto;line-height:1.7">
       We've matched your project to the optimal Cable Concrete® block — with full hydraulic data, university test results, mat calculator, and a tailored IECS Africa quote.
     </p>
     <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;flex-wrap:wrap;font-size:12px;color:#86efac">
       <span>⬡ Block recommendation</span><span>📐 Mat calculator</span><span>📊 Hydraulic tables</span><span>📄 Printable report</span>
     </div>
-    <p style="font-size:12px;color:#6b7c93;margin-top:12px">Complete the form below — free of charge.</p>
+    <p style="font-size:12px;color:#9aa9bd;margin-top:12px">Complete the form below — free of charge.</p>
   </div>
   <div class="card">
     <h3 style="font-size:19px;font-weight:700;color:#fff;margin-bottom:4px">Your Details</h3>
-    <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;line-height:1.6">
+    <p style="font-size:13px;color:#b9c4d4;margin-bottom:20px;line-height:1.6">
       Your full report opens instantly on the next screen — ready to print or save as PDF. IECS Africa receives your quote request and will follow up directly.
     </p>
     <div class="g2">
@@ -294,13 +294,13 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <button class="bp" id="btn-sub" onclick="submitForm()" style="width:100%;margin-top:18px;font-size:16px">
       UNLOCK MY RECOMMENDATION &amp; REQUEST QUOTE →
     </button>
-    <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:10px">
+    <p style="font-size:11px;color:#9aa9bd;text-align:center;margin-top:10px">
       Your report opens instantly on the next screen — print it or save it as a PDF. IECS Africa receives your quote request and will respond directly.
     </p>
   </div>
   <div style="display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap">
     <button class="bs" onclick="show('quiz')">← Back to Questions</button>
-    <button onclick="resetApp()" style="background:none;border:none;color:#6b7c93;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+    <button onclick="resetApp()" style="background:none;border:none;color:#9aa9bd;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
   </div>
 </div>
 
@@ -362,7 +362,7 @@ let dtab="selection", mtab="CC35", stab="cc35", openComp=null;
 // ── INIT ──────────────────────────────────────────────────────────────────────
 [...SSA.map(m=>"★ "+m),"South Africa","Angola","Cameroon","Senegal"].forEach(m=>{
   const sp=document.createElement('span');
-  Object.assign(sp.style,{background:m.includes("★")?"rgba(74,222,128,.1)":"#111827",border:"1px solid "+(m.includes("★")?"rgba(74,222,128,.3)":"#1e2d42"),color:m.includes("★")?"#86efac":"#94a3b8",padding:"3px 10px",borderRadius:"999px",fontSize:"11px"});
+  Object.assign(sp.style,{background:m.includes("★")?"rgba(74,222,128,.1)":"#111827",border:"1px solid "+(m.includes("★")?"rgba(74,222,128,.3)":"#1e2d42"),color:m.includes("★")?"#86efac":"#b9c4d4",padding:"3px 10px",borderRadius:"999px",fontSize:"11px"});
   sp.textContent=m;
   document.getElementById('mkt').appendChild(sp);
 });
@@ -386,6 +386,30 @@ function scores(){
 }
 function winner(s){return Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];}
 function ranked(s){const mx=Math.max(...Object.values(s));return Object.entries(s).map(([k,v])=>({id:k,name:B[k].name,pct:mx>0?Math.round(v/mx*100):0,color:B[k].c})).sort((a,b)=>b.pct-a.pct);}
+
+// ── FACTOR OF SAFETY (velocity capacity vs design) ─────────────────────────────
+// Design velocity = conservative upper bound of the velocity band picked in Q3.
+// Permissible velocity = good-placement, unanchored values from the Cable
+// Concrete® Engineering Binder (MILD vs STEEP bed-slope regime, set by Q2).
+const VBAND=[4.0,6.0,7.0,8.0];
+function fosData(){
+  const av=answers[2], asl=answers[1];
+  if(av===null||av===undefined) return null;
+  const dv=VBAND[av]||VBAND[VBAND.length-1];
+  const steep=(asl===2||asl===3);
+  const tbl=steep?STEEP:MILD, perm={};
+  tbl.forEach(r=>perm[r.b]=parseFloat(r.am));
+  const rows=['CCG2','CC35','CC45','CC70'].map(k=>{
+    const pv=perm[k], fos=pv/dv;
+    let col,lab;
+    if(fos>=1.5){col='#22c55e';lab='Ample';}
+    else if(fos>=1.2){col='#4ade80';lab='Adequate';}
+    else if(fos>=1.0){col='#f59e0b';lab='Marginal';}
+    else {col='#ef4444';lab='Under capacity';}
+    return {id:k,name:B[k].name,c:B[k].c,pv:pv,fos:fos,col:col,lab:lab};
+  });
+  return {dv:dv,steep:steep,rows:rows};
+}
 
 // ── QUIZ ──────────────────────────────────────────────────────────────────────
 function startQuiz(){answers=Array(5).fill(null);curQ=0;renderQ();show('quiz');}
@@ -538,8 +562,8 @@ function renderCalc(){
 
   const el=document.getElementById('calc-z');if(!el)return;
   el.innerHTML=`
-  <div style="font-size:11px;color:#6b7c93;margin-bottom:10px;padding:7px 10px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:6px">
-    💡 Select from dropdown <strong style="color:#94a3b8">or</strong> type a custom value in the box on the right
+  <div style="font-size:11px;color:#9aa9bd;margin-bottom:10px;padding:7px 10px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:6px">
+    💡 Select from dropdown <strong style="color:#b9c4d4">or</strong> type a custom value in the box on the right
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
 
@@ -593,8 +617,8 @@ function renderCalc(){
 
   </div>
 
-  <div style="background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:10px;padding:14px;margin-bottom:12px;font-size:12px;color:#6b7c93;line-height:1.9">
-    <strong style="color:#94a3b8">How this is calculated (per Engineering Binder):</strong><br>
+  <div style="background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:10px;padding:14px;margin-bottom:12px;font-size:12px;color:#9aa9bd;line-height:1.9">
+    <strong style="color:#b9c4d4">How this is calculated (per Engineering Binder):</strong><br>
     Bed area = ${L} m × ${bw} m = <strong style="color:#86efac">${bedArea.toFixed(1)} m²</strong><br>
     Slope face width = ${bh} m bank × √(${Z}²+1) = <strong style="color:#f59e0b">${slopeFaceWidth.toFixed(2)} m</strong> along slope surface<br>
     Slope area = ${sides} side(s) × ${L} m × ${slopeFaceWidth.toFixed(2)} m = <strong style="color:#f59e0b">${slopeArea.toFixed(1)} m²</strong><br>
@@ -604,18 +628,18 @@ function renderCalc(){
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
     <div style="text-align:center;padding:12px 8px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px">
       <div style="font-size:26px;font-weight:900;color:#60a5fa">${bedMats}</div>
-      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Bed mats<br>${bedArea.toFixed(1)} m²</div>
+      <div style="font-size:11px;color:#9aa9bd;margin-top:2px">Bed mats<br>${bedArea.toFixed(1)} m²</div>
     </div>
     <div style="text-align:center;padding:12px 8px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px">
       <div style="font-size:26px;font-weight:900;color:#f59e0b">${slopeMats}</div>
-      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Slope mats<br>${slopeArea.toFixed(1)} m²</div>
+      <div style="font-size:11px;color:#9aa9bd;margin-top:2px">Slope mats<br>${slopeArea.toFixed(1)} m²</div>
     </div>
     <div style="text-align:center;padding:12px 8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px">
       <div style="font-size:32px;font-weight:900;color:#4ade80">${totalMats}</div>
       <div style="font-size:12px;color:#e2e8f0;font-weight:600">TOTAL MATS</div>
     </div>
   </div>
-  <div style="font-size:11px;color:#6b7c93;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
+  <div style="font-size:11px;color:#9aa9bd;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
     Mat size: ${bl.ms} (${ma} m² per mat) · Block: <strong style="color:${bl.c}">${bl.name}</strong> · 10% wastage per Cable Concrete® Engineering Binder
   </div>`;
 }
@@ -628,7 +652,7 @@ function renderDT(){
   const el=document.getElementById('dt-content');if(!el)return;
   if(dtab==="selection"){
     el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Table 4-1 — Mild Slopes (&lt;1%)</h3>
-    <div style="font-size:11px;color:#6b7c93;margin-bottom:8px">Engineering Binder Part 5 · University of Windsor (1991) · Vel A = Good placement · Vel B = Poor placement</div>
+    <div style="font-size:11px;color:#9aa9bd;margin-bottom:8px">Engineering Binder Part 5 · University of Windsor (1991) · Vel A = Good placement · Vel B = Poor placement</div>
     <div class="twrap"><table><thead><tr><th>Block</th><th>Vel B m/s</th><th>Vel A m/s</th><th>Vel B ft/s</th><th>Vel A ft/s</th></tr></thead><tbody>
     ${MILD.map(r=>`<tr><td class="hi">${r.b}</td><td>${r.bm}</td><td class="hi">${r.am}</td><td>${r.bf}</td><td class="hi">${r.af}</td></tr>`).join('')}</tbody></table></div>
     <h3 style="font-size:15px;font-weight:700;color:#fff;margin:16px 0 4px">Table 4-2 — Moderately Steep Slopes (&lt;5%)</h3>
@@ -641,14 +665,14 @@ function renderDT(){
     ${(MN[mtab]||MN.CC35).map(r=>`<tr><td class="hi">${r.v}</td><td>${r.d}</td><td>${r.c}</td><td>${r.cb}</td><td class="wa">${r.bg}</td></tr>`).join('')}</tbody></table></div>`;
   }else if(dtab==="bridge"){
     el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Bridge Pier Scour Protection</h3>
-    <div style="font-size:11px;color:#6b7c93;margin-bottom:8px">McCorquodale et al. · ASCE Hydraulic Engineering 1993</div>
+    <div style="font-size:11px;color:#9aa9bd;margin-bottom:8px">McCorquodale et al. · ASCE Hydraulic Engineering 1993</div>
     <div class="twrap"><table><thead><tr><th>Block</th><th>Shear N/m²</th><th>Shear lb/ft²</th><th>Vel m/s</th><th>Vel ft/s</th><th>Manning n</th><th>Ht in</th></tr></thead><tbody>
     <tr><td class="hi">CCG2</td><td>182</td><td>3.8</td><td class="hi">4.0</td><td class="hi">13.0</td><td>0.017–0.02</td><td>2.5</td></tr>
     <tr><td class="hi">CC35</td><td>325</td><td>4.9</td><td class="hi">5.2</td><td class="hi">17.0</td><td>0.02–0.025</td><td>4.5</td></tr>
     <tr><td class="hi">CC45</td><td>390</td><td>8.2</td><td class="hi">6.1</td><td class="hi">20.0</td><td>0.023–0.029</td><td>5.5</td></tr>
     <tr><td class="hi">CC70</td><td>625</td><td>13.0</td><td class="hi">7.6</td><td class="hi">25.0</td><td>0.028–0.033</td><td>8.5</td></tr>
     </tbody></table></div>
-    <div style="font-size:12px;color:#94a3b8;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px">Width W = 2.5d_s + D · Upstream X₁ = 1.25d_s · Downstream X₂ = 3d_s</div>`;
+    <div style="font-size:12px;color:#b9c4d4;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px">Width W = 2.5d_s + D · Upstream X₁ = 1.25d_s · Downstream X₂ = 3d_s</div>`;
   }else{
     el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px">Side Slope Guide by Soil Type</h3>
     <div class="twrap"><table><thead><tr><th>Soil Type</th><th>Recommended Z:1</th></tr></thead><tbody>
@@ -658,7 +682,7 @@ function renderDT(){
     <tr><td class="hi">Sandy Earth</td><td>2:1 to 3:1</td></tr>
     <tr><td class="hi">Sandy Loam</td><td>3:1 to 4:1</td></tr>
     </tbody></table></div>
-    <div style="font-size:12px;color:#94a3b8;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px;line-height:1.8">
+    <div style="font-size:12px;color:#b9c4d4;background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px;margin-top:10px;line-height:1.8">
     <strong style="color:#fff">Drainage:</strong> Good subgrade drainage prevents piping. For supercritical flow: perforated pipe + granular fill + geotextile essential.<br><br>
     <strong style="color:#fff">Surface Treatment:</strong> Backfill with soil + seed + mulch, or gravel/crushed stone, or grout geotextile for UV protection.</div>`;
   }
@@ -757,8 +781,8 @@ function drawCrossSection(col){
     ${showMats?mats.map(m=>`<g transform="translate(${m.x},${m.y}) rotate(${m.r})"><rect x="-13" y="-5" width="26" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/><line x1="-13" y1="0" x2="13" y2="0" stroke="rgba(160,185,255,.5)" stroke-width=".8"/></g>`).join(''):''}
     ${showCrane?`
       <line x1="645" y1="210" x2="645" y2="18" stroke="#8ca0b8" stroke-width="4"/>
-      <line x1="645" y1="34" x2="520" y2="22" stroke="#94a3b8" stroke-width="3"/>
-      <line x1="645" y1="34" x2="678" y2="55" stroke="#6b7c93" stroke-width="2"/>
+      <line x1="645" y1="34" x2="520" y2="22" stroke="#b9c4d4" stroke-width="3"/>
+      <line x1="645" y1="34" x2="678" y2="55" stroke="#9aa9bd" stroke-width="2"/>
       <line x1="520" y1="22" x2="480" y2="140" stroke="#facc15" stroke-width="1.5" stroke-dasharray="4,3"/>
       <rect x="467" y="133" width="26" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/>
       <circle cx="480" cy="133" r="3" fill="#facc15"/>
@@ -773,7 +797,7 @@ function drawCrossSection(col){
     <text x="350" y="18" text-anchor="middle" fill="${LCOLS[ph]}" font-size="12" font-family="system-ui" font-weight="bold">${LABELS[ph]}</text>
     ${["Eroded","Installing","Protected"].map((l,i)=>`
       <circle cx="${290+i*60}" cy="200" r="4" fill="${i===ph?LCOLS[i]:'#334155'}"/>
-      <text x="${290+i*60}" y="210" text-anchor="middle" font-size="9" fill="${i===ph?'#e2e8f0':'#6b7c93'}" font-family="system-ui">${l}</text>
+      <text x="${290+i*60}" y="210" text-anchor="middle" font-size="9" fill="${i===ph?'#e2e8f0':'#9aa9bd'}" font-family="system-ui">${l}</text>
     `).join('')}
   `;
 }
@@ -781,6 +805,40 @@ function drawCrossSection(col){
 // ── BUILD RESULTS PAGE ────────────────────────────────────────────────────────
 function buildResults(){
   const s=scores(),w=winner(s),bl=B[w],rk=ranked(s);
+  const fd=fosData();
+  const recFos=fd?fd.rows.find(r=>r.id===w):null;
+  let fosAdvice='';
+  if(fd&&recFos.fos<1.2){
+    const ord=['CCG2','CC35','CC45','CC70'];
+    const better=fd.rows.find(r=>r.fos>=1.2&&ord.indexOf(r.id)>ord.indexOf(w));
+    fosAdvice=better
+      ? `Step up to <strong>${better.name}</strong> (FoS ${better.fos.toFixed(2)}) for adequate margin, or specify anchoring per Engineering Binder Part 6.`
+      : `No standard block clears a 1.2 factor of safety at this velocity — specify anchoring and an engineered design with IECS Africa (Engineering Binder Part 6).`;
+  }
+  const fosHTML=fd?`
+  <div class="card" style="margin-bottom:24px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+      <div style="max-width:62%">
+        <div style="font-size:10px;color:#9aa9bd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Design Check — Velocity Factor of Safety</div>
+        <div style="font-size:13px;color:#cbd5e1;line-height:1.6">Recommended <strong style="color:${bl.c}">${bl.name}</strong> at a design velocity of <strong style="color:#fff">${fd.dv.toFixed(1)} m/s</strong> (${fd.steep?'steep':'mild'} bed slope).</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:36px;font-weight:900;line-height:1;color:${recFos.col}">${recFos.fos.toFixed(2)}</div>
+        <div style="font-size:11px;font-weight:700;color:${recFos.col};text-transform:uppercase;letter-spacing:.05em">FoS · ${recFos.lab}</div>
+      </div>
+    </div>
+    ${recFos.fos<1.2?`<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#fcd34d;line-height:1.6">⚠ At the upper end of your velocity range, ${bl.name} is ${recFos.fos<1?'below':'close to'} its permissible velocity. ${fosAdvice}</div>`:''}
+    <div style="display:flex;flex-direction:column;gap:9px">
+      ${fd.rows.map(r=>`<div>
+        <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:3px">
+          <span style="color:${r.id===w?'#fff':'#b9c4d4'};font-weight:${r.id===w?700:400}">${r.name}${r.id===w?' · recommended':''} <span style="color:#9aa9bd">· ${r.pv.toFixed(1)} m/s permissible</span></span>
+          <span style="font-family:monospace;color:${r.col};font-weight:700;white-space:nowrap">FoS ${r.fos.toFixed(2)}</span>
+        </div>
+        <div class="sbar"><div class="sfill" style="width:${Math.max(4,Math.min(100,Math.round(r.fos/2*100)))}%;background:${r.col}"></div></div>
+      </div>`).join('')}
+    </div>
+    <p style="font-size:11px;color:#9aa9bd;margin-top:12px;line-height:1.6">FoS = permissible velocity ÷ design velocity. Permissible velocities are good-placement, unanchored values from the Cable Concrete® Engineering Binder; design velocity is the upper bound of your selected range. Preliminary screening — confirm final design with IECS Africa.</p>
+  </div>`:'';
   const isPri=eng&&SSA.includes(eng.country);
   document.getElementById('pg-results').innerHTML=`
 
@@ -801,7 +859,7 @@ function buildResults(){
   </div>
 
   <div class="card">
-    <div style="font-size:10px;color:#6b7c93;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Recommended Block for Your Project</div>
+    <div style="font-size:10px;color:#9aa9bd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Recommended Block for Your Project</div>
     <div style="font-size:48px;font-weight:900;color:${bl.c};line-height:1">${bl.name}</div>
     <div style="font-size:15px;color:#cbd5e1;margin-top:3px">${bl.sub}</div>
     ${isPri?`<div style="margin-top:8px"><span class="pill g">★ PRIORITY — IECS Africa will contact you within 24 hours</span></div>`:''}
@@ -817,9 +875,11 @@ function buildResults(){
     </div>
   </div>
 
+  ${fosHTML}
+
   <div style="margin-bottom:24px">
     <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:12px">Suitability Analysis — All Blocks</h3>
-    ${rk.map(r=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:${r.id===w?'#fff':'#94a3b8'};font-weight:${r.id===w?600:400}">${r.name}</span><span style="font-family:monospace;font-size:11px;color:${r.color}">${r.pct}%</span></div><div class="sbar"><div class="sfill" style="width:${r.pct}%;background:${r.color}"></div></div></div>`).join('')}
+    ${rk.map(r=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:${r.id===w?'#fff':'#b9c4d4'};font-weight:${r.id===w?600:400}">${r.name}</span><span style="font-family:monospace;font-size:11px;color:${r.color}">${r.pct}%</span></div><div class="sbar"><div class="sfill" style="width:${r.pct}%;background:${r.color}"></div></div></div>`).join('')}
   </div>
 
   <!-- MAT CALCULATOR SECTION - ENHANCED -->
@@ -842,7 +902,7 @@ function buildResults(){
 
   <!-- ── RESOURCES SECTION ── -->
   <div style="background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(34,197,94,.05));border:1px solid rgba(74,222,128,.25);border-radius:12px;padding:20px;margin-bottom:24px">
-    <div style="font-size:10px;color:#6b7c93;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">IECS Africa · Cable Concrete® Resources</div>
+    <div style="font-size:10px;color:#9aa9bd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">IECS Africa · Cable Concrete® Resources</div>
     <h3 style="font-size:17px;font-weight:700;color:#fff;margin-bottom:14px">Technical Documents &amp; Audio Discussions</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
       <a href="#" onclick="openModal('brochure');return false;" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#4ade80,#16a34a);border-radius:8px;padding:12px 14px;text-decoration:none;box-shadow:0 4px 12px rgba(74,222,128,.3)">
@@ -858,7 +918,7 @@ function buildResults(){
         <div><div style="font-size:13px;font-weight:700;color:#fff">Discussions on Cable Concrete</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px">AI Audio Podcast</div></div>
       </a>
     </div>
-    <p style="font-size:11px;color:#6b7c93;margin-top:12px;line-height:1.6">Documents open in a new tab. For direct assistance contact <a href="mailto:contact@iecsafrica.com" style="color:#86efac;text-decoration:none">contact@iecsafrica.com</a></p>
+    <p style="font-size:11px;color:#9aa9bd;margin-top:12px;line-height:1.6">Documents open in a new tab. For direct assistance contact <a href="mailto:contact@iecsafrica.com" style="color:#86efac;text-decoration:none">contact@iecsafrica.com</a></p>
   </div>
 
   <div class="sechdr"><div class="sn">01</div><h2 style="font-size:18px;font-weight:700;color:#fff">Gully Erosion Simulation</h2></div>
@@ -869,13 +929,13 @@ function buildResults(){
     </div>
     <div id="sim-cs">
       <svg id="cs-svg" viewBox="0 0 700 210" style="width:100%;display:block;border-radius:8px"></svg>
-      <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:6px">Auto-cycles every 3 seconds: erosion → crane installation → protected</p>
+      <p style="font-size:11px;color:#9aa9bd;text-align:center;margin-top:6px">Auto-cycles every 3 seconds: erosion → crane installation → protected</p>
     </div>
     <div id="sim-ba" style="display:none">
       <div id="ba-wrap" role="slider" tabindex="0" aria-label="Before and after comparison: drag or use arrow keys to reveal the protected channel" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50" style="cursor:ew-resize;user-select:none">
         <svg id="ba-svg" viewBox="0 0 690 180" style="width:100%;display:block;border-radius:8px"></svg>
       </div>
-      <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:6px">Click or drag to compare before / after</p>
+      <p style="font-size:11px;color:#9aa9bd;text-align:center;margin-top:6px">Click or drag to compare before / after</p>
     </div>
   </div>
 
@@ -889,14 +949,14 @@ function buildResults(){
   <div id="dt-content"></div>
 
   <div class="sechdr"><div class="sn">03</div><h2 style="font-size:18px;font-weight:700;color:#fff">Anchoring &amp; Field Installation</h2></div>
-  <p style="font-size:11px;color:#6b7c93;margin-bottom:10px">Source: Cable Concrete® Engineering Binder Part 6, Fact Sheet 6</p>
+  <p style="font-size:11px;color:#9aa9bd;margin-bottom:10px">Source: Cable Concrete® Engineering Binder Part 6, Fact Sheet 6</p>
   ${ANCHORS.map(([l,s])=>`<div class="ai"><div class="al">${l}</div><div style="font-size:12px;color:#cbd5e1;line-height:1.5">${s}</div></div>`).join('')}
 
   <div class="sechdr"><div class="sn">04</div><h2 style="font-size:18px;font-weight:700;color:#fff">University Laboratory Test Data</h2></div>
   <div style="background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(34,197,94,.04));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:18px;margin-bottom:14px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px">
       <div><div style="font-size:16px;font-weight:700;color:#4ade80">University of Minnesota — St. Anthony Falls Laboratory</div>
-      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Project Report No. 434 · March 1999 · Independent university test</div></div>
+      <div style="font-size:11px;color:#9aa9bd;margin-top:2px">Project Report No. 434 · March 1999 · Independent university test</div></div>
       <span class="pill g">✓ University Verified</span>
     </div>
     <div style="font-size:12px;color:#cbd5e1;background:rgba(0,0,0,.2);border-radius:6px;padding:10px;margin-bottom:10px;line-height:1.7">Both CC 35 and CC 45 OS systems performed well up to maximum facility capability (3.5 ft overtopping head). Failure was not induced — the test facility reached its limit before the blocks failed.</div>
@@ -907,13 +967,13 @@ function buildResults(){
     <button class="tab" data-t="cc45" onclick="switchST('cc45')">CC 45 OS Test Runs (5–8)</button>
   </div>
   <div id="st-content"></div>
-  <div style="font-size:11px;color:#6b7c93;margin-top:6px">2:1 downstream slope · Silty clay (CL) · Non-woven 6.1 oz/yd² polypropylene geotextile</div>
+  <div style="font-size:11px;color:#9aa9bd;margin-top:6px">2:1 downstream slope · Silty clay (CL) · Non-woven 6.1 oz/yd² polypropylene geotextile</div>
 
   <div class="sechdr"><div class="sn">05</div><h2 style="font-size:18px;font-weight:700;color:#fff">Why Cable Concrete®</h2></div>
   ${COMPS.map(([n,body],i)=>`<div class="comp" role="button" tabindex="0" aria-expanded="false" onclick="toggleComp(${i})" onkeydown="keyActivate(event)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-size:15px;font-weight:700;color:#e2e8f0">${n}</div>
-      <span class="comp-arr" style="color:#6b7c93" aria-hidden="true">▾</span>
+      <span class="comp-arr" style="color:#9aa9bd" aria-hidden="true">▾</span>
     </div>
     <div class="comp-body" style="display:none;font-size:12px;color:#cbd5e1;line-height:1.6;margin-top:8px">${body}</div>
   </div>`).join('')}
@@ -925,12 +985,12 @@ function buildResults(){
       <span style="font-size:16px">⚠</span>
       <strong style="font-size:13px;color:#f59e0b">This guide is for reference only. Improper installation voids all performance warranties.</strong>
     </div>
-    <p style="font-size:12px;color:#94a3b8;line-height:1.7">Cable Concrete® mats must be installed by trained and experienced personnel. IECS Africa strongly recommends engaging our certified installation teams for all projects. See Section 07 for details.</p>
+    <p style="font-size:12px;color:#b9c4d4;line-height:1.7">Cable Concrete® mats must be installed by trained and experienced personnel. IECS Africa strongly recommends engaging our certified installation teams for all projects. See Section 07 for details.</p>
   </div>
 
   <!-- Cable & Rope Specification Table -->
   <h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px">Cable &amp; Rope Specifications — Per Engineering Binder</h3>
-  <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#94a3b8;line-height:1.7">
+  <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#b9c4d4;line-height:1.7">
     <strong style="color:#f59e0b">Critical:</strong> Only use the cable grade specified for the block type. Substituting lower-grade wire rope or polyester rope for stainless steel in high-velocity or coastal applications significantly reduces system strength and corrosion resistance. Never splice or join cables on site — all cable must run continuously from mat edge to mat edge as factory-supplied.
   </div>
   <div class="twrap" style="margin-bottom:20px">
@@ -954,7 +1014,7 @@ function buildResults(){
           <td>4 mm (5/32")</td>
           <td>~1,800 lbs (SS) / ~1,200 lbs (polyester)</td>
           <td style="color:#4ade80">Inland / low exposure</td>
-          <td style="color:#94a3b8;font-size:10px">Polyester acceptable for permeable paving &amp; gentle slope applications only. Use SS in all channel applications.</td>
+          <td style="color:#b9c4d4;font-size:10px">Polyester acceptable for permeable paving &amp; gentle slope applications only. Use SS in all channel applications.</td>
         </tr>
         <tr>
           <td class="hi">CC 35</td>
@@ -963,7 +1023,7 @@ function buildResults(){
           <td>4 mm (5/32")</td>
           <td>3,300 lbs (1,500 kg)</td>
           <td style="color:#60a5fa">Inland / moderate</td>
-          <td style="color:#94a3b8;font-size:10px">Do NOT use galvanised wire rope — chloride pitting in tropical soils. Stainless steel mandatory.</td>
+          <td style="color:#b9c4d4;font-size:10px">Do NOT use galvanised wire rope — chloride pitting in tropical soils. Stainless steel mandatory.</td>
         </tr>
         <tr>
           <td class="hi">CC 45</td>
@@ -972,7 +1032,7 @@ function buildResults(){
           <td>4 mm (5/32")</td>
           <td>3,300 lbs (1,500 kg)</td>
           <td style="color:#f59e0b">Steep / high velocity</td>
-          <td style="color:#94a3b8;font-size:10px">Inspect cable tension after first high-flow event. Re-tension any slack before backfill.</td>
+          <td style="color:#b9c4d4;font-size:10px">Inspect cable tension after first high-flow event. Re-tension any slack before backfill.</td>
         </tr>
         <tr>
           <td class="hi">CC 70</td>
@@ -981,7 +1041,7 @@ function buildResults(){
           <td>4.8 mm (3/16")</td>
           <td>4,700 lbs (2,130 kg)</td>
           <td style="color:#f87171">Coastal / extreme</td>
-          <td style="color:#94a3b8;font-size:10px">Larger diameter cable — do not substitute 4mm. Coastal applications: inspect annually for crevice corrosion at clamp points.</td>
+          <td style="color:#b9c4d4;font-size:10px">Larger diameter cable — do not substitute 4mm. Coastal applications: inspect annually for crevice corrosion at clamp points.</td>
         </tr>
       </tbody>
     </table>
@@ -989,11 +1049,11 @@ function buildResults(){
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
     <div style="background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px">
       <div style="font-size:11px;color:#4ade80;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Clamping Hardware</div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.7">Use only 302/304 stainless steel cable clamps (bulldog grips) at all mat-to-mat connections. Minimum 2 clamps per connection point. Torque to manufacturer specification — over-tightening crushes the 1×19 strand and reduces breaking strength by up to 30%.</div>
+      <div style="font-size:12px;color:#b9c4d4;line-height:1.7">Use only 302/304 stainless steel cable clamps (bulldog grips) at all mat-to-mat connections. Minimum 2 clamps per connection point. Torque to manufacturer specification — over-tightening crushes the 1×19 strand and reduces breaking strength by up to 30%.</div>
     </div>
     <div style="background:#111827;border:1px solid #1e2d42;border-radius:8px;padding:12px">
       <div style="font-size:11px;color:#4ade80;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Field Cutting</div>
-      <div style="font-size:12px;color:#94a3b8;line-height:1.7">Cut cable only with an angle grinder or approved cable cutter — never with bolt cutters, which crush and fray the strand. Immediately cap all cut ends with stainless steel ferrules or cable end caps to prevent unravelling and corrosion ingress.</div>
+      <div style="font-size:12px;color:#b9c4d4;line-height:1.7">Cut cable only with an angle grinder or approved cable cutter — never with bolt cutters, which crush and fray the strand. Immediately cap all cut ends with stainless steel ferrules or cable end caps to prevent unravelling and corrosion ingress.</div>
     </div>
   </div>
 
@@ -1022,7 +1082,7 @@ function buildResults(){
   <!-- ── RESOURCES DOWNLOAD BAR ── -->
   <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:20px;margin:24px 0">
     <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">IECS Africa Resources</div>
-    <div style="font-size:12px;color:#6b7c93;margin-bottom:16px">Product brochure, engineering presentation, and audio discussion — opens in a new tab.</div>
+    <div style="font-size:12px;color:#9aa9bd;margin-bottom:16px">Product brochure, engineering presentation, and audio discussion — opens in a new tab.</div>
     <div style="display:flex;flex-wrap:wrap;gap:10px">
       <a href="#" onclick="openModal('brochure');return false;" rel="noopener"
         style="display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">
@@ -1037,8 +1097,8 @@ function buildResults(){
         🎙️ Discussions on Cable Concrete
       </a>
     </div>
-    <div style="font-size:11px;color:#6b7c93;margin-top:12px;line-height:1.6">
-      All resources hosted at <strong style="color:#94a3b8">www.cableconcrete.app</strong> · Update the brochure and presentation links in your website admin to point to the correct files.
+    <div style="font-size:11px;color:#9aa9bd;margin-top:12px;line-height:1.6">
+      All resources hosted at <strong style="color:#b9c4d4">www.cableconcrete.app</strong> · Update the brochure and presentation links in your website admin to point to the correct files.
     </div>
   </div>
 
@@ -1079,11 +1139,11 @@ function buildResults(){
   <!-- ── TERMS OF AGREEMENT CHECKBOX ── -->
   <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <div style="font-size:13px;color:#e2e8f0;font-weight:600">⬇ Almost there — tick all 5 boxes below to unlock your report</div>
-    <div style="font-size:11px;color:#6b7c93">Then click "Print Report & Request Quote"</div>
+    <div style="font-size:11px;color:#9aa9bd">Then click "Print Report & Request Quote"</div>
   </div>
   <div style="background:#111827;border:2px solid rgba(74,222,128,.3);border-radius:12px;padding:20px;margin-bottom:20px" id="terms-box">
     <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">Terms of Agreement — Required</h3>
-    <p style="font-size:12px;color:#94a3b8;margin-bottom:14px;line-height:1.7">By printing or sharing this report, the recipient acknowledges and agrees to the following terms:</p>
+    <p style="font-size:12px;color:#b9c4d4;margin-bottom:14px;line-height:1.7">By printing or sharing this report, the recipient acknowledges and agrees to the following terms:</p>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
       ${[
         ["terms1","I have read and understood the Disclaimer & Limitation of Liability (Section 08) above."],
@@ -1097,7 +1157,7 @@ function buildResults(){
           <span style="font-size:12px;color:#e2e8f0;line-height:1.6">${text}</span>
         </label>`).join('')}
     </div>
-    <div id="terms-status" style="font-size:12px;color:#6b7c93;padding:10px;background:rgba(0,0,0,.2);border-radius:6px;text-align:center">
+    <div id="terms-status" style="font-size:12px;color:#9aa9bd;padding:10px;background:rgba(0,0,0,.2);border-radius:6px;text-align:center">
       ☐ Please confirm all five terms above before printing or sharing this report.
     </div>
   </div>
@@ -1109,12 +1169,12 @@ function buildResults(){
     <button class="bs" onclick="show('contact')">← Back to Contact Form</button>
     <button class="bs" onclick="show('quiz')">← Adjust Answers</button>
   </div>
-  <div class="no-print" style="font-size:11px;color:#6b7c93;text-align:center;line-height:1.8;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:8px;padding:10px;margin-bottom:20px">
+  <div class="no-print" style="font-size:11px;color:#9aa9bd;text-align:center;line-height:1.8;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:8px;padding:10px;margin-bottom:20px">
     Confirm all five Terms of Agreement above before printing. Your quote request goes to IECS Africa${eng?", who will follow up at "+eng.email:""}; print or save the report as a PDF for your records.
   </div>
   <div style="border-top:1px solid #1e2d42;padding-top:16px;margin-top:8px;text-align:center">
-    <div style="font-size:11px;color:#6b7c93;line-height:1.9">
-      <strong style="color:#94a3b8;display:block;font-size:12px;margin-bottom:4px">
+    <div style="font-size:11px;color:#9aa9bd;line-height:1.9">
+      <strong style="color:#b9c4d4;display:block;font-size:12px;margin-bottom:4px">
         IECS Africa · A subsidiary of IECS Global Inc. Canada
       </strong>
       www.cableconcrete.app · contact@iecsafrica.com<br>
@@ -1144,7 +1204,7 @@ function checkTerms(){
     st.textContent=all
       ? '✓ All terms confirmed. You may now print or share this report.'
       : '☐ Please confirm all five terms above before printing or sharing this report.';
-    st.style.color=all?'#22c55e':'#6b7c93';
+    st.style.color=all?'#22c55e':'#9aa9bd';
     st.style.background=all?'rgba(34,197,94,.08)':'rgba(0,0,0,.2)';
   }
   if(box) box.style.borderColor=all?'rgba(34,197,94,.4)':'rgba(74,222,128,.3)';
@@ -1192,7 +1252,7 @@ function printReport(){
       You will be contacted at <strong style="color:#86efac">${eng?eng.email:''}</strong> with a formal quote.
     </div>
     <div style="border-top:1px solid #1e2d42;padding-top:16px;">
-      <div style="font-size:13px;color:#94a3b8;margin-bottom:14px">Save a copy of your full engineering report:</div>
+      <div style="font-size:13px;color:#b9c4d4;margin-bottom:14px">Save a copy of your full engineering report:</div>
       <div style="display:flex;flex-direction:column;gap:10px;align-items:center;width:100%">
         <button onclick="window.print()" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:10px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;width:100%;max-width:320px">
           🖨 Save Full Report as PDF
@@ -1204,7 +1264,7 @@ function printReport(){
             <div><strong style="color:#86efac;display:block;margin-bottom:2px">Android / Chrome:</strong>Tap the button above → tap the 3 dots ⋮ at top right → tap Print → tap the dropdown at top → select <strong>Save as PDF</strong> → tap Save</div>
           </div>
         </div>
-        <button onclick="document.getElementById('report-confirm').remove()" style="background:transparent;border:1px solid #1e3a5f;color:#94a3b8;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;width:100%;max-width:320px">
+        <button onclick="document.getElementById('report-confirm').remove()" style="background:transparent;border:1px solid #1e3a5f;color:#b9c4d4;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;width:100%;max-width:320px">
           Close
         </button>
       </div>
