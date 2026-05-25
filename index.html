@@ -111,11 +111,10 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   td{padding:7px 8px;font-size:11px}
 }
 @media(max-width:480px){
-  /* Declutter the sticky header on narrow phones so the logo and the
-     Install App button have room to breathe. */
+  /* Declutter the sticky header on narrow phones so the logo has room. */
   #hdr-sub,.hdr-tagline{display:none}
   .hdr{gap:8px}
-  #install-btn{padding:7px 12px}
+  #install-cta{width:100%}
 }
 @media print{
   .hdr,.no-print{display:none!important}
@@ -171,20 +170,6 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     </div>
   </div>
   <div id="hdr-sub" style="font-size:12px;color:#6b7c93">Block Selection Tool</div>
-  <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;position:relative">
-    <button id="install-btn" onclick="handleInstall()" aria-label="Install the Cable Concrete app on your device" style="display:flex;align-items:center;gap:6px;background:#22c55e;color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(34,197,94,.35)">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Install App
-    </button>
-    <div id="ios-install" role="dialog" aria-label="How to install on your device" style="display:none;position:absolute;right:0;top:44px;background:#0f1e30;border:1px solid #1e2d42;border-radius:10px;padding:14px;width:256px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.5)">
-      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-        <img src="icon-192.png" alt="Cable Concrete app icon" width="30" height="30" style="border-radius:7px;flex-shrink:0">
-        <div style="font-size:13px;font-weight:700;color:#fff">Add Cable Concrete® to your Home Screen</div>
-      </div>
-      <div id="install-steps" style="font-size:12px;color:#cbd5e1;line-height:1.95"></div>
-      <button onclick="document.getElementById('ios-install').style.display='none'" style="margin-top:10px;width:100%;background:transparent;border:1px solid #1e2d42;color:#94a3b8;border-radius:6px;padding:7px;font-size:12px;cursor:pointer">Got it</button>
-    </div>
-  </div>
 </div>
 
 <div class="wrap">
@@ -200,6 +185,17 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   </p>
   <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
   <button class="bp" onclick="startQuiz()">Begin Engineering Assessment &rarr;</button>
+
+  <!-- Easy install button (with app logo) -->
+  <div style="margin-top:22px;display:flex;justify-content:center">
+    <button id="install-cta" onclick="handleInstall()" aria-label="Install the Cable Concrete app on your device" style="display:inline-flex;align-items:center;gap:14px;background:#0f1e30;border:1px solid rgba(74,222,128,.35);border-radius:16px;padding:12px 22px 12px 12px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='#22c55e';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(74,222,128,.35)';this.style.transform='none'">
+      <img src="icon-192.png" alt="" width="48" height="48" style="border-radius:12px;flex-shrink:0">
+      <span style="text-align:left">
+        <span style="display:block;font-size:15px;font-weight:800;color:#fff;line-height:1.2">Install the Cable Concrete® App</span>
+        <span style="display:block;font-size:11px;color:#86efac;margin-top:2px">⬇ Add to your home screen · works offline</span>
+      </span>
+    </button>
+  </div>
 
   <!-- Resources on intro page -->
   <div style="margin-top:36px;border-top:1px solid #1e2d42;padding-top:28px">
@@ -1312,12 +1308,12 @@ function isIOS(){
     || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 }
 function hideInstallUI(){
-  ['install-btn','pwa-banner','ios-install'].forEach(id=>{
+  ['install-cta','pwa-banner','install-modal'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='none';
   });
 }
 
-// Single entry point for both the header button and the bottom banner.
+// Single entry point for the install button and the bottom banner.
 function handleInstall(){
   // Chrome / Edge / Android captured a native prompt — use it directly.
   if(deferredPrompt){
@@ -1337,8 +1333,11 @@ function handleInstall(){
       ? '<strong style="color:#86efac">iPhone / iPad — Safari:</strong><br>1. Tap the <strong style="color:#86efac">Share</strong> button (the square with an up-arrow)<br>2. Choose <strong style="color:#86efac">Add to Home Screen</strong><br>3. Tap <strong style="color:#86efac">Add</strong>'
       : '<strong style="color:#86efac">Android — Chrome:</strong><br>1. Tap the menu <strong style="color:#86efac">⋮</strong> (top right)<br>2. Tap <strong style="color:#86efac">Install app</strong> / <strong>Add to Home screen</strong><br>3. Tap <strong style="color:#86efac">Add</strong><br><br><span style="color:#94a3b8">On desktop, click the <strong style="color:#86efac">install icon</strong> in the browser address bar.</span>';
   }
-  const box=document.getElementById('ios-install');
-  if(box)box.style.display=(box.style.display==='block')?'none':'block';
+  const box=document.getElementById('install-modal');
+  if(box)box.style.display='flex';
+}
+function closeInstallModal(){
+  const box=document.getElementById('install-modal');if(box)box.style.display='none';
 }
 
 window.addEventListener('beforeinstallprompt',e=>{
@@ -1354,6 +1353,17 @@ window.addEventListener('appinstalled',()=>{deferredPrompt=null;hideInstallUI();
 // Hide the install affordances when already running as an installed app.
 if(isStandalone())hideInstallUI();
 </script>
+<!-- ── INSTALL INSTRUCTIONS MODAL ── -->
+<div id="install-modal" role="dialog" aria-modal="true" aria-label="How to install the Cable Concrete app" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeInstallModal()">
+  <div style="background:#0f1e30;border:1px solid #1e3a5f;border-radius:16px;padding:22px;width:100%;max-width:340px;box-shadow:0 12px 40px rgba(0,0,0,.6)">
+    <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">
+      <img src="icon-192.png" alt="Cable Concrete app icon" width="46" height="46" style="border-radius:11px;flex-shrink:0">
+      <div style="font-size:15px;font-weight:800;color:#fff;line-height:1.2">Add Cable Concrete® to your Home Screen</div>
+    </div>
+    <div id="install-steps" style="font-size:13px;color:#cbd5e1;line-height:2"></div>
+    <button onclick="closeInstallModal()" style="margin-top:16px;width:100%;background:#22c55e;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;font-weight:700;cursor:pointer">Got it</button>
+  </div>
+</div>
 <!-- ── PWA INSTALL BANNER ── -->
 <div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#0f1e30;border-top:1px solid rgba(74,222,128,.3);padding:12px 18px;align-items:center;justify-content:space-between;gap:12px;z-index:999;flex-wrap:wrap">
   <div style="display:flex;align-items:center;gap:10px">
