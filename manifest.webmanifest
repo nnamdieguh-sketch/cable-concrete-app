@@ -1,0 +1,25 @@
+{
+  "name": "Cable Concrete® Block Selection Tool",
+  "short_name": "Cable Concrete®",
+  "description": "Engineering block selection and quote tool by IECS Africa",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0e14",
+  "theme_color": "#22c55e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Crect%20width='192'%20height='192'%20fill='%230a0e14'/%3E%3Cpolygon%20points='96,20%20172,62%20172,130%2096,172%2020,130%2020,62'%20fill='%2322c55e'/%3E%3Ctext%20x='96'%20y='112'%20text-anchor='middle'%20font-family='system-ui'%20font-weight='900'%20font-size='52'%20fill='white'%3ECC%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Crect%20width='512'%20height='512'%20fill='%230a0e14'/%3E%3Cpolygon%20points='256,54%20459,166%20459,346%20256,458%2053,346%2053,166'%20fill='%2322c55e'/%3E%3Ctext%20x='256'%20y='298'%20text-anchor='middle'%20font-family='system-ui'%20font-weight='900'%20font-size='138'%20fill='white'%3ECC%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

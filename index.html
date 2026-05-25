@@ -15,11 +15,17 @@
 <meta property="og:title" content="Cable Concrete® Block Selection Tool — IECS Africa">
 <meta property="og:description" content="Find the right Cable Concrete® erosion control block for your project. Free engineering assessment, mat calculator, hydraulic data and instant quote. Serving 12+ countries across Sub-Saharan Africa.">
 <meta property="og:site_name" content="Cable Concrete® by IECS Africa">
+<meta property="og:image" content="https://www.cableconcrete.app/og-image.jpg">
+<meta property="og:image:width" content="349">
+<meta property="og:image:height" content="105">
+<meta property="og:image:alt" content="Cable Concrete® by IECS Africa">
 <!-- Twitter/X Card -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cable Concrete® Block Selection Tool — IECS Africa">
 <meta name="twitter:description" content="Free engineering tool: Cable Concrete® block selection, mat calculator, hydraulic data and instant quote for erosion control projects across Africa.">
 <meta name="twitter:url" content="https://www.cableconcrete.app">
+<meta name="twitter:image" content="https://www.cableconcrete.app/og-image.jpg">
+<meta name="twitter:image:alt" content="Cable Concrete® by IECS Africa">
 <!-- OneSignal Push Notifications -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
@@ -37,17 +43,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cable Concrete®">
-<link rel="manifest" href="data:application/json,{
-  %22name%22:%22Cable%20Concrete%C2%AE%20Block%20Selection%20Tool%22,
-  %22short_name%22:%22Cable%20Concrete%C2%AE%22,
-  %22description%22:%22Engineering%20block%20selection%20and%20quote%20tool%20by%20IECS%20Africa%22,
-  %22start_url%22:%22/%22,
-  %22display%22:%22standalone%22,
-  %22background_color%22:%22%230a0e14%22,
-  %22theme_color%22:%22%2322c55e%22,
-  %22orientation%22:%22portrait%22,
-  %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Crect%20width='192'%20height='192'%20fill='%230a0e14'/%3E%3Cpolygon%20points='96,20%20172,62%20172,130%2096,172%2020,130%2020,62'%20fill='%2322c55e'/%3E%3Ctext%20x='96'%20y='112'%20text-anchor='middle'%20font-family='system-ui'%20font-weight='900'%20font-size='52'%20fill='white'%3ECC%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]
-}">
+<link rel="manifest" href="manifest.webmanifest">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#0a0e14;color:#f1f5f9;font-size:15px;line-height:1.7;min-height:100vh}
@@ -70,7 +66,7 @@ button{cursor:pointer;font-family:inherit;transition:all .15s}
 .ps.done{background:#22c55e}.ps.cur{background:#4ade80}
 input,select,textarea{background:#0f172a;border:1px solid #1e3a5f;color:#f1f5f9;border-radius:8px;padding:11px 14px;font-size:15px;font-family:inherit;width:100%;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,.15)}
-input::placeholder,textarea::placeholder{color:#64748b}
+input::placeholder,textarea::placeholder{color:#6b7c93}
 select option{background:#0f172a;color:#f1f5f9}
 .err{font-size:12px;color:#f87171;margin-top:4px;min-height:16px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -121,7 +117,38 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes gradshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.cableconcrete.app/#org",
+      "name": "IECS Africa",
+      "description": "Authorised distributor and installation specialist for Cable Concrete® erosion control systems across Sub-Saharan Africa. A subsidiary of IECS Global Inc. Canada.",
+      "url": "https://www.cableconcrete.app",
+      "logo": "https://www.cableconcrete.app/og-image.jpg",
+      "email": "contact@iecsafrica.com",
+      "areaServed": ["Nigeria","Ghana","Kenya","Tanzania","Ethiopia","Uganda","Zambia","Mozambique","South Africa","Angola","Cameroon","Senegal"],
+      "parentOrganization": { "@type": "Organization", "name": "IECS Global Inc.", "address": { "@type": "PostalAddress", "addressCountry": "CA" } }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Cable Concrete® Block Selection Tool",
+      "url": "https://www.cableconcrete.app",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Free engineering tool for Cable Concrete® block selection across Sub-Saharan Africa: instant block recommendations, mat quantity calculations, hydraulic data and a quote from IECS Africa.",
+      "image": "https://www.cableconcrete.app/og-image.jpg",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@id": "https://www.cableconcrete.app/#org" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -131,10 +158,10 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <img src="data:image/png;base64,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" alt="Cable Concrete Logo" style="height:32px;width:auto;filter:brightness(1.1) saturate(1.2);flex-shrink:0">
     <div style="border-left:1px solid #1e2d42;padding-left:12px">
       <div style="font-size:10px;color:#4ade80;letter-spacing:.1em;text-transform:uppercase">IECS Africa</div>
-      <div style="font-size:9px;color:#64748b;letter-spacing:.04em;text-transform:uppercase">Subsidiary · IECS Global Inc. Canada</div>
+      <div style="font-size:9px;color:#6b7c93;letter-spacing:.04em;text-transform:uppercase">Subsidiary · IECS Global Inc. Canada</div>
     </div>
   </div>
-  <div id="hdr-sub" style="font-size:12px;color:#64748b">Block Selection Tool</div>
+  <div id="hdr-sub" style="font-size:12px;color:#6b7c93">Block Selection Tool</div>
   <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
     <div style="position:relative">
       <button onclick="document.getElementById('install-menu').style.display=document.getElementById('install-menu').style.display==='none'?'block':'none'" style="display:flex;align-items:center;gap:5px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:5px 11px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">
@@ -160,7 +187,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
           3. Tap <strong style="color:#86efac">Add to Home Screen</strong><br>
           4. Tap <strong style="color:#86efac">Add</strong> ✅
         </div>
-        <a href="index.html" download="CableConcrete-BlockTool.html" style="display:block;margin-top:10px;text-align:center;font-size:11px;color:#64748b;text-decoration:none;border-top:1px solid #1e2d42;padding-top:10px" onmouseover="this.style.color='#86efac'" onmouseout="this.style.color='#64748b'">⬇ Download HTML file for desktop</a>
+        <a href="index.html" download="CableConcrete-BlockTool.html" style="display:block;margin-top:10px;text-align:center;font-size:11px;color:#6b7c93;text-decoration:none;border-top:1px solid #1e2d42;padding-top:10px" onmouseover="this.style.color='#86efac'" onmouseout="this.style.color='#6b7c93'">⬇ Download HTML file for desktop</a>
       </div>
     </div>
   </div>
@@ -175,7 +202,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     Find the Right <span style="color:#4ade80">Cable Concrete®</span> Block
   </h1>
   <p style="font-size:15px;color:#94a3b8;max-width:500px;margin:0 auto 24px;line-height:1.7">
-    5 engineering questions. Full recommendation with hydraulic data, university test results, mat calculator, and a quote from IECS Africa — sent directly to your email.
+    5 engineering questions. Full recommendation with hydraulic data, university test results and a mat calculator — shown instantly on-screen, ready to print or save as PDF, with a quote request sent to IECS Africa.
   </p>
   <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
   <button class="bp" onclick="startQuiz()">Begin Engineering Assessment &rarr;</button>
@@ -200,7 +227,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 <!-- ── QUIZ ── -->
 <div class="page" id="pg-quiz" style="padding-top:24px">
   <div class="prog" id="prog"></div>
-  <div id="qnum" style="font-size:11px;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px"></div>
+  <div id="qnum" style="font-size:11px;color:#6b7c93;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px"></div>
   <h2 id="qtxt" style="font-size:22px;font-weight:700;color:#fff;margin-bottom:18px"></h2>
   <div id="qopts" class="g2" style="gap:8px"></div>
   <div id="qscores" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"></div>
@@ -209,7 +236,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <button class="bp" id="qnext" onclick="qNext()" disabled>Next →</button>
   </div>
   <div style="margin-top:12px;text-align:center">
-    <button onclick="resetApp()" style="background:none;border:none;color:#64748b;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+    <button onclick="resetApp()" style="background:none;border:none;color:#6b7c93;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
   </div>
 </div>
 
@@ -224,19 +251,19 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;flex-wrap:wrap;font-size:12px;color:#86efac">
       <span>⬡ Block recommendation</span><span>📐 Mat calculator</span><span>📊 Hydraulic tables</span><span>📄 Printable report</span>
     </div>
-    <p style="font-size:12px;color:#64748b;margin-top:12px">Complete the form below — free of charge.</p>
+    <p style="font-size:12px;color:#6b7c93;margin-top:12px">Complete the form below — free of charge.</p>
   </div>
   <div class="card">
     <h3 style="font-size:19px;font-weight:700;color:#fff;margin-bottom:4px">Your Details</h3>
     <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;line-height:1.6">
-      Your full report is emailed to you instantly. IECS Africa receives your quote request and will follow up directly.
+      Your full report opens instantly on the next screen — ready to print or save as PDF. IECS Africa receives your quote request and will follow up directly.
     </p>
     <div class="g2">
-      <div><label class="lbl">Full Name *</label><input id="f-name" type="text" placeholder="Engr. John Okafor"><div class="err" id="e-name"></div></div>
-      <div><label class="lbl">Firm / Organisation *</label><input id="f-firm" type="text" placeholder="FMWR Engineering Division"><div class="err" id="e-firm"></div></div>
-      <div><label class="lbl">Professional Email *</label><input id="f-email" type="email" placeholder="engr.john@ministry.gov.ng"><div class="err" id="e-email"></div></div>
+      <div><label class="lbl" for="f-name">Full Name *</label><input id="f-name" type="text" autocomplete="name" placeholder="Engr. John Okafor"><div class="err" id="e-name" role="alert"></div></div>
+      <div><label class="lbl" for="f-firm">Firm / Organisation *</label><input id="f-firm" type="text" autocomplete="organization" placeholder="FMWR Engineering Division"><div class="err" id="e-firm" role="alert"></div></div>
+      <div><label class="lbl" for="f-email">Professional Email *</label><input id="f-email" type="email" autocomplete="email" placeholder="engr.john@ministry.gov.ng"><div class="err" id="e-email" role="alert"></div></div>
       <div>
-        <label class="lbl">Country *</label>
+        <label class="lbl" for="f-country">Country *</label>
         <select id="f-country" onchange="chkPriority()">
           <option value="">— Select Country —</option>
           <optgroup label="★ Priority Markets" id="ssa-opts"></optgroup>
@@ -245,15 +272,15 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
         <div class="err" id="e-country"></div>
         <div id="pri-badge" style="display:none;margin-top:5px"><span class="pill g">★ Priority Response — 24hr target</span></div>
       </div>
-      <div><label class="lbl">Phone / WhatsApp *</label><input id="f-phone" type="tel" placeholder="Select country first"><div class="err" id="e-phone"></div></div>
+      <div><label class="lbl" for="f-phone">Phone / WhatsApp *</label><input id="f-phone" type="tel" autocomplete="tel" placeholder="Select country first"><div class="err" id="e-phone" role="alert"></div></div>
       <div></div>
       <div style="grid-column:1/-1">
-        <label class="lbl">Project Scope &amp; Description *</label>
+        <label class="lbl" for="f-scope">Project Scope &amp; Description *</label>
         <textarea id="f-scope" rows="3" placeholder="e.g. 2.4 km gully erosion control, Anambra State — 4.5m channel, 3:1 slope, high seasonal flow velocity..."></textarea>
-        <div class="err" id="e-scope"></div>
+        <div class="err" id="e-scope" role="alert"></div>
       </div>
       <div style="grid-column:1/-1">
-        <label class="lbl">How did you find us? <span style="color:#475569;font-size:9px">(optional)</span></label>
+        <label class="lbl" for="f-source">How did you find us? <span style="color:#475569;font-size:9px">(optional)</span></label>
         <select id="f-source">
           <option value="">— Select one —</option>
           <option value="Google Search">Google Search</option>
@@ -267,17 +294,21 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
           <option value="Other">Other</option>
         </select>
       </div>
+      <div class="sr-only" aria-hidden="true">
+        <label for="f-website">Leave this field blank</label>
+        <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
     </div>
     <button class="bp" id="btn-sub" onclick="submitForm()" style="width:100%;margin-top:18px;font-size:16px">
       UNLOCK MY RECOMMENDATION &amp; REQUEST QUOTE →
     </button>
-    <p style="font-size:11px;color:#64748b;text-align:center;margin-top:10px">
-      Your report is emailed to you instantly. IECS Africa receives your quote request and will respond directly.
+    <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:10px">
+      Your report opens instantly on the next screen — print it or save it as a PDF. IECS Africa receives your quote request and will respond directly.
     </p>
   </div>
   <div style="display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap">
     <button class="bs" onclick="show('quiz')">← Back to Questions</button>
-    <button onclick="resetApp()" style="background:none;border:none;color:#64748b;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
+    <button onclick="resetApp()" style="background:none;border:none;color:#6b7c93;font-size:12px;cursor:pointer;text-decoration:underline">✕ Cancel &amp; start over</button>
   </div>
 </div>
 
@@ -351,6 +382,9 @@ function show(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.getElementById('pg-'+page).classList.add('on');
   document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report"}[page]||"";
+  // Stop the auto-cycling cross-section animation whenever we leave the results
+  // page so it isn't redrawing a hidden SVG forever (battery/CPU on mobile).
+  if(page!=='results'&&simTimer){clearInterval(simTimer);simTimer=null;}
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function scores(){
@@ -404,9 +438,9 @@ function chkPriority(){
   // Update if empty, or if current value is just a prefix (no actual number typed yet)
   const isJustPrefix=Object.values(PHONE_PREFIX).some(p=>currentVal===p||currentVal===p+' '||currentVal==='');
   if(isJustPrefix){
+    // Prefill the dialling code without stealing focus — focusing here pops the
+    // on-screen keyboard mid-form on mobile, which is disruptive.
     phoneEl.value=prefix+' ';
-    phoneEl.focus();
-    phoneEl.setSelectionRange(phoneEl.value.length,phoneEl.value.length);
   }
 }
 function submitForm(){
@@ -433,6 +467,9 @@ function submitForm(){
     if(!v)ok=false;
   });
   if(!ok)return;
+  // Honeypot: real users never see or fill this field. If it's populated the
+  // submission is almost certainly a bot — show the report but skip the lead.
+  const isBot=!!((document.getElementById('f-website')||{}).value||'').trim();
   eng={name,firm,email,phone,country,scope,source};
   const btn=document.getElementById('btn-sub');
   btn.disabled=true;
@@ -451,6 +488,8 @@ function submitForm(){
 
   // Always show results after 6 seconds max (mobile network safety net)
   const safetyTimer=setTimeout(()=>doShowResults(),6000);
+
+  if(isBot){clearTimeout(safetyTimer);doShowResults();return;}
 
   sendToSheets({
     name:name, firm:firm, email:email, phone:phone,
@@ -507,7 +546,7 @@ function renderCalc(){
 
   const el=document.getElementById('calc-z');if(!el)return;
   el.innerHTML=`
-  <div style="font-size:11px;color:#64748b;margin-bottom:10px;padding:7px 10px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:6px">
+  <div style="font-size:11px;color:#6b7c93;margin-bottom:10px;padding:7px 10px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:6px">
     💡 Select from dropdown <strong style="color:#94a3b8">or</strong> type a custom value in the box on the right
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
@@ -562,7 +601,7 @@ function renderCalc(){
 
   </div>
 
-  <div style="background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:10px;padding:14px;margin-bottom:12px;font-size:12px;color:#64748b;line-height:1.9">
+  <div style="background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.15);border-radius:10px;padding:14px;margin-bottom:12px;font-size:12px;color:#6b7c93;line-height:1.9">
     <strong style="color:#94a3b8">How this is calculated (per Engineering Binder):</strong><br>
     Bed area = ${L} m × ${bw} m = <strong style="color:#86efac">${bedArea.toFixed(1)} m²</strong><br>
     Slope face width = ${bh} m bank × √(${Z}²+1) = <strong style="color:#f59e0b">${slopeFaceWidth.toFixed(2)} m</strong> along slope surface<br>
@@ -573,18 +612,18 @@ function renderCalc(){
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
     <div style="text-align:center;padding:12px 8px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px">
       <div style="font-size:26px;font-weight:900;color:#60a5fa">${bedMats}</div>
-      <div style="font-size:11px;color:#64748b;margin-top:2px">Bed mats<br>${bedArea.toFixed(1)} m²</div>
+      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Bed mats<br>${bedArea.toFixed(1)} m²</div>
     </div>
     <div style="text-align:center;padding:12px 8px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px">
       <div style="font-size:26px;font-weight:900;color:#f59e0b">${slopeMats}</div>
-      <div style="font-size:11px;color:#64748b;margin-top:2px">Slope mats<br>${slopeArea.toFixed(1)} m²</div>
+      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Slope mats<br>${slopeArea.toFixed(1)} m²</div>
     </div>
     <div style="text-align:center;padding:12px 8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px">
       <div style="font-size:32px;font-weight:900;color:#4ade80">${totalMats}</div>
       <div style="font-size:12px;color:#e2e8f0;font-weight:600">TOTAL MATS</div>
     </div>
   </div>
-  <div style="font-size:11px;color:#64748b;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
+  <div style="font-size:11px;color:#6b7c93;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
     Mat size: ${bl.ms} (${ma} m² per mat) · Block: <strong style="color:${bl.c}">${bl.name}</strong> · 10% wastage per Cable Concrete® Engineering Binder
   </div>`;
 }
@@ -597,7 +636,7 @@ function renderDT(){
   const el=document.getElementById('dt-content');if(!el)return;
   if(dtab==="selection"){
     el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Table 4-1 — Mild Slopes (&lt;1%)</h3>
-    <div style="font-size:11px;color:#64748b;margin-bottom:8px">Engineering Binder Part 5 · University of Windsor (1991) · Vel A = Good placement · Vel B = Poor placement</div>
+    <div style="font-size:11px;color:#6b7c93;margin-bottom:8px">Engineering Binder Part 5 · University of Windsor (1991) · Vel A = Good placement · Vel B = Poor placement</div>
     <div class="twrap"><table><thead><tr><th>Block</th><th>Vel B m/s</th><th>Vel A m/s</th><th>Vel B ft/s</th><th>Vel A ft/s</th></tr></thead><tbody>
     ${MILD.map(r=>`<tr><td class="hi">${r.b}</td><td>${r.bm}</td><td class="hi">${r.am}</td><td>${r.bf}</td><td class="hi">${r.af}</td></tr>`).join('')}</tbody></table></div>
     <h3 style="font-size:15px;font-weight:700;color:#fff;margin:16px 0 4px">Table 4-2 — Moderately Steep Slopes (&lt;5%)</h3>
@@ -610,7 +649,7 @@ function renderDT(){
     ${(MN[mtab]||MN.CC35).map(r=>`<tr><td class="hi">${r.v}</td><td>${r.d}</td><td>${r.c}</td><td>${r.cb}</td><td class="wa">${r.bg}</td></tr>`).join('')}</tbody></table></div>`;
   }else if(dtab==="bridge"){
     el.innerHTML=`<h3 style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Bridge Pier Scour Protection</h3>
-    <div style="font-size:11px;color:#64748b;margin-bottom:8px">McCorquodale et al. · ASCE Hydraulic Engineering 1993</div>
+    <div style="font-size:11px;color:#6b7c93;margin-bottom:8px">McCorquodale et al. · ASCE Hydraulic Engineering 1993</div>
     <div class="twrap"><table><thead><tr><th>Block</th><th>Shear N/m²</th><th>Shear lb/ft²</th><th>Vel m/s</th><th>Vel ft/s</th><th>Manning n</th><th>Ht in</th></tr></thead><tbody>
     <tr><td class="hi">CCG2</td><td>182</td><td>3.8</td><td class="hi">4.0</td><td class="hi">13.0</td><td>0.017–0.02</td><td>2.5</td></tr>
     <tr><td class="hi">CC35</td><td>325</td><td>4.9</td><td class="hi">5.2</td><td class="hi">17.0</td><td>0.02–0.025</td><td>4.5</td></tr>
@@ -642,6 +681,11 @@ function toggleComp(i){
   openComp=openComp===i?null:i;
   document.querySelectorAll('.comp-body').forEach((el,idx)=>el.style.display=idx===openComp?'block':'none');
   document.querySelectorAll('.comp-arr').forEach((el,idx)=>el.textContent=idx===openComp?'▴':'▾');
+  document.querySelectorAll('.comp').forEach((el,idx)=>el.setAttribute('aria-expanded',idx===openComp?'true':'false'));
+}
+// Keyboard activation for elements given role="button"
+function keyActivate(e){
+  if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){e.preventDefault();e.currentTarget.click();}
 }
 
 // ── SIMULATOR ────────────────────────────────────────────────────────────────
@@ -679,11 +723,19 @@ function initBA(col){
     <text x="${p*6.9}" y="95" text-anchor="middle" font-size="15" font-family="Arial" font-weight="bold" fill="#0a0e14">&#8596;</text>`;
   };
 
+  const setPct=v=>{simPct=Math.max(5,Math.min(95,v));el.setAttribute('aria-valuenow',Math.round(simPct));drawBA();};
   drawBA();
-  const mv=e=>{const r=el.getBoundingClientRect();simPct=Math.max(5,Math.min(95,(e.clientX-r.left)/r.width*100));drawBA();};
+  el.setAttribute('aria-valuenow',Math.round(simPct));
+  const mv=e=>{const r=el.getBoundingClientRect();setPct((e.clientX-r.left)/r.width*100);};
   el.onclick=mv;
   el.onmousemove=e=>{if(e.buttons===1)mv(e);};
-  el.ontouchmove=e=>{e.preventDefault();const r=el.getBoundingClientRect();simPct=Math.max(5,Math.min(95,(e.touches[0].clientX-r.left)/r.width*100));drawBA();};
+  el.ontouchmove=e=>{e.preventDefault();const r=el.getBoundingClientRect();setPct((e.touches[0].clientX-r.left)/r.width*100);};
+  el.onkeydown=e=>{
+    if(e.key==='ArrowLeft'||e.key==='ArrowDown'){e.preventDefault();setPct(simPct-5);}
+    else if(e.key==='ArrowRight'||e.key==='ArrowUp'){e.preventDefault();setPct(simPct+5);}
+    else if(e.key==='Home'){e.preventDefault();setPct(5);}
+    else if(e.key==='End'){e.preventDefault();setPct(95);}
+  };
 }
 
 function drawCrossSection(col){
@@ -714,7 +766,7 @@ function drawCrossSection(col){
     ${showCrane?`
       <line x1="645" y1="210" x2="645" y2="18" stroke="#8ca0b8" stroke-width="4"/>
       <line x1="645" y1="34" x2="520" y2="22" stroke="#94a3b8" stroke-width="3"/>
-      <line x1="645" y1="34" x2="678" y2="55" stroke="#64748b" stroke-width="2"/>
+      <line x1="645" y1="34" x2="678" y2="55" stroke="#6b7c93" stroke-width="2"/>
       <line x1="520" y1="22" x2="480" y2="140" stroke="#facc15" stroke-width="1.5" stroke-dasharray="4,3"/>
       <rect x="467" y="133" width="26" height="10" fill="${col}" stroke="rgba(0,0,0,.4)" stroke-width=".7"/>
       <circle cx="480" cy="133" r="3" fill="#facc15"/>
@@ -729,7 +781,7 @@ function drawCrossSection(col){
     <text x="350" y="18" text-anchor="middle" fill="${LCOLS[ph]}" font-size="12" font-family="system-ui" font-weight="bold">${LABELS[ph]}</text>
     ${["Eroded","Installing","Protected"].map((l,i)=>`
       <circle cx="${290+i*60}" cy="200" r="4" fill="${i===ph?LCOLS[i]:'#334155'}"/>
-      <text x="${290+i*60}" y="210" text-anchor="middle" font-size="9" fill="${i===ph?'#e2e8f0':'#64748b'}" font-family="system-ui">${l}</text>
+      <text x="${290+i*60}" y="210" text-anchor="middle" font-size="9" fill="${i===ph?'#e2e8f0':'#6b7c93'}" font-family="system-ui">${l}</text>
     `).join('')}
   `;
 }
@@ -751,13 +803,13 @@ function buildResults(){
         <span style="color:#4ade80">②</span> <strong style="color:#4ade80">⚡ Use the Mat Calculator</strong> — scroll down just below this card to calculate your exact mat quantities<br>
         <span style="color:#86efac">③</span> <strong style="color:#fff">Scroll all the way down</strong> to Section 08 — Disclaimer &amp; Terms<br>
         <span style="color:#86efac">④</span> <strong style="color:#fff">Tick all 5 agreement checkboxes</strong> at the bottom to unlock the report<br>
-        <span style="color:#86efac">⑤</span> <strong style="color:#fff">Click "Print Report &amp; Request Quote"</strong> — your report is sent to IECS Africa and a copy to your email
+        <span style="color:#86efac">⑤</span> <strong style="color:#fff">Click "Print Report &amp; Request Quote"</strong> — sends your quote request to IECS Africa and lets you print or save the report as a PDF
       </div>
     </div>
   </div>
 
   <div class="card">
-    <div style="font-size:10px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Recommended Block for Your Project</div>
+    <div style="font-size:10px;color:#6b7c93;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Recommended Block for Your Project</div>
     <div style="font-size:48px;font-weight:900;color:${bl.c};line-height:1">${bl.name}</div>
     <div style="font-size:15px;color:#cbd5e1;margin-top:3px">${bl.sub}</div>
     ${isPri?`<div style="margin-top:8px"><span class="pill g">★ PRIORITY — IECS Africa will contact you within 24 hours</span></div>`:''}
@@ -798,7 +850,7 @@ function buildResults(){
 
   <!-- ── RESOURCES SECTION ── -->
   <div style="background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(34,197,94,.05));border:1px solid rgba(74,222,128,.25);border-radius:12px;padding:20px;margin-bottom:24px">
-    <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">IECS Africa · Cable Concrete® Resources</div>
+    <div style="font-size:10px;color:#6b7c93;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">IECS Africa · Cable Concrete® Resources</div>
     <h3 style="font-size:17px;font-weight:700;color:#fff;margin-bottom:14px">Technical Documents &amp; Audio Discussions</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
       <a href="#" onclick="openModal('brochure');return false;" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#4ade80,#16a34a);border-radius:8px;padding:12px 14px;text-decoration:none;box-shadow:0 4px 12px rgba(74,222,128,.3)">
@@ -814,7 +866,7 @@ function buildResults(){
         <div><div style="font-size:13px;font-weight:700;color:#fff">Discussions on Cable Concrete</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:1px">AI Audio Podcast</div></div>
       </a>
     </div>
-    <p style="font-size:11px;color:#64748b;margin-top:12px;line-height:1.6">Documents open in a new tab. For direct assistance contact <a href="mailto:contact@iecsafrica.com" style="color:#86efac;text-decoration:none">contact@iecsafrica.com</a></p>
+    <p style="font-size:11px;color:#6b7c93;margin-top:12px;line-height:1.6">Documents open in a new tab. For direct assistance contact <a href="mailto:contact@iecsafrica.com" style="color:#86efac;text-decoration:none">contact@iecsafrica.com</a></p>
   </div>
 
   <div class="sechdr"><div class="sn">01</div><h2 style="font-size:18px;font-weight:700;color:#fff">Gully Erosion Simulation</h2></div>
@@ -825,13 +877,13 @@ function buildResults(){
     </div>
     <div id="sim-cs">
       <svg id="cs-svg" viewBox="0 0 700 210" style="width:100%;display:block;border-radius:8px"></svg>
-      <p style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">Auto-cycles every 3 seconds: erosion → crane installation → protected</p>
+      <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:6px">Auto-cycles every 3 seconds: erosion → crane installation → protected</p>
     </div>
     <div id="sim-ba" style="display:none">
-      <div id="ba-wrap" style="cursor:ew-resize;user-select:none">
+      <div id="ba-wrap" role="slider" tabindex="0" aria-label="Before and after comparison: drag or use arrow keys to reveal the protected channel" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50" style="cursor:ew-resize;user-select:none">
         <svg id="ba-svg" viewBox="0 0 690 180" style="width:100%;display:block;border-radius:8px"></svg>
       </div>
-      <p style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">Click or drag to compare before / after</p>
+      <p style="font-size:11px;color:#6b7c93;text-align:center;margin-top:6px">Click or drag to compare before / after</p>
     </div>
   </div>
 
@@ -845,14 +897,14 @@ function buildResults(){
   <div id="dt-content"></div>
 
   <div class="sechdr"><div class="sn">03</div><h2 style="font-size:18px;font-weight:700;color:#fff">Anchoring &amp; Field Installation</h2></div>
-  <p style="font-size:11px;color:#64748b;margin-bottom:10px">Source: Cable Concrete® Engineering Binder Part 6, Fact Sheet 6</p>
+  <p style="font-size:11px;color:#6b7c93;margin-bottom:10px">Source: Cable Concrete® Engineering Binder Part 6, Fact Sheet 6</p>
   ${ANCHORS.map(([l,s])=>`<div class="ai"><div class="al">${l}</div><div style="font-size:12px;color:#cbd5e1;line-height:1.5">${s}</div></div>`).join('')}
 
   <div class="sechdr"><div class="sn">04</div><h2 style="font-size:18px;font-weight:700;color:#fff">University Laboratory Test Data</h2></div>
   <div style="background:linear-gradient(135deg,rgba(74,222,128,.06),rgba(34,197,94,.04));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:18px;margin-bottom:14px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px">
       <div><div style="font-size:16px;font-weight:700;color:#4ade80">University of Minnesota — St. Anthony Falls Laboratory</div>
-      <div style="font-size:11px;color:#64748b;margin-top:2px">Project Report No. 434 · March 1999 · Independent university test</div></div>
+      <div style="font-size:11px;color:#6b7c93;margin-top:2px">Project Report No. 434 · March 1999 · Independent university test</div></div>
       <span class="pill g">✓ University Verified</span>
     </div>
     <div style="font-size:12px;color:#cbd5e1;background:rgba(0,0,0,.2);border-radius:6px;padding:10px;margin-bottom:10px;line-height:1.7">Both CC 35 and CC 45 OS systems performed well up to maximum facility capability (3.5 ft overtopping head). Failure was not induced — the test facility reached its limit before the blocks failed.</div>
@@ -863,13 +915,13 @@ function buildResults(){
     <button class="tab" data-t="cc45" onclick="switchST('cc45')">CC 45 OS Test Runs (5–8)</button>
   </div>
   <div id="st-content"></div>
-  <div style="font-size:11px;color:#64748b;margin-top:6px">2:1 downstream slope · Silty clay (CL) · Non-woven 6.1 oz/yd² polypropylene geotextile</div>
+  <div style="font-size:11px;color:#6b7c93;margin-top:6px">2:1 downstream slope · Silty clay (CL) · Non-woven 6.1 oz/yd² polypropylene geotextile</div>
 
   <div class="sechdr"><div class="sn">05</div><h2 style="font-size:18px;font-weight:700;color:#fff">Why Cable Concrete®</h2></div>
-  ${COMPS.map(([n,body],i)=>`<div class="comp" onclick="toggleComp(${i})">
+  ${COMPS.map(([n,body],i)=>`<div class="comp" role="button" tabindex="0" aria-expanded="false" onclick="toggleComp(${i})" onkeydown="keyActivate(event)">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-size:15px;font-weight:700;color:#e2e8f0">${n}</div>
-      <span class="comp-arr" style="color:#64748b">▾</span>
+      <span class="comp-arr" style="color:#6b7c93" aria-hidden="true">▾</span>
     </div>
     <div class="comp-body" style="display:none;font-size:12px;color:#cbd5e1;line-height:1.6;margin-top:8px">${body}</div>
   </div>`).join('')}
@@ -978,7 +1030,7 @@ function buildResults(){
   <!-- ── RESOURCES DOWNLOAD BAR ── -->
   <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:20px;margin:24px 0">
     <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">IECS Africa Resources</div>
-    <div style="font-size:12px;color:#64748b;margin-bottom:16px">Product brochure, engineering presentation, and audio discussion — opens in a new tab.</div>
+    <div style="font-size:12px;color:#6b7c93;margin-bottom:16px">Product brochure, engineering presentation, and audio discussion — opens in a new tab.</div>
     <div style="display:flex;flex-wrap:wrap;gap:10px">
       <a href="#" onclick="openModal('brochure');return false;" rel="noopener"
         style="display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:#86efac;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">
@@ -993,7 +1045,7 @@ function buildResults(){
         🎙️ Discussions on Cable Concrete
       </a>
     </div>
-    <div style="font-size:11px;color:#64748b;margin-top:12px;line-height:1.6">
+    <div style="font-size:11px;color:#6b7c93;margin-top:12px;line-height:1.6">
       All resources hosted at <strong style="color:#94a3b8">www.cableconcrete.app</strong> · Update the brochure and presentation links in your website admin to point to the correct files.
     </div>
   </div>
@@ -1035,7 +1087,7 @@ function buildResults(){
   <!-- ── TERMS OF AGREEMENT CHECKBOX ── -->
   <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <div style="font-size:13px;color:#e2e8f0;font-weight:600">⬇ Almost there — tick all 5 boxes below to unlock your report</div>
-    <div style="font-size:11px;color:#64748b">Then click "Print Report & Request Quote"</div>
+    <div style="font-size:11px;color:#6b7c93">Then click "Print Report & Request Quote"</div>
   </div>
   <div style="background:#111827;border:2px solid rgba(74,222,128,.3);border-radius:12px;padding:20px;margin-bottom:20px" id="terms-box">
     <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">Terms of Agreement — Required</h3>
@@ -1053,7 +1105,7 @@ function buildResults(){
           <span style="font-size:12px;color:#e2e8f0;line-height:1.6">${text}</span>
         </label>`).join('')}
     </div>
-    <div id="terms-status" style="font-size:12px;color:#64748b;padding:10px;background:rgba(0,0,0,.2);border-radius:6px;text-align:center">
+    <div id="terms-status" style="font-size:12px;color:#6b7c93;padding:10px;background:rgba(0,0,0,.2);border-radius:6px;text-align:center">
       ☐ Please confirm all five terms above before printing or sharing this report.
     </div>
   </div>
@@ -1065,11 +1117,11 @@ function buildResults(){
     <button class="bs" onclick="show('contact')">← Back to Contact Form</button>
     <button class="bs" onclick="show('quiz')">← Adjust Answers</button>
   </div>
-  <div class="no-print" style="font-size:11px;color:#64748b;text-align:center;line-height:1.8;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:8px;padding:10px;margin-bottom:20px">
-    Confirm all five Terms of Agreement above before printing. Report will be sent to IECS Africa and a copy to ${eng?eng.email:"your email"}.
+  <div class="no-print" style="font-size:11px;color:#6b7c93;text-align:center;line-height:1.8;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.1);border-radius:8px;padding:10px;margin-bottom:20px">
+    Confirm all five Terms of Agreement above before printing. Your quote request goes to IECS Africa${eng?", who will follow up at "+eng.email:""}; print or save the report as a PDF for your records.
   </div>
   <div style="border-top:1px solid #1e2d42;padding-top:16px;margin-top:8px;text-align:center">
-    <div style="font-size:11px;color:#64748b;line-height:1.9">
+    <div style="font-size:11px;color:#6b7c93;line-height:1.9">
       <strong style="color:#94a3b8;display:block;font-size:12px;margin-bottom:4px">
         IECS Africa · A subsidiary of IECS Global Inc. Canada
       </strong>
@@ -1100,7 +1152,7 @@ function checkTerms(){
     st.textContent=all
       ? '✓ All terms confirmed. You may now print or share this report.'
       : '☐ Please confirm all five terms above before printing or sharing this report.';
-    st.style.color=all?'#22c55e':'#64748b';
+    st.style.color=all?'#22c55e':'#6b7c93';
     st.style.background=all?'rgba(34,197,94,.08)':'rgba(0,0,0,.2)';
   }
   if(box) box.style.borderColor=all?'rgba(34,197,94,.4)':'rgba(74,222,128,.3)';
@@ -1160,10 +1212,11 @@ function printReport(){
             <div><strong style="color:#86efac;display:block;margin-bottom:2px">Android / Chrome:</strong>Tap the button above → tap the 3 dots ⋮ at top right → tap Print → tap the dropdown at top → select <strong>Save as PDF</strong> → tap Save</div>
           </div>
         </div>
-        <button onclick="document.getElementById('report-confirm').remove()" style="background:transparent;border:1px solid #1e3a5f;color:#64748b;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;width:100%;max-width:320px">
+        <button onclick="document.getElementById('report-confirm').remove()" style="background:transparent;border:1px solid #1e3a5f;color:#94a3b8;border-radius:10px;padding:12px 20px;font-size:14px;cursor:pointer;width:100%;max-width:320px">
           Close
         </button>
       </div>
+    </div>
   `;
   const btnRow=document.querySelector('.no-print');
   if(btnRow&&btnRow.parentNode)btnRow.parentNode.insertBefore(panel,btnRow.nextSibling);
@@ -1244,32 +1297,13 @@ function sendToSheets(payload,onDone){
 }
 
 // ── PWA SERVICE WORKER ────────────────────────────────────────────────────────
+// Registered from a real same-origin file so it can take the '/' scope and
+// actually cache the app for offline use. A blob: URL cannot do this.
+// Falls back silently (e.g. when opened from file://) without affecting the app.
 if('serviceWorker' in navigator){
-  const swCode=`
-    const CACHE='cc-tool-v1';
-    const ASSETS=['/'];
-    self.addEventListener('install',e=>{
-      e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
-    });
-    self.addEventListener('activate',e=>{
-      e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
-    });
-    self.addEventListener('fetch',e=>{
-      e.respondWith(caches.match(e.request).then(cached=>{
-        const fresh=fetch(e.request).then(res=>{
-          if(res&&res.status===200){
-            const clone=res.clone();
-            caches.open(CACHE).then(c=>c.put(e.request,clone));
-          }
-          return res;
-        }).catch(()=>cached);
-        return cached||fresh;
-      }));
-    });
-  `;
-  const blob=new Blob([swCode],{type:'application/javascript'});
-  const swUrl=URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(()=>{});
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
 }
 
 // ── PWA INSTALL BANNER ────────────────────────────────────────────────────────
@@ -1303,12 +1337,12 @@ function installPWA(){
     <div style="width:36px;height:36px;background:#4ade80;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px;color:#fff;flex-shrink:0">CC</div>
     <div>
       <div style="font-size:13px;font-weight:700;color:#fff">Install Cable Concrete® App</div>
-      <div style="font-size:11px;color:#64748b">IECS Africa · Subsidiary of IECS Global Inc. Canada</div>
+      <div style="font-size:11px;color:#6b7c93">IECS Africa · Subsidiary of IECS Global Inc. Canada</div>
     </div>
   </div>
   <div style="display:flex;gap:8px">
     <button onclick="installPWA()" style="background:#4ade80;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer">Install App</button>
-    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#64748b;border:1px solid #1e2d42;border-radius:6px;padding:8px 12px;font-size:13px;cursor:pointer">✕</button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:transparent;color:#6b7c93;border:1px solid #1e2d42;border-radius:6px;padding:8px 12px;font-size:13px;cursor:pointer">✕</button>
   </div>
 </div>
 </body>
