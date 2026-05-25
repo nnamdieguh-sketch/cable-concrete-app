@@ -1386,15 +1386,28 @@ function handleInstall(){
   }
 }
 
+// Count each install once per device by logging to the same Google Sheet
+// pipeline used for leads. Cross-platform: 'appinstalled' fires on
+// Android/Chrome/Edge/desktop; on iPhone (no such event) the first launch from
+// the home screen is logged instead. A localStorage flag prevents double counts.
+function logInstall(method){
+  try{ if(localStorage.getItem('cc_install_logged')) return; localStorage.setItem('cc_install_logged','1'); }catch(e){}
+  var plat=isIOS()?'iOS':(/Android/i.test(navigator.userAgent)?'Android':'Other/Desktop');
+  sendToSheets({event:'app_install',method:method,platform:plat,display:isStandalone()?'standalone':'browser',ua:(navigator.userAgent||'').slice(0,180)});
+}
+
 window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
 window.addEventListener('appinstalled',function(){
   deferredPrompt=null;
   const w=document.getElementById('install-wrap');if(w)w.style.display='none';
+  logInstall('appinstalled');
 });
 
-// Inside the already-installed app there's nothing to install — hide the button.
+// Inside the already-installed app there's nothing to install — hide the button,
+// and (covers iPhone) count the first home-screen launch as an install.
 if(isStandalone()){
   const w=document.getElementById('install-wrap');if(w)w.style.display='none';
+  logInstall('standalone_open');
 }
 </script>
 </body>
