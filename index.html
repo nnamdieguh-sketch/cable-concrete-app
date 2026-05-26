@@ -403,12 +403,27 @@ function fosData(){
     const pv=perm[k], fos=pv/dv;
     let col,lab;
     if(fos>=1.5){col='#22c55e';lab='Ample';}
-    else if(fos>=1.2){col='#4ade80';lab='Adequate';}
-    else if(fos>=1.0){col='#f59e0b';lab='Marginal';}
-    else {col='#ef4444';lab='Under capacity';}
+    else if(fos>=1.2){col='#4ade80';lab='Good margin';}
+    else if(fos>=1.0){col='#86efac';lab='Within permissible';}
+    else {col='#f59e0b';lab='Anchoring required';}
     return {id:k,name:B[k].name,c:B[k].c,pv:pv,fos:fos,col:col,lab:lab};
   });
   return {dv:dv,steep:steep,rows:rows};
+}
+
+// The headline recommendation = heavier of {quiz best-fit, lightest block with
+// FoS >= 1.0 at the conservative upper bound of the velocity band}. If no
+// standard block reaches FoS 1.0, recommend CC 70 (heaviest) and flag that
+// anchoring is required per the Engineering Binder (Part 6).
+function recommended(s){
+  const w=winner(s);
+  const fd=fosData();
+  if(!fd) return w;
+  const order=['CCG2','CC35','CC45','CC70'];
+  const wRow=fd.rows.find(r=>r.id===w);
+  if(wRow&&wRow.fos>=1.0) return w;
+  const better=fd.rows.find(r=>r.fos>=1.0&&order.indexOf(r.id)>order.indexOf(w));
+  return better?better.id:'CC70';
 }
 
 // ── QUIZ ──────────────────────────────────────────────────────────────────────
@@ -490,7 +505,7 @@ function submitForm(){
   const btn=document.getElementById('btn-sub');
   btn.disabled=true;
   btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block"></span>Sending your request...</span>';
-  const s=scores(),w=winner(s),bl=B[w];
+  const s=scores(),w=recommended(s),bl=B[w];
   const isPri=SSA.includes(country);
 
   function doShowResults(){
@@ -548,7 +563,7 @@ const BED_WIDTHS=[1,2,3,4,5,6,7,8,10,12,15,20,25,30,40,50,60,75,100];
 let calc={length:100,bedWidth:6,bankHeight:1.5,slopeZ:3,sides:2};
 
 function renderCalc(){
-  const w=winner(scores()),bl=B[w],ma=bl.ma;
+  const w=recommended(scores()),bl=B[w],ma=bl.ma;
   // Engineering calculation (per binder)
   const L=calc.length, bw=calc.bedWidth, bh=calc.bankHeight, Z=calc.slopeZ, sides=calc.sides;
   const slopeFaceWidth = bh * Math.sqrt(Z*Z + 1);           // true slope face width
@@ -804,16 +819,12 @@ function drawCrossSection(col){
 
 // ── BUILD RESULTS PAGE ────────────────────────────────────────────────────────
 function buildResults(){
-  const s=scores(),w=winner(s),bl=B[w],rk=ranked(s);
+  const s=scores(),w=recommended(s),bl=B[w],rk=ranked(s);
   const fd=fosData();
   const recFos=fd?fd.rows.find(r=>r.id===w):null;
   let fosAdvice='';
-  if(fd&&recFos.fos<1.2){
-    const ord=['CCG2','CC35','CC45','CC70'];
-    const better=fd.rows.find(r=>r.fos>=1.2&&ord.indexOf(r.id)>ord.indexOf(w));
-    fosAdvice=better
-      ? `Step up to <strong>${better.name}</strong> (FoS ${better.fos.toFixed(2)}) for adequate margin, or specify anchoring per Engineering Binder Part 6.`
-      : `No standard block clears a 1.2 factor of safety at this velocity — specify anchoring and an engineered design with IECS Africa (Engineering Binder Part 6).`;
+  if(fd&&recFos&&recFos.fos<1.0){
+    fosAdvice=`This velocity exceeds the permissible limit for any standard unanchored block. Specify anchoring and confirm an engineered design with IECS Africa per Engineering Binder Part 6.`;
   }
   const fosHTML=fd?`
   <div class="card" style="margin-bottom:24px">
@@ -827,7 +838,7 @@ function buildResults(){
         <div style="font-size:11px;font-weight:700;color:${recFos.col};text-transform:uppercase;letter-spacing:.05em">FoS · ${recFos.lab}</div>
       </div>
     </div>
-    ${recFos.fos<1.2?`<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#fcd34d;line-height:1.6">⚠ At the upper end of your velocity range, ${bl.name} is ${recFos.fos<1?'below':'close to'} its permissible velocity. ${fosAdvice}</div>`:''}
+    ${recFos.fos<1.0?`<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#fcd34d;line-height:1.6">⚠ ${fosAdvice}</div>`:''}
     <div style="display:flex;flex-direction:column;gap:9px">
       ${fd.rows.map(r=>`<div>
         <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:3px">
@@ -878,8 +889,9 @@ function buildResults(){
   ${fosHTML}
 
   <div style="margin-bottom:24px">
-    <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:12px">Suitability Analysis — All Blocks</h3>
-    ${rk.map(r=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:${r.id===w?'#fff':'#b9c4d4'};font-weight:${r.id===w?600:400}">${r.name}</span><span style="font-family:monospace;font-size:11px;color:${r.color}">${r.pct}%</span></div><div class="sbar"><div class="sfill" style="width:${r.pct}%;background:${r.color}"></div></div></div>`).join('')}
+    <h3 style="font-size:16px;font-weight:700;color:#fff;margin-bottom:6px">Suitability Analysis — All Blocks</h3>
+    <p style="font-size:11px;color:#9aa9bd;margin:0 0 12px;line-height:1.6">Overall fit across all 5 questions. The highlighted block is the final recommendation, which also satisfies the velocity Factor-of-Safety check above.</p>
+    ${rk.map(r=>`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;margin-bottom:3px"><span style="color:${r.id===w?'#fff':'#b9c4d4'};font-weight:${r.id===w?600:400}">${r.name}${r.id===w?` <span style="display:inline-block;font-size:9px;font-weight:700;color:#0a0e14;background:#4ade80;border-radius:999px;padding:1px 7px;margin-left:6px;vertical-align:1px">✓ RECOMMENDED</span>`:''}</span><span style="font-family:monospace;font-size:11px;color:${r.color}">${r.pct}%</span></div><div class="sbar"><div class="sfill" style="width:${r.pct}%;background:${r.color}"></div></div></div>`).join('')}
   </div>
 
   <!-- MAT CALCULATOR SECTION - ENHANCED -->
