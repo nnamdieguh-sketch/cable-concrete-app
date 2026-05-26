@@ -234,6 +234,9 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 
 <!-- ── CONTACT ── -->
 <div class="page" id="pg-contact" style="padding-top:24px">
+  <div style="margin-bottom:14px">
+    <button class="bs" onclick="show('quiz')" style="font-size:13px;padding:8px 14px">← Back to Questions</button>
+  </div>
   <div style="background:linear-gradient(135deg,#0f1e30,#1a2232);border:1px solid #1e2d42;border-radius:12px;padding:28px 24px;margin-bottom:20px;text-align:center">
     <div style="width:54px;height:54px;background:rgba(74,222,128,.12);border:2px solid rgba(74,222,128,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px">⬡</div>
     <h2 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:8px">Your Recommendation is Ready</h2>
@@ -883,6 +886,12 @@ function buildResults(){
   </div>`:'';
   const isPri=eng&&SSA.includes(eng.country);
   document.getElementById('pg-results').innerHTML=`
+
+  <!-- ── TOP BACK / ADJUST ROW ── -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+    <button class="bs" onclick="show('quiz')" style="font-size:13px;padding:8px 14px">← Adjust Answers</button>
+    <button class="bs" onclick="show('contact')" style="font-size:13px;padding:8px 14px">← Back to Contact</button>
+  </div>
 
   <!-- ── SCROLL GUIDANCE BANNER ── -->
   <div style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(239,68,68,.06));border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px">
