@@ -355,7 +355,7 @@ const ANCHORS=[["Anchor type","Duckbill™ or equivalent — driven to undisturb
 const COMPS=[["vs Angular Rock Rip-Rap","Rip-rap requires large-stone quarries largely unavailable in SSA and shifts unpredictably under high velocity. Cable Concrete® is factory-engineered with defined shear resistance up to 625 N/m² (CC 70). Superior installation rate, no quarry logistics dependency."],["vs Hand-Placed Concrete","Monolithic concrete cracks under differential settlement and thermal cycling — common in Nigerian and East African expansive soils. Cable Concrete® articulates to follow ground movement while maintaining full erosion protection. No formwork or curing time."],["vs Gabion Baskets","Gabion wire corrodes in 5–15 years in tropical and coastal environments. Cable Concrete® uses 302/304 stainless steel cable with breaking strength up to 4,700 lbs (CC 70). No basket distortion under sustained flow."],["vs Stone Pitching","Stone pitching mortar joints erode at velocities above 3 m/s. Cable Concrete® CC 45 handles up to 6.1 m/s with good placement. University-tested by Minnesota SAFL and University of Windsor."]];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let answers=Array(5).fill(null), curQ=0, eng=null;
+let answers=Array(5).fill(null), curQ=0, eng=null, preciseV=null;
 let zones=[{id:1,type:"flat",label:"Zone 1 — Flat / Channel Bed",l:"",w:""}];
 let dtab="selection", mtab="CC35", stab="cc35", openComp=null;
 
@@ -395,7 +395,8 @@ const VBAND=[4.0,6.0,7.0,8.0];
 function fosData(){
   const av=answers[2], asl=answers[1];
   if(av===null||av===undefined) return null;
-  const dv=VBAND[av]||VBAND[VBAND.length-1];
+  const usePrecise=(preciseV!==null&&!isNaN(preciseV)&&preciseV>0);
+  const dv=usePrecise?preciseV:(VBAND[av]||VBAND[VBAND.length-1]);
   const steep=(asl===2||asl===3);
   const tbl=steep?STEEP:MILD, perm={};
   tbl.forEach(r=>perm[r.b]=parseFloat(r.am));
@@ -408,7 +409,7 @@ function fosData(){
     else {col='#f59e0b';lab='Anchoring required';}
     return {id:k,name:B[k].name,c:B[k].c,pv:pv,fos:fos,col:col,lab:lab};
   });
-  return {dv:dv,steep:steep,rows:rows};
+  return {dv:dv,steep:steep,rows:rows,precise:usePrecise};
 }
 
 // The headline recommendation = heavier of {quiz best-fit, lightest block with
@@ -427,7 +428,7 @@ function recommended(s){
 }
 
 // ── QUIZ ──────────────────────────────────────────────────────────────────────
-function startQuiz(){answers=Array(5).fill(null);curQ=0;renderQ();show('quiz');}
+function startQuiz(){answers=Array(5).fill(null);preciseV=null;curQ=0;renderQ();show('quiz');}
 function renderQ(){
   const q=QS[curQ];
   document.getElementById('hdr-sub').textContent="Question "+(curQ+1)+" of 5";
@@ -435,12 +436,42 @@ function renderQ(){
   document.getElementById('qtxt').textContent=q.q;
   document.getElementById('prog').innerHTML=QS.map((_,i)=>`<div class="ps${i<curQ?' done':i===curQ?' cur':''}"></div>`).join('');
   document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<button class="opt${answers[curQ]===i?' sel':''}" onclick="pick(${i})">${o.t}</button>`).join('');
+  if(curQ===2){
+    var pv=(preciseV!==null&&!isNaN(preciseV))?preciseV:'';
+    document.getElementById('qopts').insertAdjacentHTML('beforeend',
+      `<div style="margin-top:14px;padding:12px 14px;background:rgba(15,30,48,.55);border:1px solid #1e2d42;border-radius:10px">
+         <div style="font-size:12px;color:#9aa9bd;text-align:center;line-height:1.5;margin-bottom:9px">Have a computed design velocity? Enter it for a precise Factor of Safety:</div>
+         <div style="display:flex;justify-content:center;align-items:center;gap:8px">
+           <input id="precise-v" type="number" inputmode="decimal" min="0" max="20" step="0.1" placeholder="e.g. 4.8" value="${pv}" oninput="setPreciseVelocity(this.value)" aria-label="Exact design velocity in metres per second" style="width:130px;padding:8px 12px;border-radius:8px;border:1px solid #1e2d42;background:#0f1e30;color:#fff;font-size:14px;text-align:center" />
+           <span style="font-size:13px;color:#cbd5e1">m/s</span>
+         </div>
+       </div>`);
+  }
   const btn=document.getElementById('qnext');
   btn.disabled=answers[curQ]===null;
   btn.textContent=curQ<4?"Next →":"Get My Recommendation →";
   renderScorePills();
 }
-function pick(i){answers[curQ]=i;renderQ();}
+function pick(i){answers[curQ]=i; if(curQ===2)preciseV=null; renderQ();}
+// Precise design velocity (m/s) — optional input on Q3 that calibrates the FoS
+// math against the engineer's actual computed value instead of a band midpoint.
+// Auto-picks the matching band so the quiz answer stays valid; doesn't re-render
+// the input (would steal focus), only updates state, the Next button, the score
+// pills, and the band-button highlight.
+function setPreciseVelocity(v){
+  var x=parseFloat(v);
+  if(isNaN(x)||x<=0){preciseV=null;return;}
+  preciseV=x;
+  var band=x<=4?0:(x<=6?1:(x<=7?2:3));
+  answers[2]=band;
+  var btn=document.getElementById('qnext'); if(btn) btn.disabled=false;
+  var optsEl=document.getElementById('qopts');
+  if(optsEl){
+    var btns=optsEl.querySelectorAll('button.opt');
+    btns.forEach(function(b,i){ b.classList.toggle('sel', i===band); });
+  }
+  renderScorePills();
+}
 function renderScorePills(){
   const s=scores(),r=ranked(s);
   document.getElementById('qscores').innerHTML=answers.some(a=>a!==null)?r.map(b=>`<div class="pill" style="background:${b.color}18;border-color:${b.color}44;color:${b.color};gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:${b.color};display:inline-block"></span>${b.name} <span style="font-family:monospace">${s[b.id]}pts</span></div>`).join(''):'';
@@ -831,7 +862,7 @@ function buildResults(){
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
       <div style="max-width:62%">
         <div style="font-size:10px;color:#9aa9bd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Design Check — Velocity Factor of Safety</div>
-        <div style="font-size:13px;color:#cbd5e1;line-height:1.6">Recommended <strong style="color:${bl.c}">${bl.name}</strong> at a design velocity of <strong style="color:#fff">${fd.dv.toFixed(1)} m/s</strong> (${fd.steep?'steep':'mild'} bed slope).</div>
+        <div style="font-size:13px;color:#cbd5e1;line-height:1.6">Recommended <strong style="color:${bl.c}">${bl.name}</strong> at a design velocity of <strong style="color:#fff">${fd.dv.toFixed(2)} m/s</strong> <span style="color:#9aa9bd">(${fd.precise?'your input':'upper bound of band'}, ${fd.steep?'steep':'mild'} bed slope)</span>.</div>
       </div>
       <div style="text-align:right">
         <div style="font-size:36px;font-weight:900;line-height:1;color:${recFos.col}">${recFos.fos.toFixed(2)}</div>
@@ -848,7 +879,7 @@ function buildResults(){
         <div class="sbar"><div class="sfill" style="width:${Math.max(4,Math.min(100,Math.round(r.fos/2*100)))}%;background:${r.col}"></div></div>
       </div>`).join('')}
     </div>
-    <p style="font-size:11px;color:#9aa9bd;margin-top:12px;line-height:1.6">FoS = permissible velocity ÷ design velocity. Permissible velocities are good-placement, unanchored values from the Cable Concrete® Engineering Binder; design velocity is the upper bound of your selected range. Preliminary screening — confirm final design with IECS Africa.</p>
+    <p style="font-size:11px;color:#9aa9bd;margin-top:12px;line-height:1.6">FoS = permissible velocity ÷ design velocity. Permissible velocities are good-placement, unanchored values from the Cable Concrete® Engineering Binder. Design velocity uses your typed value when entered on Q3, otherwise the conservative upper bound of the selected band. The recommendation already accounts for this check. Preliminary screening — confirm final design with IECS Africa.</p>
   </div>`:'';
   const isPri=eng&&SSA.includes(eng.country);
   document.getElementById('pg-results').innerHTML=`
