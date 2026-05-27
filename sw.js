@@ -1,8 +1,17 @@
 // Cable Concrete® Block Selection Tool — service worker
-// Network-first so engineers always get the latest data when online;
-// cached copy is only used as an offline fallback.
-const CACHE = 'cc-tool-v2';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './og-image.jpg'];
+// Stale-while-revalidate: serve from cache instantly so the PWA opens fast,
+// then refresh in the background so the next launch has the latest.
+const CACHE = 'cc-tool-v3';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './og-image.png',
+  './icon-180.png',
+  './icon-192.png',
+  './icon-512.png',
+  './logo-mark.png'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -27,14 +36,17 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
 
   e.respondWith(
-    fetch(req)
-      .then(res => {
-        if (res && res.status === 200 && res.type === 'basic') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(req, clone)).catch(() => {});
-        }
-        return res;
-      })
-      .catch(() => caches.match(req).then(cached => cached || caches.match('./index.html')))
+    caches.match(req).then(cached => {
+      const networkUpdate = fetch(req)
+        .then(res => {
+          if (res && res.status === 200 && res.type === 'basic') {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(req, clone)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() => cached || caches.match('./index.html'));
+      return cached || networkUpdate;
+    })
   );
 });
