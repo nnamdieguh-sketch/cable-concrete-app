@@ -1475,9 +1475,11 @@ function handleInstall(){
   }
   const hint=document.getElementById('install-hint');
   if(hint){
-    hint.textContent=isIOS()
-      ? 'On iPhone: tap the Share button, then “Add to Home Screen”.'
-      : 'Open your browser menu (⋮) and tap “Install app” / “Add to Home screen”.';
+    if(isIOS()){
+      hint.innerHTML='On iPhone: tap <svg width="13" height="16" viewBox="0 0 16 20" style="vertical-align:-3px;display:inline-block" aria-hidden="true"><path d="M8 1L4 5M8 1L12 5M8 1V13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3 9H1V19H15V9H13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> in Safari\'s toolbar, then &ldquo;Add to Home Screen&rdquo;.';
+    } else {
+      hint.textContent='Open your browser menu (⋮) and tap “Install app” / “Add to Home screen”.';
+    }
     hint.style.display='block';
   }
 }
@@ -1505,7 +1507,43 @@ if(isStandalone()){
   const w=document.getElementById('install-wrap');if(w)w.style.display='none';
   logInstall('standalone_open');
 }
+
+// iOS doesn't expose a programmatic install — and won't even show its own
+// prompt. Without a visible nudge most iPhone users never realise they can
+// add the app to their home screen. The banner below points at Safari's
+// share icon so installing takes one tap-once-you-see-it instead of
+// "guess where the menu is". Hidden on iOS Chrome/Firefox/Edge (their
+// share menu doesn't reliably surface Add to Home Screen), inside the
+// already-installed app, and after the user dismisses it.
+function showIosBannerIfNeeded(){
+  if(!isIOS()||isStandalone()) return;
+  if(/CriOS|FxiOS|EdgiOS/i.test(navigator.userAgent)) return;
+  try{ if(localStorage.getItem('cc_ios_banner_dismissed')) return; }catch(e){}
+  const b=document.getElementById('ios-install-banner');
+  if(b) b.style.display='block';
+}
+function dismissIosBanner(){
+  try{ localStorage.setItem('cc_ios_banner_dismissed','1'); }catch(e){}
+  const b=document.getElementById('ios-install-banner');
+  if(b) b.style.display='none';
+}
+showIosBannerIfNeeded();
 </script>
+
+<!-- iOS Add-to-Home-Screen banner — shown on iOS Safari only, until dismissed -->
+<div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#0f1e30;border-top:1px solid rgba(74,222,128,.35);padding:10px 14px;z-index:60;box-shadow:0 -4px 18px rgba(0,0,0,.45)">
+  <div style="display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto">
+    <div style="font-size:13px;color:#e2e8f0;line-height:1.45;flex:1">
+      Install: tap
+      <svg width="14" height="18" viewBox="0 0 16 20" style="vertical-align:-4px;display:inline-block" aria-hidden="true">
+        <path d="M8 1L4 5M8 1L12 5M8 1V13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M3 9H1V19H15V9H13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      in Safari's toolbar, then <strong style="color:#fff">&ldquo;Add to Home Screen&rdquo;</strong>
+    </div>
+    <button onclick="dismissIosBanner()" aria-label="Dismiss install hint" style="background:none;border:none;color:#9aa9bd;font-size:22px;cursor:pointer;padding:2px 8px;line-height:1;flex-shrink:0">×</button>
+  </div>
+</div>
 </body>
 <!-- RESOURCE MODAL -->
 <div id="res-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column" onclick="if(event.target===this)closeModal()">
