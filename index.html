@@ -205,7 +205,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 
   <!-- Compliance check for a non-Cable Concrete® ACB product — direct from landing -->
   <div style="margin-top:20px;max-width:480px;margin-left:auto;margin-right:auto;text-align:center">
-    <div style="font-size:11px;color:#9aa9bd;margin-bottom:8px;letter-spacing:.03em">Evaluating a non-Cable Concrete® ACB product on your project?</div>
+    <div style="font-size:11px;color:#9aa9bd;margin-bottom:8px;letter-spacing:.03em">Evaluating an ACB product from another supplier on your project?</div>
     <button class="bp" onclick="show('evidence')" style="background:#dc2626;box-shadow:0 6px 18px rgba(220,38,38,.4)" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">📨 Upload ACBS Compliance Check &rarr;</button>
     <div style="font-size:11px;color:#9aa9bd;margin-top:8px;line-height:1.5">Opens the §1–§4 evidence schedule, ready to email — 14-day supplier response required.</div>
   </div>
@@ -485,7 +485,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <div style="display:flex;gap:11px;align-items:flex-start">
       <span style="font-size:16px;color:#ef4444;line-height:1.3;flex-shrink:0" aria-hidden="true">!</span>
       <div style="font-size:12px;color:#e2e8f0;line-height:1.7">
-        Where any articulated concrete block (ACB) product other than Cable Concrete® is proposed for this project, the supplier shall return signed documentary evidence against the four clauses below within <strong style="color:#fff">14 days</strong>. Tap the email button at the foot of this page to issue the schedule.
+        Articulated concrete block revetment is a regulated engineering product. For any ACB system proposed on this project, the supplier shall return signed documentary evidence against the four clauses below within <strong style="color:#fff">14 days</strong> of receipt of this schedule. The standard is peer-reviewed and applied across the international hydraulic engineering community. Tap the email button at the foot of this page to issue the schedule.
       </div>
     </div>
   </div>
@@ -1584,24 +1584,22 @@ function _acbsBlockName(){
   try{ var w=recommended(scores()); return (B&&B[w])?B[w].name:''; }catch(e){ return ''; }
 }
 function challengeCompetitor(){
-  var blockName=_acbsBlockName();
   var ctxLines=eng?[
     eng.scope?('Project: '+eng.scope):null,
-    eng.country?('Country: '+eng.country):null,
-    blockName?('Reference block on project: '+blockName):null
+    eng.country?('Country: '+eng.country):null
   ].filter(Boolean).join('\n')+'\n\n':'';
   var rfq='ACB Hydraulic Stability — Evidence Request\n\n'+ctxLines+
     'To the supplier proposing an articulated concrete block (ACB) revetment system for the above project:\n\n'+
-    'This project requires the supplier to provide documentary evidence against the four clauses of the ACB Hydraulic Stability Standard (FHWA-RD-89-199 · FHWA-RD-88-181 · USACE EM 1110-1100 · Delft Hydraulics ACB Revetment Program) before the product can be approved. Submissions shall be in writing and signed by an officer of the supplier company.\n\n'+
+    'Articulated concrete block revetment is a regulated engineering product. Acceptance for use on this project requires documentary evidence against the four clauses of the ACB Hydraulic Stability Standard set out below — the peer-reviewed, internationally recognised body of evidence comprising FHWA-RD-89-199 (1989), FHWA-RD-88-181 (1988), USACE Coastal Engineering Manual EM 1110-1100 (Aug 2008), and the Delft Hydraulics ACB Revetment Program — applied as standard engineering practice across the international hydraulic engineering community. Submissions shall be in writing and signed by an officer of the supplier company.\n\n'+
     '§1  Overtopping hydraulic stability test.\n'+
     '    Provide the full test report demonstrating compliance with FHWA-RD-89-199 (1989). Full-scale or accredited-scale flume, continuous overtopping flow at the maximum design discharge. State bed slope, peak shear stress (lb/ft² and N/m²), peak velocity (ft/s and m/s), and overtopping duration.\n\n'+
     '§2  Independent third-party flume testing.\n'+
     '    Provide test reports from no fewer than three independent accredited university hydraulics laboratories.\n\n'+
     '§3  Four-hour continuous overtopping survival.\n'+
-    '    Documented survival of a continuous four-hour overtopping test at the design discharge without geotextile failure, block displacement or subgrade deformation. Reference performance to be matched or exceeded: 38.5 lb/ft² peak shear and 19.0 ft/s peak velocity.\n\n'+
+    '    Documented survival of a continuous four-hour overtopping test at the design discharge without geotextile failure, block displacement or subgrade deformation. Reference performance per published peer-reviewed industry test reports: 38.5 lb/ft² peak shear and 19.0 ft/s peak velocity.\n\n'+
     '§4  Documented field performance record.\n'+
     '    Year supply of ACB revetment commenced; cumulative installed area in square metres; and three reference projects in Sub-Saharan Africa or comparable tropical/coastal environments, each with engineer of record, completion year, and current installation status.\n\n'+
-    'Until all four clauses are documented in writing and signed by an officer of your company, the product will not be approved for use on this project. Any subsequent hydraulic failure of a substituted system will be the supplier\'s professional and financial responsibility.\n\n'+
+    'Until all four clauses are documented in writing and signed by an officer of your company, the product will not be approved for use on this project. Any subsequent hydraulic failure of an inadequately documented system will be the supplier\'s professional and financial responsibility.\n\n'+
     'Please respond within 14 days.\n\n'+
     'Regards,\n'+
     (eng?(eng.name+(eng.firm?' — '+eng.firm:'')+'\n'+eng.email+(eng.phone?' · '+eng.phone:'')):'[Engineer of record]');
