@@ -1,7 +1,7 @@
 // Cable Concrete® Block Selection Tool — service worker
 // Stale-while-revalidate: serve from cache instantly so the PWA opens fast,
 // then refresh in the background so the next launch has the latest.
-const CACHE = 'cc-tool-v3';
+const CACHE = 'cc-tool-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -34,6 +34,9 @@ self.addEventListener('fetch', e => {
   // Only handle same-origin GET requests. Let everything else
   // (Google Sheets, OneSignal, Drive embeds, POSTs) pass straight through.
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  // Never cache API responses — the version probe in particular has to read
+  // the live deployment SHA each time, not a stale copy.
+  if (new URL(req.url).pathname.startsWith('/api/')) return;
 
   e.respondWith(
     caches.match(req).then(cached => {

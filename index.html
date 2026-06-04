@@ -1886,6 +1886,45 @@ function dismissAcbsBanner(){
   if(b) b.style.display='none';
 }
 showAcbsBannerIfNeeded();
+
+// Silent PWA auto-update.
+// Reads the live deployment SHA from /api/version on every load. If it
+// differs from the one we last stored on this device, we clear the
+// service-worker caches and reload — installed users land on the new
+// build without ever tapping anything. First load on each device just
+// records the version (no reload). Offline or API failure is silent.
+function _showUpdateToast(){
+  var t=document.createElement('div');
+  t.textContent='Updating to latest version…';
+  t.style.cssText='position:absolute;left:50%;top:'+(window.scrollY+12)+'px;transform:translateX(-50%);background:#0f1e30;border:1px solid rgba(74,222,128,.4);color:#86efac;padding:10px 18px;border-radius:8px;font-size:13px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.5);font-weight:600;max-width:88%;text-align:center';
+  document.body.appendChild(t);
+}
+function checkForUpdate(){
+  fetch('/api/version',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){
+      if(!d||!d.v) return;
+      var live=d.v;
+      var stored=null;
+      try{ stored=localStorage.getItem('cc_app_version'); }catch(e){}
+      if(!stored){
+        try{ localStorage.setItem('cc_app_version',live); }catch(e){}
+        return;
+      }
+      if(stored===live) return;
+      // New deploy detected — silent refresh.
+      _showUpdateToast();
+      try{ localStorage.setItem('cc_app_version',live); }catch(e){}
+      var done=function(){ setTimeout(function(){ location.reload(); },1200); };
+      if(window.caches&&caches.keys){
+        caches.keys().then(function(keys){
+          return Promise.all(keys.map(function(k){ return caches.delete(k); }));
+        }).then(done,done);
+      } else { done(); }
+    })
+    .catch(function(){}); // offline → silent
+}
+checkForUpdate();
 </script>
 
 <!-- iOS Add-to-Home-Screen banner — shown on iOS Safari only, until dismissed -->
