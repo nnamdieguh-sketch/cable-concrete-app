@@ -203,6 +203,13 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <div id="mkt" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px"></div>
   <button class="bp" onclick="startQuiz()">Begin Engineering Assessment &rarr;</button>
 
+  <!-- Compliance check for a non-Cable Concrete® ACB product — direct from landing -->
+  <div style="margin-top:20px;max-width:480px;margin-left:auto;margin-right:auto;text-align:center">
+    <div style="font-size:11px;color:#9aa9bd;margin-bottom:8px;letter-spacing:.03em">Evaluating a non-Cable Concrete® ACB product on your project?</div>
+    <button class="bp" onclick="show('evidence')" style="background:#dc2626;box-shadow:0 6px 18px rgba(220,38,38,.4)" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">📨 Upload ACBS Compliance Check &rarr;</button>
+    <div style="font-size:11px;color:#9aa9bd;margin-top:8px;line-height:1.5">Opens the §1–§4 evidence schedule, ready to email — 14-day supplier response required.</div>
+  </div>
+
   <!-- Install button (always visible) -->
   <div id="install-wrap" style="margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:9px">
     <button id="install-cta" onclick="handleInstall()" aria-label="Install the Cable Concrete app on your device" style="display:inline-flex;align-items:center;gap:16px;background:#0f1e30;border:1px solid rgba(74,222,128,.35);border-radius:18px;padding:14px 26px 14px 14px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);transition:border-color .15s,transform .15s" onmouseover="this.style.borderColor='#22c55e';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(74,222,128,.35)';this.style.transform='none'">
@@ -458,6 +465,74 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <button class="bs" onclick="show('intro')" style="margin-bottom:32px">← Back to Home</button>
 </div>
 
+<!-- ── EVIDENCE SCHEDULE (for issuing to a competing ACB supplier) ── -->
+<div class="page" id="pg-evidence" style="padding-top:24px">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+    <button class="bs" onclick="show('intro')" style="font-size:13px;padding:8px 14px">← Back to Home</button>
+  </div>
+
+  <div class="sechdr" style="border-bottom-color:rgba(220,38,38,.4)">
+    <div class="sn" style="background:#dc2626;color:#fff">!</div>
+    <h2 style="font-size:18px;font-weight:700;color:#fff">ACBS Compliance Check — Evidence Schedule</h2>
+  </div>
+
+  <div style="background:#0a0e14;border:1px solid #1e3a5f;border-radius:6px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#9aa9bd;line-height:1.65">
+    <strong style="color:#cbd5e1;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;font-size:11px">ACB Hydraulic Stability Standard — Adopted References</strong>
+    FHWA-RD-89-199 (Nov 1989) · FHWA-RD-88-181 (1988) · USACE Coastal Engineering Manual EM 1110-1100 (Aug 2008) · Delft Hydraulics ACB Revetment Program
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(220,38,38,.08),rgba(220,38,38,.03));border:1px solid rgba(220,38,38,.4);border-radius:10px;padding:14px 16px;margin-bottom:18px">
+    <div style="display:flex;gap:11px;align-items:flex-start">
+      <span style="font-size:16px;color:#ef4444;line-height:1.3;flex-shrink:0" aria-hidden="true">!</span>
+      <div style="font-size:12px;color:#e2e8f0;line-height:1.7">
+        Where any articulated concrete block (ACB) product other than Cable Concrete® is proposed for this project, the supplier shall return signed documentary evidence against the four clauses below within <strong style="color:#fff">14 days</strong>. Tap the email button at the foot of this page to issue the schedule.
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:18px">
+    <div class="card" style="border-color:rgba(220,38,38,.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="background:#0a0e14;color:#ef4444;font-weight:800;border:1px solid rgba(220,38,38,.5);border-radius:6px;padding:4px 10px;font-size:12px">§1</span>
+        <h3 style="font-size:14px;font-weight:700;color:#fff;margin:0">Overtopping hydraulic stability test</h3>
+      </div>
+      <p style="font-size:12px;color:#cbd5e1;line-height:1.7;margin:0">Test report demonstrating compliance with FHWA-RD-89-199 (1989). Full-scale or accredited-scale flume, continuous overtopping flow at the maximum design discharge. State bed slope, peak shear stress (lb/ft² and N/m²), peak velocity (ft/s and m/s), and overtopping duration.</p>
+    </div>
+    <div class="card" style="border-color:rgba(220,38,38,.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="background:#0a0e14;color:#ef4444;font-weight:800;border:1px solid rgba(220,38,38,.5);border-radius:6px;padding:4px 10px;font-size:12px">§2</span>
+        <h3 style="font-size:14px;font-weight:700;color:#fff;margin:0">Independent third-party flume testing</h3>
+      </div>
+      <p style="font-size:12px;color:#cbd5e1;line-height:1.7;margin:0">Test reports from no fewer than three independent accredited university hydraulics laboratories. Acceptable laboratories include Colorado State University ERC, University of Minnesota St Anthony Falls Laboratory, University of Windsor Hydraulics Laboratory, and Delft Hydraulics (NL).</p>
+    </div>
+    <div class="card" style="border-color:rgba(220,38,38,.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="background:#0a0e14;color:#ef4444;font-weight:800;border:1px solid rgba(220,38,38,.5);border-radius:6px;padding:4px 10px;font-size:12px">§3</span>
+        <h3 style="font-size:14px;font-weight:700;color:#fff;margin:0">Four-hour continuous overtopping survival</h3>
+      </div>
+      <p style="font-size:12px;color:#cbd5e1;line-height:1.7;margin:0">Documented survival of a continuous four-hour overtopping test at the design discharge without geotextile failure, block displacement or subgrade deformation. Reference performance to be matched or exceeded: 38.5 lb/ft² peak shear and 19.0 ft/s peak velocity.</p>
+    </div>
+    <div class="card" style="border-color:rgba(220,38,38,.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="background:#0a0e14;color:#ef4444;font-weight:800;border:1px solid rgba(220,38,38,.5);border-radius:6px;padding:4px 10px;font-size:12px">§4</span>
+        <h3 style="font-size:14px;font-weight:700;color:#fff;margin:0">Documented field performance record</h3>
+      </div>
+      <p style="font-size:12px;color:#cbd5e1;line-height:1.7;margin:0">Year supply of ACB revetment commenced; cumulative installed area in square metres; and three reference projects in Sub-Saharan Africa or comparable tropical / coastal environments, each with engineer of record, completion year, and current installation status.</p>
+    </div>
+  </div>
+
+  <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.4);border-radius:10px;padding:14px 16px;margin-bottom:18px">
+    <div style="font-size:12px;color:#e2e8f0;line-height:1.7">
+      <strong style="color:#ef4444">Engineer's duty of care:</strong> Approval of any ACB product without documented evidence against all four clauses above transfers full responsibility for the hydraulic stability of the installed system to the engineer of record. Manufacturer marketing claims and uncertified test summaries do not satisfy this duty.
+    </div>
+  </div>
+
+  <button class="bp" onclick="challengeCompetitor()" style="background:#dc2626;width:100%;margin-bottom:14px;box-shadow:0 6px 18px rgba(220,38,38,.35)" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">📨 Email This Schedule to Supplier</button>
+  <p style="font-size:11px;color:#9aa9bd;text-align:center;margin-bottom:24px;line-height:1.6">Opens your email app with the §1–§4 evidence schedule and 14-day response request pre-loaded. Recipient field left blank — select the supplier from your contacts.</p>
+
+  <button class="bs" onclick="show('intro')" style="margin-bottom:32px">← Back to Home</button>
+</div>
+
 </div><!-- end wrap -->
 
 <script>
@@ -542,7 +617,7 @@ OTHERS.forEach(c=>{document.getElementById('other-opts').appendChild(new Option(
 function show(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.getElementById('pg-'+page).classList.add('on');
-  document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report",compliance:"Cable Concrete® Compliance Pack"}[page]||"";
+  document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report",compliance:"Cable Concrete® Compliance Pack",evidence:"ACBS Compliance Check — Evidence Schedule"}[page]||"";
   // Stop the auto-cycling cross-section animation whenever we leave the results
   // page so it isn't redrawing a hidden SVG forever (battery/CPU on mobile).
   if(page!=='results'&&simTimer){clearInterval(simTimer);simTimer=null;}
