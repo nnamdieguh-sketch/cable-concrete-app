@@ -182,6 +182,17 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
 
 <!-- ── INTRO ── -->
 <div class="page on" id="pg-intro" style="padding:44px 0 32px;text-align:center">
+  <!-- One-time ACBS launch notice — only shown to returning users until dismissed -->
+  <div id="acbs-alert-banner" style="display:none;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.04));border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:14px 16px;margin-bottom:22px;text-align:left">
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <div style="background:#f59e0b;color:#0a0e14;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:800;letter-spacing:.06em;flex-shrink:0">NEW</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">ACBS Hydraulic Validation Protocol added</div>
+        <div style="font-size:12px;color:#cbd5e1;line-height:1.55">Every recommendation now includes a four-point compliance check (FHWA-RD-89-199, independent university testing, full-scale shear &amp; velocity, field record) plus a one-tap &ldquo;Challenge Competitor&rdquo; RFQ to demand the same evidence from any proposed substitute.</div>
+      </div>
+      <button onclick="dismissAcbsBanner()" aria-label="Dismiss this notice" style="background:none;border:none;color:#9aa9bd;font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0">×</button>
+    </div>
+  </div>
   <div class="pill" style="margin-bottom:16px;font-size:14px;padding:6px 18px;font-weight:700;letter-spacing:.06em">Block Selection &amp; Quote Tool</div>
   <h1 style="font-size:clamp(26px,5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px">
     Find the Right <span style="color:#4ade80">Cable Concrete®</span> Block
@@ -1232,6 +1243,44 @@ function buildResults(){
     <p style="margin-bottom:0"><strong style="color:#e2e8f0">5. Accuracy of Assessment.</strong> This tool provides a preliminary block selection based on user-supplied inputs. IECS Africa makes no representations as to the accuracy or completeness of the recommendation where inputs are estimated or where site conditions differ materially from those described. A full site investigation, hydraulic study, and certified design are required before construction.</p>
   </div>
 
+  <!-- ── SECTION 09: ACBS HYDRAULIC VALIDATION PROTOCOL ── -->
+  <div class="sechdr" style="border-bottom-color:rgba(245,158,11,.3)">
+    <div class="sn" style="background:#f59e0b;color:#0a0e14">09</div>
+    <h2 style="font-size:18px;font-weight:700;color:#fff">ACBS Hydraulic Validation Protocol</h2>
+  </div>
+  <div style="background:#111827;border:1px solid rgba(245,158,11,.35);border-radius:14px;padding:20px;margin-bottom:18px">
+    <p style="font-size:13px;color:#cbd5e1;line-height:1.65;margin-bottom:14px">
+      Use these four criteria as the minimum acceptance bar for any articulated concrete block (ACB) system proposed as equivalent to Cable Concrete®. Each Cable Concrete® mat ships compliant with all four. Competing products that cannot demonstrate compliance carry undocumented hydraulic risk.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      ${[
+        ["FHWA-RD-89-199 compliance","Federal Highway Administration overtopping hydraulic stability standard (Nov 1989). Companion standards: FHWA-RD-88-181 (1988), USACE Coastal Engineering Manual EM 1110-1100 (Aug 2008), Delft Hydraulics Block Revetment Program."],
+        ["Independent flume testing — 3+ universities","Colorado State University Engineering Research Center (Jan 2005, 4 ft × 100 ft steep-gradient overtopping flume at 2H:1V). University of Minnesota St. Anthony Falls Laboratory Report No. 434 (1999). University of Windsor (1988 channel-flow and 2004 wave-flume series)."],
+        ["Full-scale shear & velocity validation","SAFL 1999, full-size CC 35 / CC 45 OS: peak shear 38.5 lb/sq.ft, peak velocity 19.0 ft/sec, bed slopes 1.5H:1V to 3.0H:1V — no geotextile failure, no block displacement. Four-hour continuous overtopping procedure per FHWA-RD-89-199."],
+        ["40+ years documented field performance","International Erosion Control Systems Inc. in continuous business since 1984. Over 16 million sq ft (1.48 million sq m) of revetment installed worldwide. Engineering Binder traceable to the original 1988 University of Windsor tests."]
+      ].map(([title,detail])=>`
+        <div style="display:flex;gap:11px;background:#0a0e14;border:1px solid #1e3a5f;border-radius:8px;padding:11px 13px">
+          <span style="color:#4ade80;font-weight:700;font-size:16px;line-height:1.4;flex-shrink:0" aria-hidden="true">✓</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px">${title}</div>
+            <div style="font-size:12px;color:#9aa9bd;line-height:1.55">${detail}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.35);border-radius:8px;padding:11px 13px;margin-bottom:14px">
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <span style="font-size:14px;line-height:1.4;flex-shrink:0" aria-hidden="true">⚠</span>
+        <div style="font-size:12px;color:#e2e8f0;line-height:1.65">
+          <strong style="color:#f59e0b">Liability transfer:</strong> Substituting an untested or partially tested ACB product for Cable Concrete® without documented compliance against all four criteria above voids the hydraulic performance guarantees referenced in this report and transfers full hydraulic-failure liability to the specifying engineer of record.
+        </div>
+      </div>
+    </div>
+    <div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="bs" onclick="viewTestReports()" style="flex:1;min-width:170px">📄 View Full Test Reports</button>
+      <button class="bs" onclick="challengeCompetitor()" style="flex:1;min-width:170px;border-color:rgba(245,158,11,.5);color:#f59e0b">⚠ Challenge Competitor</button>
+    </div>
+  </div>
+
   <!-- ── TERMS OF AGREEMENT CHECKBOX ── -->
   <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <div style="font-size:13px;color:#e2e8f0;font-weight:600">⬇ Almost there — tick all 5 boxes below to unlock your report</div>
@@ -1304,6 +1353,73 @@ function checkTerms(){
     st.style.background=all?'rgba(34,197,94,.08)':'rgba(0,0,0,.2)';
   }
   if(box) box.style.borderColor=all?'rgba(34,197,94,.4)':'rgba(74,222,128,.3)';
+}
+
+// ── ACBS VALIDATION PROTOCOL BUTTONS ──────────────────────────────────────────
+// Build the RFQ body using whatever lead context we already captured, so the
+// engineer doesn't have to re-state the project to the competing supplier.
+function _acbsBlockName(){
+  try{ var w=recommended(scores()); return (B&&B[w])?B[w].name:''; }catch(e){ return ''; }
+}
+function challengeCompetitor(){
+  var blockName=_acbsBlockName();
+  var ctxLines=eng?[
+    eng.scope?('Project: '+eng.scope):null,
+    eng.country?('Country: '+eng.country):null,
+    blockName?('Cable Concrete® block specified: '+blockName):null
+  ].filter(Boolean).join('\n')+'\n\n':'';
+  var rfq='ACBS Hydraulic Validation RFQ\n\n'+ctxLines+
+    'To the supplier proposing an articulated concrete block (ACB) system as equivalent to Cable Concrete®:\n\n'+
+    'We require documented evidence that your product meets the four-point ACBS Hydraulic Validation Protocol below. Please attach test reports, certification letters and project references as PDFs or signed scans.\n\n'+
+    '1. FHWA-RD-89-199 compliance.\n'+
+    '   Provide the full report or third-party certificate confirming your product was tested in accordance with FHWA-RD-89-199 (Nov 1989) "Hydraulic Stability of Articulated Concrete Block Revetment Systems During Overtopping Flow." Companion standards (FHWA-RD-88-181, USACE EM 1110-1100, Delft Hydraulics) accepted as supporting evidence only.\n\n'+
+    '2. Independent flume testing — three or more universities.\n'+
+    '   Provide the names, dates and full reports for at least three independent university hydraulics-lab flume tests of your specific block type.\n\n'+
+    '3. Full-scale shear and velocity validation.\n'+
+    '   State the maximum measured shear stress (lb/sq.ft and N/m²) and velocity (ft/sec and m/s) at which your product survived a four-hour continuous overtopping test without geotextile failure or block displacement. Cite the bed slope tested.\n\n'+
+    '4. Documented field performance.\n'+
+    '   Provide the year your company started supplying ACB revetment, total square metres installed to date, and three project references in Sub-Saharan Africa or comparable tropical/coastal environments — including engineer of record, completion year, and current installation status.\n\n'+
+    'Until all four points are documented in writing and signed by an officer of your company, your product cannot be accepted as equivalent to Cable Concrete® on this project. Any subsequent hydraulic failure of the substituted system will be the supplier\'s professional and financial responsibility.\n\n'+
+    'Please respond within 14 days.\n\n'+
+    'Regards,\n'+
+    (eng?(eng.name+(eng.firm?' — '+eng.firm:'')+'\n'+eng.email+(eng.phone?' · '+eng.phone:'')):'[Engineer of record]')+'\n\n'+
+    'Generated by Cable Concrete® Block Selection Tool · www.cableconcrete.app';
+  var copied=false;
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(rfq); copied=true;
+    } else {
+      var ta=document.createElement('textarea');
+      ta.value=rfq; ta.style.position='absolute'; ta.style.left='-9999px';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta); copied=true;
+    }
+  }catch(e){}
+  var subject=encodeURIComponent('ACBS Hydraulic Validation RFQ — Cable Concrete® equivalence demonstration');
+  // mailto with no recipient — user picks the competing supplier from their contacts
+  window.location.href='mailto:?subject='+subject+'&body='+encodeURIComponent(rfq);
+  if(copied) _acbsToast('✓ RFQ copied to clipboard — your email app is opening');
+}
+function viewTestReports(){
+  var blockName=_acbsBlockName();
+  var body='Hello IECS Africa,\n\n'+
+    'Please send me the full PDF test reports referenced in the ACBS Hydraulic Validation Protocol on cableconcrete.app'+(blockName?(' for '+blockName):'')+':\n\n'+
+    '  1. Colorado State University — Articulated Concrete Block Data Report (Jan 2005)\n'+
+    '  2. University of Minnesota St. Anthony Falls Laboratory Report No. 434 (1999)\n'+
+    '  3. University of Windsor — Hydraulic and Wave Testing (1988, 2004)\n'+
+    '  4. FHWA-RD-89-199 — Hydraulic Stability of ACB Revetment Systems (Nov 1989)\n\n'+
+    (eng?(eng.name+(eng.firm?' — '+eng.firm:'')+(eng.country?' · '+eng.country:'')+'\n'+eng.email+(eng.phone?' · '+eng.phone:'')+'\n\n'):'')+
+    'Sent from www.cableconcrete.app';
+  window.location.href='mailto:contact@iecsafrica.com?subject='+encodeURIComponent('Request: Full ACBS Hydraulic Test Reports')+'&body='+encodeURIComponent(body);
+}
+// Lightweight non-blocking notification — positioned absolutely (not fixed) so
+// it scrolls with the page; auto-removed after 3 s.
+function _acbsToast(msg){
+  var t=document.createElement('div');
+  t.textContent=msg;
+  t.style.cssText='position:absolute;left:50%;top:'+(window.scrollY+window.innerHeight-110)+'px;transform:translateX(-50%);background:#0f1e30;border:1px solid rgba(74,222,128,.4);color:#86efac;padding:10px 16px;border-radius:8px;font-size:13px;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.5);max-width:88%;text-align:center';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(function(){t.remove();},500); },3000);
 }
 
 function setSimTab(t,btn){
@@ -1528,6 +1644,30 @@ function dismissIosBanner(){
   if(b) b.style.display='none';
 }
 showIosBannerIfNeeded();
+
+// One-time ACBS Hydraulic Validation Protocol launch banner.
+// Shown only to returning users (any prior cc_* localStorage flag) and only
+// once — dismissing sets cc_acbs_banner_seen. Brand-new users don't see it on
+// their first load; they get cc_visited set so they qualify next time.
+function showAcbsBannerIfNeeded(){
+  try{
+    var hasPrior=!!(localStorage.getItem('cc_install_logged')
+      || localStorage.getItem('cc_ios_banner_dismissed')
+      || localStorage.getItem('cc_visited'));
+    var seen=localStorage.getItem('cc_acbs_banner_seen');
+    if(hasPrior&&!seen){
+      var b=document.getElementById('acbs-alert-banner');
+      if(b) b.style.display='block';
+    }
+    localStorage.setItem('cc_visited','1');
+  }catch(e){}
+}
+function dismissAcbsBanner(){
+  try{ localStorage.setItem('cc_acbs_banner_seen','1'); }catch(e){}
+  var b=document.getElementById('acbs-alert-banner');
+  if(b) b.style.display='none';
+}
+showAcbsBannerIfNeeded();
 </script>
 
 <!-- iOS Add-to-Home-Screen banner — shown on iOS Safari only, until dismissed -->
