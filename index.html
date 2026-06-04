@@ -533,6 +533,53 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   <button class="bs" onclick="show('intro')" style="margin-bottom:32px">← Back to Home</button>
 </div>
 
+<!-- ── EVIDENCE REQUEST SENT — keep the engineer engaged after the mailto handoff ── -->
+<div class="page" id="pg-evidence-sent" style="padding-top:24px">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+    <button class="bs" onclick="show('intro')" style="font-size:13px;padding:8px 14px">← Back to Home</button>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(74,222,128,.08),rgba(74,222,128,.02));border:1px solid rgba(74,222,128,.4);border-radius:14px;padding:24px;margin-bottom:20px;text-align:center">
+    <div style="font-size:36px;line-height:1;color:#4ade80;margin-bottom:8px">✓</div>
+    <h2 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 6px">Evidence Request Issued</h2>
+    <p style="font-size:13px;color:#cbd5e1;line-height:1.65;margin:0">The §1–§4 evidence schedule has opened in your email app. Once you send it, the supplier has <strong style="color:#fff">14 days</strong> to return signed documentation against each clause.</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 12px">While you wait for the supplier's response</h3>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+    <button onclick="startQuiz();window.scrollTo(0,0)" style="background:#111827;border:1px solid rgba(74,222,128,.3);border-radius:14px;padding:16px;text-align:left;cursor:pointer;width:100%;font-family:inherit;color:inherit">
+      <div style="display:flex;gap:12px;align-items:center">
+        <span style="font-size:22px;flex-shrink:0;line-height:1">📐</span>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">Run the Engineering Assessment</div>
+          <div style="font-size:12px;color:#9aa9bd;line-height:1.5">Get the hydraulic data, mat quantity and Cable Concrete® recommendation for this project, so you have a like-for-like benchmark when the supplier's response arrives.</div>
+        </div>
+      </div>
+    </button>
+    <button onclick="show('compliance');window.scrollTo(0,0)" style="background:#111827;border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:16px;text-align:left;cursor:pointer;width:100%;font-family:inherit;color:inherit">
+      <div style="display:flex;gap:12px;align-items:center">
+        <span style="font-size:22px;flex-shrink:0;line-height:1">📑</span>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">View Cable Concrete® Compliance Pack</div>
+          <div style="font-size:12px;color:#9aa9bd;line-height:1.5">Read Cable Concrete®'s documented evidence against the same §1–§4 schedule — your yardstick for assessing what the supplier returns.</div>
+        </div>
+      </div>
+    </button>
+    <button onclick="show('evidence');window.scrollTo(0,0)" style="background:#111827;border:1px solid #1e3a5f;border-radius:14px;padding:16px;text-align:left;cursor:pointer;width:100%;font-family:inherit;color:inherit">
+      <div style="display:flex;gap:12px;align-items:center">
+        <span style="font-size:22px;flex-shrink:0;line-height:1">↺</span>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">Issue Another Evidence Request</div>
+          <div style="font-size:12px;color:#9aa9bd;line-height:1.5">Open the §1–§4 schedule again to send to a second supplier.</div>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <button class="bs" onclick="show('intro')" style="margin-bottom:32px">← Back to Home</button>
+</div>
+
 </div><!-- end wrap -->
 
 <script>
@@ -617,7 +664,7 @@ OTHERS.forEach(c=>{document.getElementById('other-opts').appendChild(new Option(
 function show(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.getElementById('pg-'+page).classList.add('on');
-  document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report",compliance:"Cable Concrete® Compliance Pack",evidence:"ACBS Compliance Check — Evidence Schedule"}[page]||"";
+  document.getElementById('hdr-sub').textContent={intro:"Block Selection Tool",quiz:"Question "+(curQ+1)+" of 5",contact:"Step 3 — Your Details",results:"Engineering Report",compliance:"Cable Concrete® Compliance Pack",evidence:"ACBS Compliance Check — Evidence Schedule","evidence-sent":"Evidence Request Issued"}[page]||"";
   // Stop the auto-cycling cross-section animation whenever we leave the results
   // page so it isn't redrawing a hidden SVG forever (battery/CPU on mobile).
   if(page!=='results'&&simTimer){clearInterval(simTimer);simTimer=null;}
@@ -1615,9 +1662,11 @@ function challengeCompetitor(){
     }
   }catch(e){}
   var subject=encodeURIComponent('ACB Hydraulic Stability — Evidence Request');
-  // mailto with no recipient — user picks the competing supplier from their contacts
-  window.location.href='mailto:?subject='+subject+'&body='+encodeURIComponent(rfq);
-  if(copied) _acbsToast('✓ Evidence request copied to clipboard — your email app is opening');
+  // Open mailto in a new tab so the app tab stays alive; navigate
+  // straight to the next-steps page so the engineer has somewhere
+  // meaningful to land when they switch back from Mail.
+  _openMailto('mailto:?subject='+subject+'&body='+encodeURIComponent(rfq));
+  show('evidence-sent');
 }
 function viewTestReports(){
   var blockName=_acbsBlockName();
@@ -1628,7 +1677,8 @@ function viewTestReports(){
     '  §2  University of Minnesota St Anthony Falls Laboratory Report No. 434 (1999)\n'+
     '  §2  University of Windsor — Hydraulic and Wave Testing (1988, 2004)\n\n'+
     (eng?(eng.name+(eng.firm?' — '+eng.firm:'')+(eng.country?' · '+eng.country:'')+'\n'+eng.email+(eng.phone?' · '+eng.phone:'')+'\n'):'');
-  window.location.href='mailto:contact@iecsafrica.com?subject='+encodeURIComponent('Cable Concrete® Compliance Pack — request')+'&body='+encodeURIComponent(body);
+  _openMailto('mailto:contact@iecsafrica.com?subject='+encodeURIComponent('Cable Concrete® Compliance Pack — request')+'&body='+encodeURIComponent(body));
+  _acbsToast('✓ Request opened — IECS Africa replies within 24h');
 }
 // Lightweight non-blocking notification — positioned absolutely (not fixed) so
 // it scrolls with the page; auto-removed after 3 s.
@@ -1638,6 +1688,20 @@ function _acbsToast(msg){
   t.style.cssText='position:absolute;left:50%;top:'+(window.scrollY+window.innerHeight-110)+'px;transform:translateX(-50%);background:#0f1e30;border:1px solid rgba(74,222,128,.4);color:#86efac;padding:10px 16px;border-radius:8px;font-size:13px;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.5);max-width:88%;text-align:center';
   document.body.appendChild(t);
   setTimeout(function(){ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(function(){t.remove();},500); },3000);
+}
+// Open a mailto without navigating the current tab. Using a temporary
+// anchor with target="_blank" hands the URL to the OS in a new tab so the
+// engineer's current Safari/Chrome tab — and therefore the app — stays
+// alive while Mail.app takes the foreground. When they finish in Mail
+// and switch back, the app is still loaded.
+function _openMailto(href){
+  var a=document.createElement('a');
+  a.href=href;
+  a.target='_blank';
+  a.rel='noopener';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ try{document.body.removeChild(a);}catch(e){} },0);
 }
 
 function setSimTab(t,btn){
