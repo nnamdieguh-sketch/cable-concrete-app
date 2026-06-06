@@ -238,7 +238,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
       <a href="#" onclick="show('compliance');return false;" style="display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0a0e14;padding:8px 13px;border-radius:7px;text-decoration:none;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(245,158,11,.3)">
         📑 Compliance
       </a>
-      <a href="https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/view?usp=sharing" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;padding:8px 13px;border-radius:7px;text-decoration:none;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(220,38,38,.3)">
+      <a href="#" onclick="openModal('video');return false;" style="display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;padding:8px 13px;border-radius:7px;text-decoration:none;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(220,38,38,.3)">
         🎥 Lab Test Video
       </a>
     </div>
@@ -2035,6 +2035,10 @@ function openModal(type){
     title.textContent='📊 Cable Concrete® Engineering Presentation';
     frame.src='https://docs.google.com/presentation/d/1SAw6p8lRmBOYfhfEp2J8zXqdtGqMXQIDo5QdHk7mL9Q/embed?start=false&loop=false&delayms=3000';
     ext.href='https://docs.google.com/presentation/d/1SAw6p8lRmBOYfhfEp2J8zXqdtGqMXQIDo5QdHk7mL9Q/view?usp=sharing';
+  } else if(type==='video'){
+    title.textContent='🎥 Cable Concrete® Lab Test Video';
+    frame.src='https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/preview';
+    ext.href='https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/view?usp=sharing';
   }
   modal.style.display='flex';
   document.body.style.overflow='hidden';
