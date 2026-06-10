@@ -2049,11 +2049,17 @@ function openModal(type){
     ext.href='https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/view?usp=sharing';
   } else if(type==='testreport'){
     title.textContent='📄 Cable Concrete® Flume Test Report — CSU 2005';
-    // Same-origin PDF served from the repo root; the existing modal iframe
-    // hosts it natively on Chrome/Edge/Firefox/Android; iOS Safari users
-    // tap the "Open in new tab" fallback link below the iframe.
-    frame.src='/cable-concrete-flume-test-report-csu-2005.pdf';
-    ext.href='/cable-concrete-flume-test-report-csu-2005.pdf';
+    // Chrome on Android and Safari on iOS refuse to render same-origin
+    // PDFs inline in iframes — they show a "Tap to Open" stub instead,
+    // which kicks the user out of the app. Wrapping the PDF in Google's
+    // public viewer renders it as scrollable HTML pages inside our
+    // iframe, so the engineer reads the report without ever leaving
+    // cableconcrete.app. The PDF still lives on our server; Google just
+    // proxies the rendering.
+    var pdfPath='/cable-concrete-flume-test-report-csu-2005.pdf';
+    var pdfUrl=location.origin+pdfPath;
+    frame.src='https://docs.google.com/viewer?url='+encodeURIComponent(pdfUrl)+'&embedded=true';
+    ext.href=pdfPath;
   }
   modal.style.display='flex';
   document.body.style.overflow='hidden';
