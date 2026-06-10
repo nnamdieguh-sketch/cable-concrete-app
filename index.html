@@ -1547,8 +1547,13 @@ function buildResults(){
       </div>
     </div>
     <div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="bs" onclick="show('compliance')" style="flex:1;min-width:170px">📑 View Cable Concrete® Compliance Pack</button>
+      <button class="bs" onclick="openModal('testreport')" style="flex:1;min-width:170px">📄 View Full Test Report</button>
       <button class="bs" onclick="challengeCompetitor()" style="flex:1;min-width:170px;border-color:rgba(245,158,11,.5);color:#f59e0b">📨 Issue Evidence Request to Supplier</button>
+    </div>
+    <div class="no-print" style="margin-top:8px;text-align:center">
+      <a href="/cable-concrete-flume-test-report-csu-2005.pdf" download="Cable-Concrete-Flume-Test-Report-CSU-2005.pdf" style="font-size:12px;color:#86efac;text-decoration:none">⬇ Download Report (PDF)</a>
+      <span style="color:#475569;margin:0 8px">·</span>
+      <a href="#" onclick="show('compliance');return false;" style="font-size:12px;color:#86efac;text-decoration:none">📑 Compliance Pack summary</a>
     </div>
   </div>
 
@@ -2039,6 +2044,13 @@ function openModal(type){
     title.textContent='🎥 Cable Concrete® Lab Test Video';
     frame.src='https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/preview';
     ext.href='https://drive.google.com/file/d/1Zjq2BeYAJZ0aHfMUX5-3Kr0x5wlvoWGM/view?usp=sharing';
+  } else if(type==='testreport'){
+    title.textContent='📄 Cable Concrete® Flume Test Report — CSU 2005';
+    // Same-origin PDF served from the repo root; the existing modal iframe
+    // hosts it natively on Chrome/Edge/Firefox/Android; iOS Safari users
+    // tap the "Open in new tab" fallback link below the iframe.
+    frame.src='/cable-concrete-flume-test-report-csu-2005.pdf';
+    ext.href='/cable-concrete-flume-test-report-csu-2005.pdf';
   }
   modal.style.display='flex';
   document.body.style.overflow='hidden';
