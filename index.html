@@ -27,6 +27,17 @@
 <meta name="twitter:image" content="https://www.cableconcrete.app/og-image.png">
 <meta name="twitter:image:alt" content="Cable Concrete® by IECS Africa">
 <meta name="theme-color" content="#14532d">
+<script>
+  // Capture Chrome's install prompt as early as possible — it fires
+  // once per page load and may fire before the rest of the script
+  // executes, so we stash it in window.__ccDeferredPrompt now and the
+  // install button picks it up later.
+  window.__ccDeferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    window.__ccDeferredPrompt = e;
+  });
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -208,7 +219,11 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     </button>
     <div style="font-size:11px;color:#9aa9bd;text-align:center">IECS Africa · A subsidiary of IECS Global Inc. Canada</div>
     <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
-    <button class="bs" onclick="shareApp()" aria-label="Share this app with colleagues" style="margin-top:4px;display:inline-flex;align-items:center;gap:8px;font-size:13px">📤 Share with Colleagues</button>
+  </div>
+
+  <!-- Share button (outside install-wrap so it stays visible after install) -->
+  <div style="margin-top:14px;text-align:center">
+    <button class="bs" onclick="shareApp()" aria-label="Share this app with colleagues" style="display:inline-flex;align-items:center;gap:8px;font-size:13px">📤 Share with Colleagues</button>
   </div>
 
   <!-- Resources on intro page -->
@@ -1887,7 +1902,8 @@ if('serviceWorker' in navigator){
 }
 
 // ── PWA INSTALL ───────────────────────────────────────────────────────────────
-let deferredPrompt=null;
+// Reuse the prompt that was captured by the early <head> listener.
+let deferredPrompt=window.__ccDeferredPrompt||null;
 
 function isStandalone(){
   return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)
@@ -1926,7 +1942,9 @@ function logInstall(method){
   sendToSheets({event:'app_install',method:method,platform:plat,display:isStandalone()?'standalone':'browser',ua:(navigator.userAgent||'').slice(0,180)});
 }
 
-window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
+// Re-bind so any later prompt event (rare, but possible after the early
+// capture is consumed or after install is cancelled) is also picked up.
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; window.__ccDeferredPrompt=e; });
 window.addEventListener('appinstalled',function(){
   deferredPrompt=null;
   const w=document.getElementById('install-wrap');if(w)w.style.display='none';
