@@ -1897,78 +1897,23 @@ function isIOS(){
   return /iPad|iPhone|iPod/.test(navigator.userAgent)
     || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 }
-// One tap → the browser's own install prompt on Android Chrome. iOS Safari
-// has no programmatic install API (Apple blocks it), so we render a clear
-// numbered-step instruction card and scroll it into view — the engineer
-// gets exactly the moves they need without hunting for tiny help text.
+// One tap → the browser's own install prompt. Falls back to a one-line hint
+// only on browsers that don't expose a programmatic install (e.g. iPhone).
 function handleInstall(){
   if(deferredPrompt){
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });
     return;
   }
-  _showInstallSteps();
-}
-
-function _stepHTML(n,html){
-  return '<div style="display:flex;gap:11px;margin-bottom:10px;align-items:flex-start">'+
-    '<div style="background:#4ade80;color:#0a0e14;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;line-height:1">'+n+'</div>'+
-    '<div style="font-size:13px;color:#e2e8f0;line-height:1.55;padding-top:3px">'+html+'</div>'+
-    '</div>';
-}
-
-function _showInstallSteps(){
-  var hint=document.getElementById('install-hint');
-  if(!hint) return;
-
-  var shareIcon='<svg width="16" height="20" viewBox="0 0 16 20" style="vertical-align:-5px;display:inline-block" aria-hidden="true">'+
-    '<path d="M8 1L4 5M8 1L12 5M8 1V13" stroke="#86efac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'+
-    '<path d="M3 9H1V19H15V9H13" stroke="#86efac" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
-  var menuIcon='<span style="font-weight:900;color:#fff;font-size:16px;line-height:1;vertical-align:-2px">⋮</span>';
-
-  var heading, steps;
-  if(isIOS()){
-    var iosOtherBrowser=/CriOS|FxiOS|EdgiOS/i.test(navigator.userAgent);
-    if(iosOtherBrowser){
-      heading='iPhone install needs Safari';
-      steps=_stepHTML(1,'Copy this address: <strong style="color:#86efac">cableconcrete.app</strong>')+
-        _stepHTML(2,'Open <strong style="color:#fff">Safari</strong> and paste it into the address bar')+
-        _stepHTML(3,'Then tap '+shareIcon+' Share → <strong style="color:#fff">Add to Home Screen</strong>');
+  const hint=document.getElementById('install-hint');
+  if(hint){
+    if(isIOS()){
+      hint.innerHTML='On iPhone: tap <svg width="13" height="16" viewBox="0 0 16 20" style="vertical-align:-3px;display:inline-block" aria-hidden="true"><path d="M8 1L4 5M8 1L12 5M8 1V13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3 9H1V19H15V9H13" stroke="#86efac" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> in Safari\'s toolbar, then &ldquo;Add to Home Screen&rdquo;.';
     } else {
-      heading='How to install on iPhone';
-      steps=_stepHTML(1,'Tap the Share icon '+shareIcon+' at the <strong style="color:#fff">bottom of Safari</strong>')+
-        _stepHTML(2,'Scroll the share sheet down and tap <strong style="color:#fff">"Add to Home Screen"</strong>')+
-        _stepHTML(3,'Tap <strong style="color:#fff">Add</strong> in the top right');
+      hint.textContent='Open your browser menu (⋮) and tap “Install app” / “Add to Home screen”.';
     }
-  } else if(/Android/i.test(navigator.userAgent)){
-    heading='How to install on Android';
-    steps=_stepHTML(1,'Tap the '+menuIcon+' menu at the <strong style="color:#fff">top-right of Chrome</strong>')+
-      _stepHTML(2,'Tap <strong style="color:#fff">"Install app"</strong> or <strong style="color:#fff">"Add to Home screen"</strong>')+
-      _stepHTML(3,'Confirm — the icon appears on your home screen');
-  } else {
-    heading='How to install';
-    steps=_stepHTML(1,'Open your browser menu '+menuIcon)+
-      _stepHTML(2,'Tap <strong style="color:#fff">"Install app"</strong> or <strong style="color:#fff">"Add to Home screen"</strong>');
+    hint.style.display='block';
   }
-
-  hint.innerHTML='<div style="font-size:14px;font-weight:700;color:#4ade80;text-align:center;margin-bottom:14px;letter-spacing:.02em">'+heading+'</div>'+steps+
-    '<button onclick="_hideInstallSteps()" aria-label="Close install instructions" style="margin-top:6px;background:none;border:none;color:#9aa9bd;font-size:11px;cursor:pointer;text-decoration:underline;display:block;margin-left:auto;margin-right:auto">Got it</button>';
-  hint.style.display='block';
-  hint.style.maxWidth='460px';
-  hint.style.width='100%';
-  hint.style.background='rgba(15,30,48,.92)';
-  hint.style.border='1px solid rgba(74,222,128,.4)';
-  hint.style.borderRadius='12px';
-  hint.style.padding='16px 18px';
-  hint.style.boxShadow='0 8px 24px rgba(0,0,0,.5)';
-  hint.style.color='#e2e8f0';
-  hint.style.textAlign='left';
-  setTimeout(function(){ try{ hint.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} },80);
-}
-
-function _hideInstallSteps(){
-  var hint=document.getElementById('install-hint');
-  if(hint) hint.style.display='none';
 }
 
 // Count each install once per device by logging to the same Google Sheet
