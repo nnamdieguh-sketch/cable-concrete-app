@@ -37,6 +37,52 @@
     e.preventDefault();
     window.__ccDeferredPrompt = e;
   });
+
+  // Internal error monitoring — every uncaught JS error and unhandled
+  // promise rejection is fingerprinted, rate-limited (60 s per unique
+  // error per session), and shipped to the same Apps Script that already
+  // receives leads. Apps Script logs to the Errors sheet and emails
+  // nnamdieguh@iecsafrica.com on first occurrence per day.
+  (function(){
+    var GS = 'https://script.google.com/macros/s/AKfycbzXzZJ_t-9GjxPmacEj9L5Aj0h47fQI0Zl--SP9JxkBdSXu4P_Lm3DJFUq1jahtXUmwPA/exec';
+    var recent = {};
+    function fp(m,s,l){ return (m||'').slice(0,80) + '|' + (s||'').slice(-40) + '|' + (l||0); }
+    function ship(payload){
+      var key = fp(payload.message, payload.source, payload.line);
+      var now = Date.now();
+      if(recent[key] && now - recent[key] < 60000) return;
+      recent[key] = now;
+      payload.event = 'error_log';
+      payload.page = location.pathname || '/';
+      payload.ua = (navigator.userAgent || '').slice(0,200);
+      payload.ts = new Date().toLocaleString();
+      var qs = Object.keys(payload).map(function(k){
+        return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k] || '');
+      }).join('&');
+      try{
+        fetch(GS + '?' + qs + '&t=' + now, { method:'GET', mode:'no-cors', keepalive:true })
+          .catch(function(){});
+      }catch(e){}
+    }
+    window.addEventListener('error', function(e){
+      ship({
+        type: 'js-error',
+        message: (e.message || '') + (e.error ? ' / ' + e.error.toString() : ''),
+        source: e.filename || '',
+        line: e.lineno || 0,
+        col: e.colno || 0,
+        stack: ((e.error && e.error.stack) || '').slice(0,500)
+      });
+    });
+    window.addEventListener('unhandledrejection', function(e){
+      var r = e.reason;
+      ship({
+        type: 'unhandled-rejection',
+        message: (r && r.message) || (r && r.toString && r.toString()) || 'Unknown rejection',
+        stack: ((r && r.stack) || '').slice(0,500)
+      });
+    });
+  })();
 </script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
