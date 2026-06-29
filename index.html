@@ -26,18 +26,6 @@
 <meta name="twitter:url" content="https://www.cableconcrete.app">
 <meta name="twitter:image" content="https://www.cableconcrete.app/og-image.png">
 <meta name="twitter:image:alt" content="Cable Concrete® by IECS Africa">
-<!-- OneSignal Push Notifications -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "301e7315-5e7a-4b04-9d6a-0bd9645f6e96",
-      safari_web_id: "web.onesignal.auto.2d55a779-27e1-4bb7-a896-7e19803bedb7",
-      notifyButton: { enable: true },
-    });
-  });
-</script>
 <meta name="theme-color" content="#14532d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -220,6 +208,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     </button>
     <div style="font-size:11px;color:#9aa9bd;text-align:center">IECS Africa · A subsidiary of IECS Global Inc. Canada</div>
     <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
+    <button class="bs" onclick="shareApp()" aria-label="Share this app with colleagues" style="margin-top:4px;display:inline-flex;align-items:center;gap:8px;font-size:13px">📤 Share with Colleagues</button>
   </div>
 
   <!-- Resources on intro page -->
@@ -1204,6 +1193,7 @@ function buildResults(){
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
     <button class="bs" onclick="show('quiz')" style="font-size:13px;padding:8px 14px">← Adjust Answers</button>
     <button class="bs" onclick="show('contact')" style="font-size:13px;padding:8px 14px">← Back to Contact</button>
+    <button class="bs no-print" onclick="shareApp('report')" style="font-size:13px;padding:8px 14px;margin-left:auto">📤 Share</button>
   </div>
 
   <!-- ── SCROLL GUIDANCE BANNER ── -->
@@ -1712,6 +1702,40 @@ function _openMailto(href){
   document.body.appendChild(a);
   a.click();
   setTimeout(function(){ try{document.body.removeChild(a);}catch(e){} },0);
+}
+
+// Native share sheet — WhatsApp / Email / SMS / Copy. context='report'
+// tailors the message to the engineer's current recommendation if one is
+// loaded; default is to share the tool itself.
+function shareApp(context){
+  var data={
+    title:'Cable Concrete® Block Selection Tool',
+    text:'Free engineering tool for Cable Concrete® erosion control across Sub-Saharan Africa — instant block recommendation, hydraulic data, mat calculator and ACBS hydraulic-stability evidence.',
+    url:'https://www.cableconcrete.app'
+  };
+  if(context==='report'){
+    try{
+      var w=recommended(scores());
+      var blockName=(B&&B[w])?B[w].name:'';
+      if(blockName){
+        data.text='My Cable Concrete® recommendation: '+blockName+'. Generate your own free engineering report at:';
+      }
+    }catch(e){}
+  }
+  if(navigator.share){
+    navigator.share(data).catch(function(){});
+    return;
+  }
+  // Fallback for browsers without Web Share — copy a sensible payload to
+  // the clipboard so the engineer can paste it into WhatsApp / Email.
+  var payload=data.text+'\n'+data.url;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(payload)
+      .then(function(){ _acbsToast('✓ Link copied — paste into WhatsApp, Email or chat'); })
+      .catch(function(){ window.prompt('Copy this link:',data.url); });
+  } else {
+    window.prompt('Copy this link:',data.url);
+  }
 }
 
 function setSimTab(t,btn){
