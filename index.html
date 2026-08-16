@@ -40,12 +40,29 @@
 
   // Internal error monitoring — every uncaught JS error and unhandled
   // promise rejection is fingerprinted, rate-limited (60 s per unique
-  // error per session), and shipped to the same Apps Script that already
-  // receives leads. Apps Script logs to the Errors sheet and emails
-  // nnamdieguh@iecsafrica.com on first occurrence per day.
+  // error per session), filtered to our own code, and shipped to the
+  // same Apps Script that already receives leads. Apps Script logs to
+  // the Errors sheet and emails nnamdieguh@iecsafrica.com on first
+  // occurrence per day.
   (function(){
     var GS = 'https://script.google.com/macros/s/AKfycbzXzZJ_t-9GjxPmacEj9L5Aj0h47fQI0Zl--SP9JxkBdSXu4P_Lm3DJFUq1jahtXUmwPA/exec';
     var recent = {};
+    // Only care about errors that originated in OUR code. Everything else —
+    // Vercel Analytics, OneSignal, service-worker internals, browser
+    // extensions, ad-blockers rewriting third-party scripts — is noise
+    // (and, until Apps Script has the error_log dispatch, would be
+    // emailed as an empty "lead").
+    function isOurError(source){
+      if(!source) return false;                 // CORS-hidden ("Script error.") — drop
+      var s = String(source);
+      // Third-party paths served from our own domain.
+      if(s.indexOf('/_vercel/') !== -1) return false;
+      if(s.indexOf('OneSignalSDK') !== -1) return false;
+      if(s.indexOf('onesignal.com') !== -1) return false;
+      // Anything outside our origin is third-party by definition.
+      try { if(new URL(s).origin !== location.origin) return false; } catch(e){}
+      return true;
+    }
     function fp(m,s,l){ return (m||'').slice(0,80) + '|' + (s||'').slice(-40) + '|' + (l||0); }
     function ship(payload){
       var key = fp(payload.message, payload.source, payload.line);
@@ -65,10 +82,12 @@
       }catch(e){}
     }
     window.addEventListener('error', function(e){
+      var source = e.filename || '';
+      if(!isOurError(source)) return;         // third-party noise — skip
       ship({
         type: 'js-error',
         message: (e.message || '') + (e.error ? ' / ' + e.error.toString() : ''),
-        source: e.filename || '',
+        source: source,
         line: e.lineno || 0,
         col: e.colno || 0,
         stack: ((e.error && e.error.stack) || '').slice(0,500)
@@ -76,10 +95,14 @@
     });
     window.addEventListener('unhandledrejection', function(e){
       var r = e.reason;
+      var stack = (r && r.stack) || '';
+      // Rejections don't carry a filename directly; infer origin from the
+      // stack. If none of our own scripts appears in it, treat as noise.
+      if(stack && !/cableconcrete\.app/i.test(stack) && !/index\.html/i.test(stack)) return;
       ship({
         type: 'unhandled-rejection',
         message: (r && r.message) || (r && r.toString && r.toString()) || 'Unknown rejection',
-        stack: ((r && r.stack) || '').slice(0,500)
+        stack: stack.slice(0,500)
       });
     });
   })();
