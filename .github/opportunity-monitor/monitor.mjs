@@ -50,11 +50,11 @@ const OUT_COST_PER_TOKEN    = 5.00 / 1_000_000;
 // contract is awarded the spec already says "stone pitching" or "gabions" and
 // the argument is against a locked document.
 const QUERIES = [
-  'expression of interest consultancy detailed design erosion control {country}',
-  'request for proposals engineering design gully erosion drainage {country}',
-  'terms of reference feasibility study erosion channel slope protection {country}',
-  'consultancy services detailed engineering design flood erosion {country}',
-  'World Bank AfDB consultant selection erosion watershed design {country}'
+  'expression of interest consultancy detailed design erosion gully control {country}',
+  'request for proposals engineering design drainage channel lining {country}',
+  'terms of reference feasibility study slope embankment protection {country}',
+  'consultancy detailed engineering design dam spillway riverbank protection {country}',
+  'World Bank AfDB consultant selection flood protection revetment design {country}'
 ];
 
 // Cheap pre-filter so we only pay the model for plausible candidates.
@@ -142,13 +142,22 @@ The commercial window is when a DESIGN CONSULTANT is being procured, or design i
 
 So a small consultancy EOI for detailed design is worth FAR MORE than a billion-naira construction contract award. Score accordingly — do not be impressed by contract value.
 
-STEP 1 — classify RELEVANCE. Could ACB revetment plausibly be specified on this work?
-  "direct"     erosion or gully control, channel lining, slope or embankment protection, shoreline
-               or coastal protection, drainage channel works, scour protection, watershed erosion works
-  "adjacent"   flood mitigation, stormwater or urban drainage, watershed management, dam spillway or
-               downstream channel works, road drainage — ACB is plausible but not the headline scope
-  "unrelated"  water supply, sanitation or WASH, road pavement, buildings, dam wall or structural works,
-               power, general infrastructure with no water-channel or slope element, or scope not stated
+STEP 1 — classify RELEVANCE. ACB revetment is a versatile product. It is specified for:
+erosion and gully control; channel and canal lining; slope protection; embankment protection of all
+kinds including road, rail and dam embankments; dam upstream faces, spillways, downstream aprons and
+stilling basins; bridge pier and abutment scour protection; riverbank, shoreline and coastal
+protection; levees and flood protection works; and permeable paving and pedestrian surfacing (the
+open-cell CC G2 block at 40% open area is a paving product).
+
+  "direct"     any of the applications listed above is named or clearly implied by the scope
+  "adjacent"   civil works where such an application is plausible but not stated — watershed
+               management programmes, urban stormwater and sanitation with a drainage component,
+               road or rail projects where embankment and drainage scope is not spelled out,
+               general infrastructure with a likely earthworks or water-control element
+  "unrelated"  no physical civil works at all, or works with no surface, slope, channel or
+               water-control element — water supply pipelines, treatment plants, WASH hardware,
+               buildings, power, IT, supply of goods, pure policy or capacity-building studies,
+               job adverts, directories, academic papers
 
 STEP 2 — classify STAGE:
   "design-tender"    EOI, RFP, ToR or consultant shortlisting for feasibility study, detailed engineering design, ESIA+design, or technical design services
@@ -171,8 +180,9 @@ Within those ceilings, rank by stage:
   3-4   works-tender — specification already written, useful only if it names a lining method to challenge
   1-2   works-awarded, unrelated relevance, or not a real opportunity (directory, job advert, academic paper, marketing)
 
-If the snippet does not state what physical work is involved, relevance is "unrelated" — do not assume
-erosion scope from a project title alone.
+If the snippet names civil works but not enough detail to confirm an ACB application, use "adjacent"
+rather than guessing "direct". Reserve "unrelated" for work that genuinely has no surface, slope,
+channel or water-control element — not merely for scope that is vaguely described.
 
 For each result return an object with:
   i         - the index number given
