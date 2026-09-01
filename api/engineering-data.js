@@ -10,7 +10,7 @@
 // reconstruct the dataset.
 
 const B = {
-  CCG2: { name: "CC G2", sub: "Permeable Paving & Gentle Slopes", h: "80–88 mm", wt: "25–28 lbs/sf", vel: "4.0 m/s (good)", oa: "40%", ms: "2.44m × 6.1m", ma: 14.88, c: "#4ade80", sh: "182 N/m²", nc: "0.019–0.022", nb: "0.03–0.035", bh: '2.5"', cb: "302/304 SS or polyester braided" },
+  CCG2: { name: "CC G2", sub: "Permeable Paving & Gentle Slopes", h: "80–88 mm", wt: "25–28 lbs/sf", vel: "4.0 m/s (good)", oa: "40%", ms: "2.44m × 4.88m", ma: 11.9, c: "#4ade80", sh: "182 N/m²", nc: "0.019–0.022", nb: "0.03–0.035", bh: '2.5"', cb: "302/304 SS or polyester braided" },
   CC35: { name: "CC 35", sub: "Channel Lining & Moderate Slopes", h: '114–127 mm (4.5")', wt: "37–40 lbs/sf", vel: "5.2 m/s (good) / 2.7 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#60a5fa", sh: "325 N/m²", nc: "0.022–0.027", nb: "0.03–0.035", bh: '4.5"', cb: 'SS 1×19 5/32"/4mm' },
   CC45: { name: "CC 45", sub: "Steep Slopes & High Velocity", h: '140–152 mm (5.5")', wt: "45–52 lbs/sf", vel: "6.1 m/s (good) / 3.5 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f59e0b", sh: "390 N/m²", nc: "0.024–0.029", nb: "0.03–0.035", bh: '5.5"', cb: 'SS 1×19 5/32"/4mm' },
   CC70: { name: "CC 70", sub: "Shoreline, Coastal & Extreme Flow", h: '216–229 mm (8.5")', wt: "70–78 lbs/sf", vel: "7.6 m/s (good) / 4.0 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f87171", sh: "625 N/m²", nc: "0.028–0.033", nb: "0.03–0.035", bh: '8.5"', cb: 'SS 1×19 3/16"/4.8mm' },
@@ -87,11 +87,38 @@ const COMPS = [
   ["vs Stone Pitching", "Stone pitching mortar joints erode at velocities above 3 m/s. Cable Concrete® CC 45 handles up to 6.1 m/s with good placement. University-tested by Minnesota SAFL and University of Windsor."]
 ];
 
+// Supply-and-install rates from the Cable Concrete® Price Guide (Updated B).
+// Rates are per square metre of supplied area and INCLUDE materials,
+// geotextile, cable/rope, equipment, labour and installation. They EXCLUDE
+// earthworks and taxes.
+//
+// Kept server-side alongside the hydraulic tables so (a) they never appear in
+// View Source, and (b) they can be revised here when the Naira moves without
+// touching the front end.
+//
+// `countries` gates which markets see an automatic estimate. Everywhere else
+// the app shows a "request a price for your market" call to action instead of
+// quoting Naira figures that wouldn't apply.
+const PRICING = {
+  currency: 'NGN',
+  symbol: '₦',
+  countries: ['Nigeria'],
+  rates: {
+    CCG2: { low: 30000, high: 45000 },
+    CC35: { low: 45000, high: 50000 },
+    CC45: { low: 50000, high: 55000 },
+    CC70: { low: 70000, high: 80000 }
+  },
+  includes: 'Concrete mix (25 MPa), geotextile, stainless steel cable / rope, equipment, labour and installation',
+  excludes: 'Earthworks and taxes',
+  note: 'Project size, inflation and currency fluctuations can affect pricing and can sometimes make it slightly more expensive.'
+};
+
 module.exports = function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'POST only' });
   }
   res.setHeader('Cache-Control', 'no-store');
-  return res.status(200).json({ B, MILD, STEEP, MN, SAFL35, SAFL45, ANCHORS, COMPS });
+  return res.status(200).json({ B, MILD, STEEP, MN, SAFL35, SAFL45, ANCHORS, COMPS, PRICING });
 };
