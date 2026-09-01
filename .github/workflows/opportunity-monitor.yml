@@ -1,0 +1,43 @@
+name: Erosion Control Opportunity Monitor
+
+on:
+  schedule:
+    # Mondays 06:00 UTC (07:00 Lagos / 09:00 Nairobi)
+    - cron: '0 6 * * 1'
+  workflow_dispatch:          # adds a "Run workflow" button for manual runs
+
+permissions:
+  contents: write             # commit the dedup store back
+  issues: write               # post the digest
+
+concurrency:
+  group: opportunity-monitor  # never let two scans overlap
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scan for opportunities
+        env:
+          BRAVE_API_KEY:     ${{ secrets.BRAVE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node .github/opportunity-monitor/monitor.mjs
+
+      - name: Persist dedup store
+        run: |
+          git config user.name  "opportunity-monitor"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/opportunity-monitor/seen.json
+          git diff --staged --quiet || git commit -m "chore: update opportunity dedup store [skip ci]"
+          git push
