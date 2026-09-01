@@ -675,7 +675,7 @@ const BMETA={
   CC45:{name:"CC 45",c:"#f59e0b"},
   CC70:{name:"CC 70",c:"#f87171"},
 };
-let B=null, MILD=null, STEEP=null, MN=null, SAFL35=null, SAFL45=null, ANCHORS=null, COMPS=null;
+let B=null, MILD=null, STEEP=null, MN=null, SAFL35=null, SAFL45=null, ANCHORS=null, COMPS=null, PRICING=null;
 
 // Single-flight async loader for the proprietary engineering tables. Triggered
 // when the user reaches the contact form so the data is usually ready by the
@@ -687,7 +687,7 @@ function loadEngineeringData(){
   if(_engDataPromise) return _engDataPromise;
   _engDataPromise=fetch('/api/engineering-data',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})
     .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(d=>{B=d.B;MILD=d.MILD;STEEP=d.STEEP;MN=d.MN;SAFL35=d.SAFL35;SAFL45=d.SAFL45;ANCHORS=d.ANCHORS;COMPS=d.COMPS;})
+    .then(d=>{B=d.B;MILD=d.MILD;STEEP=d.STEEP;MN=d.MN;SAFL35=d.SAFL35;SAFL45=d.SAFL45;ANCHORS=d.ANCHORS;COMPS=d.COMPS;PRICING=d.PRICING||null;})
     .catch(e=>{_engDataPromise=null;throw e;});
   return _engDataPromise;
 }
@@ -1076,7 +1076,110 @@ function renderCalc(){
   </div>
   <div style="font-size:11px;color:#9aa9bd;border-top:1px solid #1e2d42;padding-top:10px;line-height:1.8">
     Mat size: ${bl.ms} (${ma} m² per mat) · Block: <strong style="color:${bl.c}">${bl.name}</strong> · 10% wastage per Cable Concrete® Engineering Binder
+  </div>
+  ${costEstimateHTML(w, totalWithWastage, totalMats)}`;
+}
+
+// ── PRELIMINARY BUDGET ESTIMATE ───────────────────────────────────────────────
+// Rates live server-side in /api/engineering-data (PRICING). We quote a RANGE,
+// never a single figure, and label it an estimate rather than a quotation —
+// a firm number here would anchor the engineer against IECS Africa's real
+// quote once earthworks and site specifics are priced.
+//
+// Markets outside PRICING.countries get a "request a price" call to action
+// instead of Naira figures that wouldn't apply to them.
+function _fmtMoney(sym, n){
+  return sym + Math.round(n).toLocaleString('en-NG');
+}
+function costEstimateHTML(blockId, areaWithWastage, totalMats){
+  if(!PRICING || !PRICING.rates) return '';
+  const country = (eng && eng.country) || '';
+  const priced  = PRICING.countries.indexOf(country) !== -1;
+  const rate    = PRICING.rates[blockId];
+  const bl      = B[blockId];
+
+  // Out-of-market (or no country captured yet) — offer a price request.
+  if(!priced || !rate){
+    const forWhat = country ? ('for ' + country) : 'for your market';
+    return `
+  <div class="no-print" style="margin-top:14px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:15px">
+    <div style="font-size:14px;font-weight:700;color:#f59e0b;margin-bottom:6px">💰 Project Pricing</div>
+    <p style="font-size:12px;color:#cbd5e1;line-height:1.65;margin-bottom:11px">
+      Your quantities are ready — <strong style="color:#fff">${totalMats} mats</strong> covering <strong style="color:#fff">${areaWithWastage.toFixed(1)} m²</strong> of ${bl.name}.
+      Supply-and-install rates ${forWhat} are quoted individually, so IECS Africa will price this against local logistics and site conditions.
+    </p>
+    <button class="bs" onclick="requestProjectPrice()" style="border-color:rgba(245,158,11,.5);color:#f59e0b">📨 Request a Price ${country ? 'for ' + country : ''}</button>
   </div>`;
+  }
+
+  const low  = areaWithWastage * rate.low;
+  const high = areaWithWastage * rate.high;
+  const sym  = PRICING.symbol || '';
+  return `
+  <div style="margin-top:14px;background:linear-gradient(135deg,rgba(74,222,128,.07),rgba(74,222,128,.02));border:1px solid rgba(74,222,128,.35);border-radius:12px;padding:16px">
+    <div style="font-size:14px;font-weight:700;color:#4ade80;margin-bottom:10px">💰 Preliminary Budget Estimate</div>
+    <div style="text-align:center;padding:12px 8px;background:rgba(0,0,0,.25);border-radius:10px;margin-bottom:12px">
+      <div style="font-size:clamp(19px,5.2vw,27px);font-weight:900;color:#fff;line-height:1.25;word-break:break-word">
+        ${_fmtMoney(sym, low)} <span style="color:#9aa9bd;font-weight:600">–</span> ${_fmtMoney(sym, high)}
+      </div>
+      <div style="font-size:11px;color:#9aa9bd;margin-top:5px">Supply &amp; install · ${country}</div>
+    </div>
+    <div style="font-size:11px;color:#9aa9bd;line-height:1.9;margin-bottom:11px">
+      ${areaWithWastage.toFixed(1)} m² (incl. 10% wastage) × ${_fmtMoney(sym, rate.low)}–${_fmtMoney(sym, rate.high)} per m² for <strong style="color:${bl.c}">${bl.name}</strong><br>
+      <span style="color:#86efac">✓ Includes:</span> ${PRICING.includes}<br>
+      <span style="color:#f87171">✗ Excludes:</span> ${PRICING.excludes}
+    </div>
+    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 12px;margin-bottom:12px">
+      <div style="font-size:11px;color:#e2e8f0;line-height:1.65">
+        <strong style="color:#f59e0b">Preliminary estimate — not a quotation.</strong>
+        ${PRICING.note} Earthworks, site access, mobilisation and taxes are priced separately. A firm quotation follows a site investigation by IECS Africa.
+      </div>
+    </div>
+    <button class="bs no-print" onclick="requestProjectPrice()" style="width:100%;border-color:rgba(74,222,128,.5);color:#4ade80">📨 Request Firm Quotation</button>
+  </div>`;
+}
+
+// Opens the engineer's email app with the project quantities pre-filled so
+// IECS Africa can price it without a back-and-forth. Uses _openMailto so the
+// app tab stays alive behind the composer.
+function requestProjectPrice(){
+  let w='', bl=null, ma=0;
+  try{ w=recommended(scores()); bl=B&&B[w]; ma=(bl&&bl.ma)||0; }catch(e){}
+  const L=calc.length, bw=calc.bedWidth, bh=calc.bankHeight, Z=calc.slopeZ, sides=calc.sides;
+  const slopeFaceWidth = bh * Math.sqrt(Z*Z + 1);
+  const totalArea = (L*bw) + (sides*L*slopeFaceWidth);
+  const withWastage = totalArea * 1.10;
+  const mats = ma ? Math.ceil(withWastage/ma) : 0;
+
+  const body =
+    'Request for Cable Concrete® project quotation\n\n' +
+    (eng ? (
+      'Engineer: ' + eng.name + (eng.firm ? ' — ' + eng.firm : '') + '\n' +
+      'Email:    ' + eng.email + (eng.phone ? '\nPhone:    ' + eng.phone : '') + '\n' +
+      (eng.country ? 'Country:  ' + eng.country + '\n' : '') +
+      (eng.scope ? '\nProject scope:\n' + eng.scope + '\n' : '')
+    ) : '') +
+    '\nRECOMMENDED SYSTEM\n' +
+    '------------------\n' +
+    'Block:            ' + (bl ? bl.name + ' — ' + bl.sub : '(see report)') + '\n' +
+    (bl ? 'Mat size:         ' + bl.ms + ' (' + bl.ma + ' m² per mat)\n' : '') +
+    '\nQUANTITIES (from the Block Selection Tool)\n' +
+    '------------------\n' +
+    'Channel length:   ' + L + ' m\n' +
+    'Bed width:        ' + bw + ' m\n' +
+    'Bank height:      ' + bh + ' m\n' +
+    'Side slope:       ' + Z + 'H:1V, ' + sides + ' side(s)\n' +
+    'Protected area:   ' + totalArea.toFixed(1) + ' m²\n' +
+    'With 10% wastage: ' + withWastage.toFixed(1) + ' m²\n' +
+    'Total mats:       ' + mats + '\n\n' +
+    'Please provide a firm supply-and-install quotation for the above, including earthworks, mobilisation and applicable taxes.\n\n' +
+    'Regards,\n' +
+    (eng ? eng.name + (eng.firm ? ' — ' + eng.firm : '') : '[Engineer of record]');
+
+  _openMailto('mailto:contact@iecsafrica.com?subject=' +
+    encodeURIComponent('Quotation request — Cable Concrete® ' + (bl ? bl.name : 'project')) +
+    '&body=' + encodeURIComponent(body));
+  _acbsToast('✓ Quotation request opened — IECS Africa replies within 24h');
 }
 
 // ── DATA TABS ─────────────────────────────────────────────────────────────────
