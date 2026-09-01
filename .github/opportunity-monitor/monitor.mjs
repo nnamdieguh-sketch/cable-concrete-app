@@ -142,7 +142,15 @@ The commercial window is when a DESIGN CONSULTANT is being procured, or design i
 
 So a small consultancy EOI for detailed design is worth FAR MORE than a billion-naira construction contract award. Score accordingly — do not be impressed by contract value.
 
-First classify each result into one stage:
+STEP 1 — classify RELEVANCE. Could ACB revetment plausibly be specified on this work?
+  "direct"     erosion or gully control, channel lining, slope or embankment protection, shoreline
+               or coastal protection, drainage channel works, scour protection, watershed erosion works
+  "adjacent"   flood mitigation, stormwater or urban drainage, watershed management, dam spillway or
+               downstream channel works, road drainage — ACB is plausible but not the headline scope
+  "unrelated"  water supply, sanitation or WASH, road pavement, buildings, dam wall or structural works,
+               power, general infrastructure with no water-channel or slope element, or scope not stated
+
+STEP 2 — classify STAGE:
   "design-tender"    EOI, RFP, ToR or consultant shortlisting for feasibility study, detailed engineering design, ESIA+design, or technical design services
   "design-underway"  a design consultant has been appointed, or design/feasibility work is in progress
   "project-funded"   project approved or financed, design not yet procured
@@ -150,15 +158,25 @@ First classify each result into one stage:
   "works-awarded"    works contract awarded, contractor named, or construction begun
   "unknown"          cannot tell
 
-Then score 1-10:
-  9-10  stage is design-tender AND the work clearly involves erosion, gully, channel, drainage, slope or shoreline protection
-  7-8   stage is design-tender but erosion relevance is partial, OR stage is design-underway with clear erosion scope
-  5-6   stage is project-funded with erosion scope — early warning, design procurement likely to follow
-  3-4   stage is works-tender — specification already written, only useful if it names a lining method we could challenge
-  1-2   stage is works-awarded, or not a real opportunity (directory, job advert, academic paper, marketing)
+STEP 3 — score 1-10. RELEVANCE IS A HARD CEILING, applied before stage:
+  - "unrelated" scores 1-2. Never above 2, no matter how good the procurement stage is. A perfect
+    design-stage EOI for water supply or road pavement is still a 2 — we cannot sell into it.
+  - "adjacent" scores at most 6.
+  - only "direct" may score 7-10.
+
+Within those ceilings, rank by stage:
+  9-10  direct relevance + design-tender — the specification is still open, this is the target
+  7-8   direct relevance + design-underway, or direct + design-tender with some scope ambiguity
+  5-6   project-funded with direct relevance, or any adjacent-relevance result
+  3-4   works-tender — specification already written, useful only if it names a lining method to challenge
+  1-2   works-awarded, unrelated relevance, or not a real opportunity (directory, job advert, academic paper, marketing)
+
+If the snippet does not state what physical work is involved, relevance is "unrelated" — do not assume
+erosion scope from a project title alone.
 
 For each result return an object with:
   i         - the index number given
+  relevance - one of the relevance strings above
   stage     - one of the stage strings above
   score     - 1-10
   project   - short project name, or null
@@ -268,7 +286,8 @@ function buildDigest(hits, dropped) {
       return s !== 0 ? s : b.score - a.score;
     });
     for (const h of sorted) {
-      md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}\n\n`;
+      const rel = h.relevance === 'adjacent' ? ' · _adjacent scope_' : '';
+      md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}${rel}\n\n`;
       if (h.location) md += `- **Location:** ${h.location}\n`;
       if (h.funder)   md += `- **Funder:** ${h.funder}\n`;
       if (h.work)     md += `- **Work:** ${h.work}\n`;
@@ -295,6 +314,11 @@ function buildDigest(hits, dropped) {
 }
 
 async function createIssue(title, body) {
+  // Assign to the repo owner. GitHub defaults an owned repo's watch setting to
+  // "Participating and @mentions", so an issue opened by github-actions[bot]
+  // generates no notification on its own. Being assigned always does.
+  const owner = (GH_REPO || '').split('/')[0];
+
   const r = await fetch(`https://api.github.com/repos/${GH_REPO}/issues`, {
     method: 'POST',
     headers: {
@@ -302,11 +326,17 @@ async function createIssue(title, body) {
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, body, labels: ['opportunity-monitor'] })
+    body: JSON.stringify({
+      title,
+      body,
+      labels: ['opportunity-monitor'],
+      ...(owner ? { assignees: [owner] } : {})
+    })
   });
   if (!r.ok) throw new Error(`Issue creation failed ${r.status}: ${(await r.text()).slice(0, 300)}`);
   const issue = await r.json();
   console.log(`\nIssue created: ${issue.html_url}`);
+  console.log(`  assigned to: ${issue.assignees?.map(a => a.login).join(', ') || '(none — check assignee permissions)'}`);
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────
