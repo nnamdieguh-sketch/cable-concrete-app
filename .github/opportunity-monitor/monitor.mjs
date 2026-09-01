@@ -43,20 +43,41 @@ const BRAVE_COST_PER_SEARCH = 0.005;
 const IN_COST_PER_TOKEN     = 1.00 / 1_000_000;
 const OUT_COST_PER_TOKEN    = 5.00 / 1_000_000;
 
-// Procurement-flavoured queries. We're hunting notices, not directories.
+// Targeted at the DESIGN/CONSULTANCY stage, not construction.
+//
+// The commercial window for Cable Concrete opens when a design consultant is
+// being procured — before anyone has written a specification. Once a works
+// contract is awarded the spec already says "stone pitching" or "gabions" and
+// the argument is against a locked document.
 const QUERIES = [
-  'erosion control tender {country}',
-  'gully erosion rehabilitation contract award {country}',
-  'ACReSAL NEWMAP erosion control project {country}',
-  'World Bank AfDB erosion control procurement notice {country}',
-  'slope protection channel lining invitation to bid {country}'
+  'expression of interest consultancy detailed design erosion control {country}',
+  'request for proposals engineering design gully erosion drainage {country}',
+  'terms of reference feasibility study erosion channel slope protection {country}',
+  'consultancy services detailed engineering design flood erosion {country}',
+  'World Bank AfDB consultant selection erosion watershed design {country}'
 ];
 
 // Cheap pre-filter so we only pay the model for plausible candidates.
+// Weighted toward design-stage vocabulary.
 const PROCUREMENT_HINTS = [
-  'tender','procure','bid','rfp','rfq','expression of interest','eoi',
-  'contract','award','invitation','prequalification','solicitation','notice'
+  // design / consultancy stage — what we actually want
+  'expression of interest','eoi','terms of reference','tor','consultancy',
+  'consultant','feasibility','detailed design','engineering design','esia',
+  'request for proposal','rfp','shortlist','prequalification',
+  // general procurement — kept so we still see early-stage project notices
+  'tender','procure','bid','rfq','invitation','solicitation','notice'
 ];
+
+// Lifecycle stages, ordered. Anything at 'works-awarded' is past our window.
+const STAGE_ORDER = ['design-tender','design-underway','project-funded','works-tender','works-awarded','unknown'];
+const STAGE_LABEL = {
+  'design-tender'   : '🟢 Design tender open',
+  'design-underway' : '🟡 Design in progress',
+  'project-funded'  : '🔵 Funded, design upcoming',
+  'works-tender'    : '🟠 Works tender (spec locked)',
+  'works-awarded'   : '🔴 Awarded (too late)',
+  'unknown'         : '⚪ Stage unclear'
+};
 
 const spend = { usd: 0, braveCalls: 0, modelCalls: 0, inTokens: 0, outTokens: 0 };
 const budgetLeft = () => MAX_SPEND_USD - spend.usd;
@@ -114,23 +135,39 @@ async function scoreBatch(batch, country) {
   ).join('\n\n');
 
   const prompt =
-`You are screening web results for genuine erosion-control PROCUREMENT OPPORTUNITIES in ${country} — tenders, bids, contract awards, expressions of interest, or funded project announcements that could need articulated concrete block revetment (channel lining, gully rehabilitation, slope protection, shoreline protection).
+`You are screening web results for erosion-control ENGINEERING DESIGN opportunities in ${country}, on behalf of a manufacturer of articulated concrete block (ACB) revetment used for channel lining, gully rehabilitation, slope and shoreline protection.
 
-Score each result 1-10 for how likely it is to be a real, actionable project opportunity.
+CRITICAL — what makes something valuable here:
+The commercial window is when a DESIGN CONSULTANT is being procured, or design is underway, because that is when the technical specification gets written. Once a works/construction contract is advertised or awarded, the specification is already fixed (typically to stone pitching, gabions or riprap) and the opportunity is gone.
 
-Score HIGH (7-10): a named project or tender with a location, a funder (World Bank, AfDB, ACReSAL, NEWMAP, state ministry), a scope involving erosion/channel/slope work, ideally a deadline or reference number.
-Score MEDIUM (4-6): a real project mentioned but vague on scope, funding or timing.
-Score LOW (1-3): directories, job adverts, academic papers, news with no project, company marketing, anything not an actual opportunity.
+So a small consultancy EOI for detailed design is worth FAR MORE than a billion-naira construction contract award. Score accordingly — do not be impressed by contract value.
+
+First classify each result into one stage:
+  "design-tender"    EOI, RFP, ToR or consultant shortlisting for feasibility study, detailed engineering design, ESIA+design, or technical design services
+  "design-underway"  a design consultant has been appointed, or design/feasibility work is in progress
+  "project-funded"   project approved or financed, design not yet procured
+  "works-tender"     construction/works tender advertised, bidding documents issued for physical works
+  "works-awarded"    works contract awarded, contractor named, or construction begun
+  "unknown"          cannot tell
+
+Then score 1-10:
+  9-10  stage is design-tender AND the work clearly involves erosion, gully, channel, drainage, slope or shoreline protection
+  7-8   stage is design-tender but erosion relevance is partial, OR stage is design-underway with clear erosion scope
+  5-6   stage is project-funded with erosion scope — early warning, design procurement likely to follow
+  3-4   stage is works-tender — specification already written, only useful if it names a lining method we could challenge
+  1-2   stage is works-awarded, or not a real opportunity (directory, job advert, academic paper, marketing)
 
 For each result return an object with:
-  i        - the index number given
-  score    - 1-10
-  project  - short project name, or null
-  location - state/city/region, or null
-  funder   - funding body, or null
-  work     - the erosion work involved in a few words, or null
-  deadline - any date mentioned, or null
-  why      - one short clause on why it scored that way
+  i         - the index number given
+  stage     - one of the stage strings above
+  score     - 1-10
+  project   - short project name, or null
+  location  - state/city/region, or null
+  funder    - funding body, or null
+  work      - the erosion work involved in a few words, or null
+  deadline  - submission deadline in YYYY-MM-DD if one is stated, else null. Do NOT put project durations or start dates here.
+  spec      - any lining method named (stone pitching, gabions, riprap, concrete lining), or null
+  why       - one short clause on why it scored that way
 
 Return ONLY a JSON array, no prose, no code fences.
 
@@ -180,22 +217,62 @@ ${listing}`;
   }
 }
 
+// ── Post-filters ───────────────────────────────────────────────────────────
+
+/**
+ * Design tenders have short submission windows, so an expired one is dead
+ * weight. Only drops entries whose deadline parses cleanly AND sits more than
+ * a fortnight in the past — anything ambiguous ("30 months from award",
+ * "March 2025") is kept rather than guessed at.
+ */
+function isExpired(deadline) {
+  if (!deadline) return false;
+  const t = Date.parse(deadline);
+  if (Number.isNaN(t)) return false;
+  return t < Date.now() - 14 * 86_400_000;
+}
+
+/**
+ * The same project often surfaces from several news sources — run #1 carried
+ * Bulbula/Gayawa twice. Collapse on normalised project name, keeping whichever
+ * copy scored highest.
+ */
+function dedupeByProject(hits) {
+  const best = new Map();
+  for (const h of hits) {
+    const key = String(h.project || h.title || h.url)
+      .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const prev = best.get(key);
+    if (!prev || h.score > prev.score) best.set(key, h);
+  }
+  return [...best.values()];
+}
+
 // ── Digest ─────────────────────────────────────────────────────────────────
-function buildDigest(hits) {
+function buildDigest(hits, dropped) {
   const today = new Date().toISOString().slice(0, 10);
   const byCountry = {};
   for (const h of hits) (byCountry[h.country] ??= []).push(h);
 
-  let md = `**${hits.length} erosion-control opportunit${hits.length === 1 ? 'y' : 'ies'}** found in the last scan.\n\n`;
-  md += `Sorted by score. Only results scoring ${SCORE_THRESHOLD}+ are shown.\n\n---\n\n`;
+  const actionable = hits.filter(h => h.stage === 'design-tender' || h.stage === 'design-underway').length;
+
+  let md = `**${hits.length} opportunit${hits.length === 1 ? 'y' : 'ies'}** — `;
+  md += `**${actionable} at design stage**, where the specification is still open.\n\n`;
+  md += `Scored on procurement stage, not contract value: a consultancy EOI for detailed design outranks a billion-naira works award, because by award the lining method is already fixed.\n\n`;
+  md += `Only results scoring ${SCORE_THRESHOLD}+ are shown.\n\n---\n\n`;
 
   for (const country of Object.keys(byCountry).sort()) {
     md += `## ${country}\n\n`;
-    for (const h of byCountry[country].sort((a, b) => b.score - a.score)) {
-      md += `### ${h.score}/10 — ${h.project || h.title}\n\n`;
+    const sorted = byCountry[country].sort((a, b) => {
+      const s = STAGE_ORDER.indexOf(a.stage ?? 'unknown') - STAGE_ORDER.indexOf(b.stage ?? 'unknown');
+      return s !== 0 ? s : b.score - a.score;
+    });
+    for (const h of sorted) {
+      md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}\n\n`;
       if (h.location) md += `- **Location:** ${h.location}\n`;
       if (h.funder)   md += `- **Funder:** ${h.funder}\n`;
       if (h.work)     md += `- **Work:** ${h.work}\n`;
+      if (h.spec)     md += `- **Lining specified:** ${h.spec} ← displacement opportunity\n`;
       if (h.deadline) md += `- **Deadline:** ${h.deadline}\n`;
       if (h.why)      md += `- **Why it scored:** ${h.why}\n`;
       md += `- **Source:** ${h.url}\n\n`;
@@ -203,12 +280,14 @@ function buildDigest(hits) {
   }
 
   md += `---\n\n`;
-  md += `<details><summary>Run cost</summary>\n\n`;
+  md += `<details><summary>Run detail</summary>\n\n`;
   md += `| | |\n|---|---|\n`;
   md += `| Spend | **$${spend.usd.toFixed(4)}** of $${MAX_SPEND_USD.toFixed(2)} cap |\n`;
   md += `| Brave searches | ${spend.braveCalls} |\n`;
   md += `| Model calls | ${spend.modelCalls} |\n`;
   md += `| Tokens | ${spend.inTokens.toLocaleString()} in / ${spend.outTokens.toLocaleString()} out |\n`;
+  md += `| Dropped — expired deadline | ${dropped.expired} |\n`;
+  md += `| Dropped — duplicate project | ${dropped.duplicate} |\n`;
   md += `\nToken counts are read from the API response, so this figure is actual, not estimated.\n\n`;
   md += `</details>\n\n`;
   md += `_Scanned ${MARKETS.length} markets on ${today}. Public procurement notices only — no personal data collected, no outreach sent._`;
@@ -285,19 +364,40 @@ async function main() {
     }
   }
 
-  hits.sort((a, b) => b.score - a.score);
+  const dropped = { expired: 0, duplicate: 0 };
+
+  const live = hits.filter(h => {
+    if (isExpired(h.deadline)) { dropped.expired++; return false; }
+    return true;
+  });
+
+  const beforeDedupe = live.length;
+  let final = dedupeByProject(live);
+  dropped.duplicate = beforeDedupe - final.length;
+
+  final.sort((a, b) => {
+    const s = STAGE_ORDER.indexOf(a.stage ?? 'unknown') - STAGE_ORDER.indexOf(b.stage ?? 'unknown');
+    return s !== 0 ? s : b.score - a.score;
+  });
+
+  const atDesign = final.filter(h => h.stage === 'design-tender' || h.stage === 'design-underway').length;
   console.log(`${hits.length} scored at or above ${SCORE_THRESHOLD}.`);
+  console.log(`  dropped ${dropped.expired} expired, ${dropped.duplicate} duplicate → ${final.length} reported`);
+  console.log(`  of which ${atDesign} are at design stage (spec still open)`);
   console.log(`Run cost: $${spend.usd.toFixed(4)} (${spend.braveCalls} searches, ${spend.modelCalls} model calls)\n`);
 
   saveSeen([...seenSet]);
 
-  if (hits.length === 0) {
+  if (final.length === 0) {
     console.log('Nothing worth reporting — no issue created.');
     return;
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  await createIssue(`Erosion control opportunities — ${today} (${hits.length})`, buildDigest(hits));
+  await createIssue(
+    `Erosion design opportunities — ${today} (${final.length}, ${atDesign} at design stage)`,
+    buildDigest(final, dropped)
+  );
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
