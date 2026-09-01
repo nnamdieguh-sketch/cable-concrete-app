@@ -50,11 +50,11 @@ const OUT_COST_PER_TOKEN    = 5.00 / 1_000_000;
 // contract is awarded the spec already says "stone pitching" or "gabions" and
 // the argument is against a locked document.
 const QUERIES = [
-  'expression of interest consultancy detailed design erosion control {country}',
-  'request for proposals engineering design gully erosion drainage {country}',
-  'terms of reference feasibility study erosion channel slope protection {country}',
-  'consultancy services detailed engineering design flood erosion {country}',
-  'World Bank AfDB consultant selection erosion watershed design {country}'
+  'expression of interest consultancy detailed design erosion gully control {country}',
+  'request for proposals engineering design drainage channel lining {country}',
+  'terms of reference feasibility study slope embankment protection {country}',
+  'consultancy detailed engineering design dam spillway riverbank protection {country}',
+  'World Bank AfDB consultant selection flood protection revetment design {country}'
 ];
 
 // Cheap pre-filter so we only pay the model for plausible candidates.
@@ -142,7 +142,24 @@ The commercial window is when a DESIGN CONSULTANT is being procured, or design i
 
 So a small consultancy EOI for detailed design is worth FAR MORE than a billion-naira construction contract award. Score accordingly — do not be impressed by contract value.
 
-First classify each result into one stage:
+STEP 1 — classify RELEVANCE. ACB revetment is a versatile product. It is specified for:
+erosion and gully control; channel and canal lining; slope protection; embankment protection of all
+kinds including road, rail and dam embankments; dam upstream faces, spillways, downstream aprons and
+stilling basins; bridge pier and abutment scour protection; riverbank, shoreline and coastal
+protection; levees and flood protection works; and permeable paving and pedestrian surfacing (the
+open-cell CC G2 block at 40% open area is a paving product).
+
+  "direct"     any of the applications listed above is named or clearly implied by the scope
+  "adjacent"   civil works where such an application is plausible but not stated — watershed
+               management programmes, urban stormwater and sanitation with a drainage component,
+               road or rail projects where embankment and drainage scope is not spelled out,
+               general infrastructure with a likely earthworks or water-control element
+  "unrelated"  no physical civil works at all, or works with no surface, slope, channel or
+               water-control element — water supply pipelines, treatment plants, WASH hardware,
+               buildings, power, IT, supply of goods, pure policy or capacity-building studies,
+               job adverts, directories, academic papers
+
+STEP 2 — classify STAGE:
   "design-tender"    EOI, RFP, ToR or consultant shortlisting for feasibility study, detailed engineering design, ESIA+design, or technical design services
   "design-underway"  a design consultant has been appointed, or design/feasibility work is in progress
   "project-funded"   project approved or financed, design not yet procured
@@ -150,15 +167,26 @@ First classify each result into one stage:
   "works-awarded"    works contract awarded, contractor named, or construction begun
   "unknown"          cannot tell
 
-Then score 1-10:
-  9-10  stage is design-tender AND the work clearly involves erosion, gully, channel, drainage, slope or shoreline protection
-  7-8   stage is design-tender but erosion relevance is partial, OR stage is design-underway with clear erosion scope
-  5-6   stage is project-funded with erosion scope — early warning, design procurement likely to follow
-  3-4   stage is works-tender — specification already written, only useful if it names a lining method we could challenge
-  1-2   stage is works-awarded, or not a real opportunity (directory, job advert, academic paper, marketing)
+STEP 3 — score 1-10. RELEVANCE IS A HARD CEILING, applied before stage:
+  - "unrelated" scores 1-2. Never above 2, no matter how good the procurement stage is. A perfect
+    design-stage EOI for water supply or road pavement is still a 2 — we cannot sell into it.
+  - "adjacent" scores at most 6.
+  - only "direct" may score 7-10.
+
+Within those ceilings, rank by stage:
+  9-10  direct relevance + design-tender — the specification is still open, this is the target
+  7-8   direct relevance + design-underway, or direct + design-tender with some scope ambiguity
+  5-6   project-funded with direct relevance, or any adjacent-relevance result
+  3-4   works-tender — specification already written, useful only if it names a lining method to challenge
+  1-2   works-awarded, unrelated relevance, or not a real opportunity (directory, job advert, academic paper, marketing)
+
+If the snippet names civil works but not enough detail to confirm an ACB application, use "adjacent"
+rather than guessing "direct". Reserve "unrelated" for work that genuinely has no surface, slope,
+channel or water-control element — not merely for scope that is vaguely described.
 
 For each result return an object with:
   i         - the index number given
+  relevance - one of the relevance strings above
   stage     - one of the stage strings above
   score     - 1-10
   project   - short project name, or null
@@ -268,7 +296,8 @@ function buildDigest(hits, dropped) {
       return s !== 0 ? s : b.score - a.score;
     });
     for (const h of sorted) {
-      md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}\n\n`;
+      const rel = h.relevance === 'adjacent' ? ' · _adjacent scope_' : '';
+      md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}${rel}\n\n`;
       if (h.location) md += `- **Location:** ${h.location}\n`;
       if (h.funder)   md += `- **Funder:** ${h.funder}\n`;
       if (h.work)     md += `- **Work:** ${h.work}\n`;
@@ -295,6 +324,11 @@ function buildDigest(hits, dropped) {
 }
 
 async function createIssue(title, body) {
+  // Assign to the repo owner. GitHub defaults an owned repo's watch setting to
+  // "Participating and @mentions", so an issue opened by github-actions[bot]
+  // generates no notification on its own. Being assigned always does.
+  const owner = (GH_REPO || '').split('/')[0];
+
   const r = await fetch(`https://api.github.com/repos/${GH_REPO}/issues`, {
     method: 'POST',
     headers: {
@@ -302,11 +336,17 @@ async function createIssue(title, body) {
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, body, labels: ['opportunity-monitor'] })
+    body: JSON.stringify({
+      title,
+      body,
+      labels: ['opportunity-monitor'],
+      ...(owner ? { assignees: [owner] } : {})
+    })
   });
   if (!r.ok) throw new Error(`Issue creation failed ${r.status}: ${(await r.text()).slice(0, 300)}`);
   const issue = await r.json();
   console.log(`\nIssue created: ${issue.html_url}`);
+  console.log(`  assigned to: ${issue.assignees?.map(a => a.login).join(', ') || '(none — check assignee permissions)'}`);
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────
