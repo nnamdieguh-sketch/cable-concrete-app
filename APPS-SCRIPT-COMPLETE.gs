@@ -1,208 +1,273 @@
 /**
  * ============================================================================
- * CABLE CONCRETE® — COMPLETE APPS SCRIPT
+ * CABLE CONCRETE® LEAD CAPTURE — Code.gs  (COMPLETE REPLACEMENT)
  * ============================================================================
  *
- * This is the WHOLE script. Select all in the Apps Script editor, delete,
- * paste this in its place, Save. Then add one trigger (see SETUP at bottom).
+ * Replaces Code.gs ONLY. Prospector.gs and Autoresponder.gs are untouched —
+ * nothing here calls them and nothing here defines a name they use.
  *
- * Handles all three things the app sends:
- *   1. Leads          — contact form submissions  -> Leads sheet  + email
- *   2. App installs    — PWA added to home screen  -> Installs sheet
- *   3. Error reports   — JS errors in a browser    -> Errors sheet + email
+ * PRESERVED exactly as before:
+ *   • SHEET_NAME "Sheet1" and its 16-column lead row order
+ *   • NOTIFY_EMAIL contact@iecsafrica.com for lead alerts
+ *   • Installs tab and its Platform/Method/Display column order
+ *   • Lead notification email wording
+ *   • Engineer autoresponder wording and signature
+ *   • testSetup() and testInstall()
  *
- * Plus a health check that polls the live site every 10 minutes and emails
- * if anything is down.
+ * ADDED:
+ *   • error_log events  -> Errors tab + throttled alert to ALERT_EMAIL
+ *   • runHealthCheck()  -> 10-minute uptime probe, alerts on failure
+ *   • Blank-lead guard  -> junk submissions logged but never emailed
  *
- * The app calls this over GET with no-cors, so doGet is the real entry point.
- * doPost is wired to the same router in case the transport ever changes.
+ * FIXED:
+ *   • Autoresponder had a markdown link pasted into a plain-text email, so
+ *     engineers were literally receiving:
+ *       Web: [www.cableconcrete.app](https://www.cableconcrete.app)
+ *     Now reads: Web: www.cableconcrete.app
+ *   • Lead subject line printed "undefined" when name/country were missing.
  * ============================================================================
  */
 
-// ── CONFIG — change these if anything moves ─────────────────────────────────
-var ALERT_EMAIL   = 'nnamdieguh@iecsafrica.com';
-var SHEET_ID      = '1Y_ivVEZ1v3JtKQlMEUElRCX9SwQubvfIvBrkhoskCpE';
-var SITE_URL      = 'https://www.cableconcrete.app';
-
-var LEADS_TAB     = 'Leads';
-var INSTALLS_TAB  = 'Installs';
-var ERRORS_TAB    = 'Errors';
-
-// Priority markets get flagged in the subject line.
-var PRIORITY_MARKETS = ['Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique'];
+var SHEET_NAME   = "Sheet1";
+var NOTIFY_EMAIL = "contact@iecsafrica.com";        // leads — sales inbox
+var ALERT_EMAIL  = "nnamdieguh@iecsafrica.com";     // errors + uptime — technical
+var SITE_URL     = "https://www.cableconcrete.app";
 
 
-// ── ROUTER ──────────────────────────────────────────────────────────────────
-function doGet(e)  { return route_(e); }
-function doPost(e) { return route_(e); }
+function doGet(e) {
+  return handleRequest(e.parameter);
+}
 
-function route_(e) {
+function doPost(e) {
+  var data = {};
   try {
-    var p = (e && e.parameter) ? e.parameter : {};
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    } else if (e.parameter) {
+      data = e.parameter;
+    }
+  } catch(err) {
+    data = e.parameter || {};
+  }
+  return handleRequest(data);
+}
 
-    if (p.event === 'error_log')   { handleErrorLog_(p);   return ok_('error logged'); }
-    if (p.event === 'app_install') { handleAppInstall_(p); return ok_('install logged'); }
+function handleRequest(data) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
 
-    // Anything else is a lead from the contact form.
-    handleLead_(p);
-    return ok_('lead received');
+    // ── APP INSTALL EVENTS ──────────────────────────────────────────────
+    // Logged to a separate "Installs" tab. No emails, no lead rows.
+    if (data.event === "app_install") {
+      var ish = ss.getSheetByName("Installs");
+      if (!ish) {
+        ish = ss.insertSheet("Installs");
+        ish.appendRow(["Timestamp", "Platform", "Method", "Display", "User Agent"]);
+      }
+      ish.appendRow([
+        new Date().toLocaleString(),
+        data.platform || "",
+        data.method || "",
+        data.display || "",
+        data.ua || ""
+      ]);
+      return ContentService
+        .createTextOutput(JSON.stringify({status:"success", logged:"install"}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── ERROR REPORTS ───────────────────────────────────────────────────
+    // The app filters third-party noise (Vercel Analytics, browser
+    // extensions) before sending, so anything arriving here is our own
+    // code. Logged to an "Errors" tab; emailed at most once per unique
+    // message per day so a repeating bug can't flood the inbox.
+    if (data.event === "error_log") {
+      var esh = ss.getSheetByName("Errors");
+      if (!esh) {
+        esh = ss.insertSheet("Errors");
+        esh.appendRow(["Timestamp","Type","Message","Source","Line","Col","Page","User Agent","Stack"]);
+        esh.setFrozenRows(1);
+      }
+      esh.appendRow([
+        new Date().toLocaleString(),
+        data.type || "",
+        data.message || "",
+        data.source || "",
+        data.line || "",
+        data.col || "",
+        data.page || "",
+        data.ua || "",
+        data.stack || ""
+      ]);
+
+      if (throttle_("err_" + hash_(String(data.message || "").slice(0,120)), 24*60*60*1000)) {
+        GmailApp.sendEmail(ALERT_EMAIL,
+          "[Cable Concrete] App error: " + String(data.message || "").slice(0,70),
+          "A JavaScript error fired in the Cable Concrete app.\n\n" +
+          "Type:    " + (data.type || "") + "\n" +
+          "Message: " + (data.message || "") + "\n" +
+          "Page:    " + (data.page || "") + "\n" +
+          "Source:  " + (data.source || "") + ":" + (data.line || "") + "\n" +
+          "Device:  " + (data.ua || "") + "\n\n" +
+          "Stack:\n" + (data.stack || "(none)") + "\n\n" +
+          "============================\n" +
+          "One email per unique error per day.\n" +
+          "Full log: https://docs.google.com/spreadsheets/d/" + ss.getId(),
+          { name: "Cable Concrete Monitor" });
+      }
+
+      return ContentService
+        .createTextOutput(JSON.stringify({status:"success", logged:"error"}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    // ────────────────────────────────────────────────────────────────────
+
+    var sheet = ss.getSheetByName(SHEET_NAME);
+
+    if (!sheet) {
+      GmailApp.sendEmail(NOTIFY_EMAIL,
+        "ERROR - Cable Concrete Sheet Not Found",
+        "Sheet named '" + SHEET_NAME + "' was not found. Lead data lost:\n\n" + JSON.stringify(data)
+      );
+      return ContentService
+        .createTextOutput(JSON.stringify({status:"error",message:"Sheet not found"}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    sheet.appendRow([
+      new Date().toLocaleString(),
+      data.name || "",
+      data.firm || "",
+      data.email || "",
+      data.phone || "",
+      data.country || "",
+      data.priority || "Standard",
+      data.scope || "",
+      data.source || "Not specified",
+      data.block || "",
+      data.velocity || "",
+      data.shear || "",
+      data.mat_size || "",
+      data.block_height || "",
+      data.cable_spec || "",
+      data.terms || ""
+    ]);
+
+    // ── BLANK-LEAD GUARD ────────────────────────────────────────────────
+    // A submission carrying neither a name nor an email is junk — a
+    // crawler, a probe, or a stray request. The row above keeps it
+    // auditable, but no email goes out. This is what produced the blank
+    // lead alerts with a script URL sitting in the Source column.
+    if (!String(data.name || "").trim() && !String(data.email || "").trim()) {
+      return ContentService
+        .createTextOutput(JSON.stringify({status:"success", logged:"blank-ignored"}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    // ────────────────────────────────────────────────────────────────────
+
+    var isPriority = (data.priority || "").indexOf("PRIORITY") > -1;
+    var subject = (isPriority ? "*** PRIORITY LEAD ***" : "New Lead") +
+      " - Cable Concrete | " + (data.name || "Unknown") + " | " + (data.country || "Unknown");
+
+    var body =
+      "============================\n" +
+      "NEW CABLE CONCRETE LEAD\n" +
+      "============================\n\n" +
+      "CONTACT DETAILS\n" +
+      "----------------\n" +
+      "Name: " + (data.name || "") + "\n" +
+      "Firm: " + (data.firm || "") + "\n" +
+      "Email: " + (data.email || "") + "\n" +
+      "Phone: " + (data.phone || "") + "\n" +
+      "Country: " + (data.country || "") + "\n" +
+      "Priority: " + (data.priority || "Standard") + "\n" +
+      "Source: " + (data.source || "Not specified") + "\n\n" +
+      "PROJECT SCOPE\n" +
+      "----------------\n" +
+      (data.scope || "") + "\n\n" +
+      "RECOMMENDED BLOCK\n" +
+      "----------------\n" +
+      "Block: " + (data.block || "") + "\n" +
+      "Max Velocity: " + (data.velocity || "") + "\n" +
+      "Shear Resistance: " + (data.shear || "") + "\n" +
+      "Mat Size: " + (data.mat_size || "") + "\n" +
+      "Block Height: " + (data.block_height || "") + "\n" +
+      "Cable Spec: " + (data.cable_spec || "") + "\n\n" +
+      "Terms Status: " + (data.terms || "") + "\n" +
+      "Submitted: " + new Date().toLocaleString() + "\n\n" +
+      "============================\n" +
+      "Reply to this email to contact the engineer directly.\n" +
+      "View full leads sheet:\n" +
+      "https://docs.google.com/spreadsheets/d/" +
+      ss.getId() + "\n" +
+      "============================";
+
+    GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, {
+      replyTo: data.email || "",
+      name: "Cable Concrete App"
+    });
+
+    if (data.email && data.email.indexOf("@") > -1 && data.email !== NOTIFY_EMAIL) {
+      var engineerSubject = "Your Cable Concrete Block Selection - IECS Africa";
+      var engineerBody =
+        "Dear " + (data.name || "Engineer") + ",\n\n" +
+        "Thank you for using the Cable Concrete Block Selection Tool.\n\n" +
+        "Your project has been received by IECS Africa.\n" +
+        "We will contact you shortly with a formal quote.\n\n" +
+        "============================\n" +
+        "YOUR RECOMMENDATION\n" +
+        "============================\n" +
+        "Block: " + (data.block || "") + "\n" +
+        "Max Velocity: " + (data.velocity || "") + "\n" +
+        "Shear Resistance: " + (data.shear || "") + "\n" +
+        "Mat Size: " + (data.mat_size || "") + "\n" +
+        "Block Height: " + (data.block_height || "") + "\n" +
+        "Cable Spec: " + (data.cable_spec || "") + "\n\n" +
+        "PROJECT: " + (data.scope || "") + "\n\n" +
+        "============================\n" +
+        "NEXT STEPS\n" +
+        "============================\n" +
+        "IECS Africa will contact you with:\n" +
+        "- Formal block supply quotation\n" +
+        "- Installation services proposal\n" +
+        "- Site visit arrangement where applicable\n\n" +
+        "For urgent enquiries:\n" +
+        "Email: contact@iecsafrica.com\n" +
+        "Phone: +234 809 464 4407\n" +
+        "Web: www.cableconcrete.app\n\n" +
+        "Best regards,\n" +
+        "Nnamdi Eguh\n" +
+        "VP Africa, IECS Global Inc. Canada\n" +
+        "IECS Africa - Subsidiary of IECS Global Inc. Canada";
+
+      GmailApp.sendEmail(data.email, engineerSubject, engineerBody, {
+        replyTo: NOTIFY_EMAIL,
+        name: "IECS Africa"
+      });
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
-    // Never throw back at the browser — log it and move on.
-    try {
-      MailApp.sendEmail({
-        to: ALERT_EMAIL,
-        subject: '[Cable Concrete] Apps Script error',
-        body: 'The script threw while handling a request.\n\n' + err.toString() +
-              '\n\nStack:\n' + (err.stack || '(none)')
-      });
-    } catch (e2) {}
-    return ok_('error');
+    return ContentService
+      .createTextOutput(JSON.stringify({status:"error",message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
   }
-}
-
-function ok_(msg) {
-  return ContentService.createTextOutput(msg).setMimeType(ContentService.MimeType.TEXT);
-}
-
-
-// ── LEADS ───────────────────────────────────────────────────────────────────
-function handleLead_(p) {
-  var headers = ['Timestamp','Name','Firm','Email','Phone','Country','Priority',
-                 'Project Scope','Source','Block','Max Velocity','Shear Resistance',
-                 'Mat Size','Block Height','Cable Spec','Terms Status'];
-
-  var row = {
-    'Timestamp'        : new Date(),
-    'Name'             : p.name || '',
-    'Firm'             : p.firm || '',
-    'Email'            : p.email || '',
-    'Phone'            : p.phone || '',
-    'Country'          : p.country || '',
-    'Priority'         : p.priority || 'Standard',
-    'Project Scope'    : p.scope || '',
-    'Source'           : p.source || '',
-    'Block'            : p.block || '',
-    'Max Velocity'     : p.velocity || '',
-    'Shear Resistance' : p.shear || '',
-    'Mat Size'         : p.mat_size || '',
-    'Block Height'     : p.block_height || '',
-    'Cable Spec'       : p.cable_spec || '',
-    'Terms Status'     : p.terms || ''
-  };
-
-  appendMapped_(LEADS_TAB, headers, row);
-
-  // Guard: a "lead" with neither a name nor an email is junk — a crawler, a
-  // probe, or a stray request. Log it (above) so it's auditable, but don't
-  // email. This is what produced the blank lead alerts.
-  if (!String(p.name || '').trim() && !String(p.email || '').trim()) return;
-
-  var isPriority = PRIORITY_MARKETS.indexOf(p.country || '') !== -1;
-  var subject = (isPriority ? '[PRIORITY] ' : '') +
-                'New Cable Concrete lead — ' + (p.name || 'Unknown') +
-                (p.country ? ' (' + p.country + ')' : '');
-
-  var body =
-    '==============================\n' +
-    'NEW CABLE CONCRETE LEAD\n' +
-    '==============================\n\n' +
-    'CONTACT DETAILS\n' +
-    '---------------\n' +
-    'Name:     ' + (p.name || '') + '\n' +
-    'Firm:     ' + (p.firm || '') + '\n' +
-    'Email:    ' + (p.email || '') + '\n' +
-    'Phone:    ' + (p.phone || '') + '\n' +
-    'Country:  ' + (p.country || '') + '\n' +
-    'Priority: ' + (p.priority || 'Standard') + '\n' +
-    'Source:   ' + (p.source || 'Not specified') + '\n\n' +
-    'PROJECT SCOPE\n' +
-    '---------------\n' +
-    (p.scope || '(not provided)') + '\n\n' +
-    'RECOMMENDED BLOCK\n' +
-    '---------------\n' +
-    'Block:            ' + (p.block || '') + '\n' +
-    'Max Velocity:     ' + (p.velocity || '') + '\n' +
-    'Shear Resistance: ' + (p.shear || '') + '\n' +
-    'Mat Size:         ' + (p.mat_size || '') + '\n' +
-    'Block Height:     ' + (p.block_height || '') + '\n' +
-    'Cable Spec:       ' + (p.cable_spec || '') + '\n\n' +
-    'Terms Status: ' + (p.terms || '') + '\n' +
-    'Submitted:    ' + (p.submitted || new Date().toLocaleString()) + '\n\n' +
-    '==============================\n' +
-    'Reply to this email to contact the engineer directly.\n' +
-    'View full leads sheet:\n' +
-    'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '\n' +
-    '==============================';
-
-  var opts = { to: ALERT_EMAIL, subject: subject, body: body };
-  if (String(p.email || '').indexOf('@') !== -1) opts.replyTo = p.email;
-  MailApp.sendEmail(opts);
-}
-
-
-// ── APP INSTALLS ────────────────────────────────────────────────────────────
-// Logged only — no email. Check the Installs tab whenever you want the count.
-function handleAppInstall_(p) {
-  appendMapped_(INSTALLS_TAB,
-    ['Timestamp','Method','Platform','Display Mode','User Agent'],
-    {
-      'Timestamp'    : new Date(),
-      'Method'       : p.method || '',
-      'Platform'     : p.platform || '',
-      'Display Mode' : p.display || '',
-      'User Agent'   : p.ua || ''
-    });
-}
-
-
-// ── ERROR REPORTS ───────────────────────────────────────────────────────────
-// The app already filters out third-party noise (Vercel Analytics, browser
-// extensions) before sending, so anything arriving here is our own code.
-// Emails at most once per day per unique message so a repeated bug can't
-// flood the inbox.
-function handleErrorLog_(p) {
-  appendMapped_(ERRORS_TAB,
-    ['Timestamp','Type','Message','Source','Line','Col','Page','User Agent','Stack'],
-    {
-      'Timestamp'  : new Date(),
-      'Type'       : p.type || '',
-      'Message'    : p.message || '',
-      'Source'     : p.source || '',
-      'Line'       : p.line || '',
-      'Col'        : p.col || '',
-      'Page'       : p.page || '',
-      'User Agent' : p.ua || '',
-      'Stack'      : p.stack || ''
-    });
-
-  if (!throttle_('err_' + hash_(String(p.message || '').slice(0, 120)), 24 * 60 * 60 * 1000)) return;
-
-  MailApp.sendEmail({
-    to: ALERT_EMAIL,
-    subject: '[Cable Concrete] App error: ' + String(p.message || '').slice(0, 70),
-    body:
-      'A JavaScript error fired in the Cable Concrete app.\n\n' +
-      'Type:    ' + (p.type || '') + '\n' +
-      'Message: ' + (p.message || '') + '\n' +
-      'Page:    ' + (p.page || '') + '\n' +
-      'Source:  ' + (p.source || '') + ':' + (p.line || '') + '\n' +
-      'Device:  ' + (p.ua || '') + '\n\n' +
-      'Stack:\n' + (p.stack || '(none)') + '\n\n' +
-      '------------------------------\n' +
-      'You get one email per unique error per day.\n' +
-      'Full log: https://docs.google.com/spreadsheets/d/' + SHEET_ID
-  });
 }
 
 
 // ── HEALTH CHECK ────────────────────────────────────────────────────────────
-// Runs on a 10-minute trigger. Emails if the site or any API is down, at most
-// once an hour so an outage doesn't spam you.
+// Add a time-driven trigger on this function (every 10 minutes — see SETUP).
+// Probes the live site's /api/health endpoint, which checks the version API,
+// the engineering-data API, the manifest and the CSU test-report PDF.
+// Emails ALERT_EMAIL on failure, at most once an hour so an outage doesn't
+// bury you in mail.
 function runHealthCheck() {
   var status, bodyText;
   try {
-    var resp = UrlFetchApp.fetch(SITE_URL + '/api/health', {
+    var resp = UrlFetchApp.fetch(SITE_URL + "/api/health", {
       muteHttpExceptions: true,
       followRedirects: true
     });
@@ -215,73 +280,24 @@ function runHealthCheck() {
     }
   } catch (err) {
     status   = 0;
-    bodyText = 'Request threw: ' + err.toString();
+    bodyText = "Request threw: " + err.toString();
   }
 
-  if (!throttle_('health_alert', 60 * 60 * 1000)) return;
+  if (!throttle_("health_alert", 60*60*1000)) return;
 
-  MailApp.sendEmail({
-    to: ALERT_EMAIL,
-    subject: '[Cable Concrete] SITE HEALTH CHECK FAILED (HTTP ' + status + ')',
-    body:
-      'The 10-minute health probe against ' + SITE_URL + ' failed.\n\n' +
-      'HTTP status: ' + status + '\n\n' +
-      'Response:\n' + bodyText + '\n\n' +
-      '------------------------------\n' +
-      'No further alerts for this issue for 1 hour.\n' +
-      'Check: ' + SITE_URL
-  });
+  GmailApp.sendEmail(ALERT_EMAIL,
+    "[Cable Concrete] SITE HEALTH CHECK FAILED (HTTP " + status + ")",
+    "The 10-minute health probe against " + SITE_URL + " failed.\n\n" +
+    "HTTP status: " + status + "\n\n" +
+    "Response:\n" + bodyText + "\n\n" +
+    "============================\n" +
+    "No further alerts for this issue for 1 hour.\n" +
+    "Check: " + SITE_URL,
+    { name: "Cable Concrete Monitor" });
 }
 
 
 // ── HELPERS ─────────────────────────────────────────────────────────────────
-
-/**
- * Appends a row to a tab, matching whatever column order that tab already
- * uses. If the tab is new or empty the supplied headers are written first.
- * This means it works with your existing Leads sheet without reordering
- * anything, and creates the Installs / Errors tabs automatically.
- */
-function appendMapped_(tabName, defaultHeaders, dataObj) {
-  var ss = SpreadsheetApp.openById(SHEET_ID);
-  var sheet = ss.getSheetByName(tabName);
-
-  if (!sheet) {
-    sheet = ss.insertSheet(tabName);
-    sheet.appendRow(defaultHeaders);
-    sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold');
-  }
-
-  var lastCol = sheet.getLastColumn();
-  var headers = (sheet.getLastRow() === 0 || lastCol === 0)
-    ? null
-    : sheet.getRange(1, 1, 1, lastCol).getValues()[0];
-
-  if (!headers || headers.join('').trim() === '') {
-    sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
-    sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, defaultHeaders.length).setFontWeight('bold');
-    headers = defaultHeaders;
-  }
-
-  // Map our data onto the sheet's actual column order.
-  var row = headers.map(function (h) {
-    var key = String(h).trim();
-    return dataObj.hasOwnProperty(key) ? dataObj[key] : '';
-  });
-
-  // Any field the sheet has no column for gets appended on the end so
-  // nothing is silently dropped.
-  Object.keys(dataObj).forEach(function (k) {
-    var found = headers.some(function (h) { return String(h).trim() === k; });
-    if (!found && dataObj[k] !== '' && dataObj[k] !== null) {
-      row.push(k + ': ' + dataObj[k]);
-    }
-  });
-
-  sheet.appendRow(row);
-}
 
 /** Returns true if enough time has passed since this key last fired. */
 function throttle_(key, windowMs) {
@@ -296,23 +312,88 @@ function throttle_(key, windowMs) {
 /** Short stable hash so repeated errors share one throttle key. */
 function hash_(str) {
   return Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, str)
-    .map(function (b) { return ('0' + (b < 0 ? b + 256 : b).toString(16)).slice(-2); })
-    .join('')
+    .map(function(b){ return ("0" + (b < 0 ? b + 256 : b).toString(16)).slice(-2); })
+    .join("")
     .slice(0, 16);
 }
 
 
-// ── SETUP & TESTING ─────────────────────────────────────────────────────────
+// ── TESTS ───────────────────────────────────────────────────────────────────
+
+function testSetup() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (sheet) {
+    Logger.log("Sheet found: " + sheet.getName());
+    handleRequest({
+      name: "Test Engineer Nnamdi",
+      firm: "IECS Africa Test",
+      email: "nnamdieguh@iecsafrica.com",
+      phone: "+234 809 464 4407",
+      country: "Nigeria",
+      priority: "PRIORITY - 24hr Response",
+      scope: "2.4km gully erosion control, Anambra State - 4.5m channel, 3:1 slope",
+      source: "Google Search",
+      block: "CC 45 - Steep Slopes & High Velocity",
+      velocity: "6.1 m/s (good) / 3.5 (poor)",
+      shear: "390 N/m2",
+      mat_size: "2.44m x 4.88m",
+      block_height: "140-152 mm (5.5 inch)",
+      cable_spec: "SS 1x19 5/32 inch / 4mm",
+      terms: "Test submission"
+    });
+    Logger.log("Done - check sheet and email.");
+  } else {
+    Logger.log("Sheet NOT found. Check SHEET_NAME = " + SHEET_NAME);
+    Logger.log("Available sheets:");
+    var sheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+    for (var i = 0; i < sheets.length; i++) {
+      Logger.log(" - " + sheets[i].getName());
+    }
+  }
+}
+
+function testInstall() {
+  handleRequest({ event: "app_install", platform: "Android", method: "test", display: "standalone", ua: "test run" });
+  Logger.log('Done - check for an "Installs" tab with a test row.');
+}
+
+/** Logs a test error and emails ALERT_EMAIL. Creates the Errors tab. */
+function testError() {
+  handleRequest({
+    event: "error_log",
+    type: "js-error",
+    message: "Script self-test error " + new Date().getTime(),
+    source: SITE_URL + "/index.html",
+    line: "1", col: "1",
+    page: "/",
+    ua: "testError",
+    stack: "(self-test)"
+  });
+  Logger.log('Done - check for an "Errors" tab and an email to ' + ALERT_EMAIL);
+}
+
+/** Probes the live site. Silent if healthy; emails if something is down. */
+function testHealth() {
+  runHealthCheck();
+  Logger.log("Health check ran. Silence means the site is healthy.");
+}
+
+/** Blank-lead guard check — logs a row to Sheet1 but sends NO email. */
+function testBlankLeadIgnored() {
+  handleRequest({ source: SITE_URL + "/_vercel/insights/script.js" });
+  Logger.log("Blank lead logged to Sheet1 with no email sent. Check the last row.");
+}
+
+
+// ── SETUP ───────────────────────────────────────────────────────────────────
 /**
- * SETUP — do this once after pasting:
- *
  *  1. Save (disk icon).
  *
- *  2. Redeploy so the app talks to this version:
+ *  2. Redeploy so the live app talks to this version:
  *       Deploy > Manage deployments > pencil icon >
  *       Version: "New version" > Deploy
- *     (Do NOT create a brand new deployment — that changes the URL and the
- *      app would stop reaching you.)
+ *     Use MANAGE deployments, not "New deployment" — a new deployment
+ *     issues a different URL and the app would stop reaching you.
  *
  *  3. Add the health-check trigger:
  *       Triggers (clock icon, left sidebar) > + Add Trigger
@@ -320,38 +401,12 @@ function hash_(str) {
  *         Event source:  Time-driven
  *         Type:          Minutes timer
  *         Interval:      Every 10 minutes
- *       Save, and accept the authorisation prompts.
+ *       Save, then accept the authorisation prompts.
  *
- *  4. Run testAll_ once from the editor to confirm everything works.
+ *  4. Verify — run each from the toolbar dropdown:
+ *       testSetup             lead row + both emails
+ *       testInstall           Installs tab row
+ *       testError             Errors tab row + alert email
+ *       testHealth            silent if the site is up
+ *       testBlankLeadIgnored  row in Sheet1, no email
  */
-
-/** Select testAll_ in the toolbar dropdown and press Run. */
-function testAll_() {
-  handleLead_({
-    name: 'Test Engineer', firm: 'Test Firm', email: ALERT_EMAIL,
-    phone: '+234 800 000 0000', country: 'Nigeria',
-    priority: 'PRIORITY — 24hr Response',
-    scope: 'Script self-test — safe to ignore.',
-    source: 'testAll_', block: 'CC 45 — Steep Slopes & High Velocity',
-    velocity: '6.1 m/s (good)', shear: '390 N/m²', mat_size: '2.44m × 4.88m',
-    block_height: '140–152 mm', cable_spec: 'SS 1x19 5/32"', terms: 'Test'
-  });
-
-  handleAppInstall_({ method: 'test', platform: 'Test', display: 'standalone', ua: 'testAll_' });
-
-  handleErrorLog_({
-    type: 'js-error', message: 'Script self-test error ' + Date.now(),
-    source: SITE_URL + '/index.html', line: '1', col: '1',
-    page: '/', ua: 'testAll_', stack: '(self-test)'
-  });
-
-  runHealthCheck();
-
-  Logger.log('testAll_ finished. Check the Leads / Installs / Errors tabs and your inbox.');
-}
-
-/** Blank-lead guard check — should log a row but send NO email. */
-function testBlankLeadIgnored_() {
-  handleLead_({ source: SITE_URL + '/_vercel/insights/script.js' });
-  Logger.log('Blank lead logged to the sheet with no email sent.');
-}
