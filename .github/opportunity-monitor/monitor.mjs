@@ -69,7 +69,11 @@ const PROCUREMENT_HINTS = [
 ];
 
 // Lifecycle stages, ordered. Anything at 'works-awarded' is past our window.
-const STAGE_ORDER = ['design-tender','design-underway','project-funded','works-tender','works-awarded','unknown'];
+// Pre-award stages rank ahead of post-award. Before an award the procuring
+// agency is the lever — they run the process, they often know which consultant
+// is likely to win, and a relationship built with them survives whoever gets
+// it. Once the award is made you are talking to one firm about one job.
+const STAGE_ORDER = ['design-tender','project-funded','design-underway','works-tender','works-awarded','unknown'];
 const STAGE_LABEL = {
   'design-tender'   : '🟢 Design tender open',
   'design-underway' : '🟡 Design in progress',
@@ -191,7 +195,14 @@ For each result return an object with:
   score     - 1-10
   project   - short project name, or null
   location  - state/city/region, or null
-  funder    - funding body, or null
+  funder    - the body providing the money (World Bank, AfDB, KfW, state government), or null
+  agency    - the government ministry, authority, agency or unit RUNNING this procurement and
+              receiving submissions. This is usually different from the funder: the World Bank may
+              fund it while a Federal Ministry of Water Resources, a state Ministry of Environment,
+              KeNHA, KERRA or a project implementation unit actually runs it. Give the specific body
+              named in the notice, not the country. null if genuinely not stated.
+  contact   - any enquiry contact given: named officer, office, email, phone, or the address for
+              collecting or submitting documents. Quote it as written. null if none.
   work      - the erosion work involved in a few words, or null
   deadline  - submission deadline in YYYY-MM-DD if one is stated, else null. Do NOT put project durations or start dates here.
   approved_date  - date the project was approved, financed or the loan/credit signed, as YYYY-MM-DD or YYYY-MM, else null
@@ -309,31 +320,48 @@ function timelineLine(h) {
 
 /**
  * Ranks how time-critical a hit is. rank 0 sorts to the very top.
- * A known, recently-appointed designer beats an open tender: with a tender
- * you don't yet know who will win, with an appointment you have a firm to ring.
+ *
+ * Pre-award beats post-award. While a tender is still open the procuring
+ * agency is contactable, knows the field, and can often say which consultant
+ * is likely to win — and a relationship formed then carries over to whoever
+ * does. After the award you are down to one firm and one conversation.
  */
+const PRE_AWARD = new Set(['design-tender', 'project-funded']);
+
 function urgency(h) {
   const dl = parseLooseDate(h.deadline);
   const aw = parseLooseDate(h.awarded_date);
   const pu = parseLooseDate(h.published_date);
+  const preAward = PRE_AWARD.has(h.stage);
 
-  if (dl) {
+  // Open tender about to close — the agency is live and reachable right now.
+  if (preAward && dl) {
     const d = daysUntil(dl.t);
-    if (d >= 0 && d <= 21) return { rank: 0, tag: `⏳ CLOSES IN ${d} DAYS` };
+    if (d >= 0 && d <= 21) return { rank: 0, tag: `⏳ CLOSES IN ${d} DAYS — CONTACT THE AGENCY NOW` };
   }
+  // Open tender with runway, or one whose deadline isn't stated. Still
+  // pre-award, so still the best moment to build the relationship.
+  if (h.stage === 'design-tender') {
+    if (dl) {
+      const d = daysUntil(dl.t);
+      if (d >= 0) return { rank: 1, tag: `📋 TENDER OPEN — ${d} days to award` };
+    }
+    return { rank: 1, tag: `📋 TENDER OPEN — contact the agency` };
+  }
+  // Funded but not yet tendered — earliest possible approach.
+  if (h.stage === 'project-funded') {
+    return { rank: 2, tag: `🌱 PRE-TENDER — agency reachable before the process starts` };
+  }
+  // Award already made. Useful, but now it is one firm rather than the agency.
   if (aw) {
     const d = daysSince(aw.t);
-    if (d >= 0 && d <= 90) return { rank: 1, tag: `🆕 DESIGNER APPOINTED ${d}d AGO — CALL THEM` };
-  }
-  if (dl) {
-    const d = daysUntil(dl.t);
-    if (d > 21 && d <= 60) return { rank: 2, tag: `📅 ${d} days to bid` };
+    if (d >= 0 && d <= 90) return { rank: 3, tag: `🆕 designer appointed ${d}d ago — approach the firm` };
   }
   if (pu) {
     const d = daysSince(pu.t);
-    if (d >= 0 && d <= 30) return { rank: 3, tag: `📰 published ${d}d ago` };
+    if (d >= 0 && d <= 30) return { rank: 4, tag: `📰 published ${d}d ago` };
   }
-  return { rank: 4, tag: null };
+  return { rank: 5, tag: null };
 }
 
 // ── Post-filters ───────────────────────────────────────────────────────────
@@ -392,12 +420,14 @@ function buildDigest(hits, dropped) {
   // fortnight or a designer appointed last month is worth acting on today,
   // and shouldn't be buried three countries down the page.
   const urgent = hits.map(h => ({ h, u: urgency(h) }))
-                     .filter(x => x.u.rank <= 1)
+                     .filter(x => x.u.rank <= 2)
                      .sort((a, b) => a.u.rank - b.u.rank);
   if (urgent.length) {
-    md += `## ⚡ Act on these first\n\n`;
+    md += `## ⚡ Pre-award — agency still reachable\n\n`;
+    md += `The award has not been made on these, so the procuring agency is the contact. They run the process, they know the field, and a relationship formed now carries over to whoever wins.\n\n`;
     for (const { h, u } of urgent) {
       md += `- **${u.tag}** — ${h.project || h.title} _(${h.country})_\n`;
+      if (h.agency) md += `  ☎️ **${h.agency}**${h.contact ? ` · ${h.contact}` : ''}\n`;
       const tl = timelineLine(h);
       if (tl) md += `  ${tl}\n`;
     }
@@ -416,6 +446,8 @@ function buildDigest(hits, dropped) {
       if (u.tag)      md += `> **${u.tag}**\n\n`;
       const tl = timelineLine(h);
       if (tl)         md += `- **Timeline:** ${tl}\n`;
+      if (h.agency)   md += `- **☎️ Procuring agency:** ${h.agency}${PRE_AWARD.has(h.stage) ? ' — reachable now, pre-award' : ''}\n`;
+      if (h.contact)  md += `- **Contact:** ${h.contact}\n`;
       if (h.location) md += `- **Location:** ${h.location}\n`;
       if (h.funder)   md += `- **Funder:** ${h.funder}\n`;
       if (h.work)     md += `- **Work:** ${h.work}\n`;
