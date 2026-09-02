@@ -69,7 +69,11 @@ const PROCUREMENT_HINTS = [
 ];
 
 // Lifecycle stages, ordered. Anything at 'works-awarded' is past our window.
-const STAGE_ORDER = ['design-tender','design-underway','project-funded','works-tender','works-awarded','unknown'];
+// Pre-award stages rank ahead of post-award. Before an award the procuring
+// agency is the lever — they run the process, they often know which consultant
+// is likely to win, and a relationship built with them survives whoever gets
+// it. Once the award is made you are talking to one firm about one job.
+const STAGE_ORDER = ['design-tender','project-funded','design-underway','works-tender','works-awarded','unknown'];
 const STAGE_LABEL = {
   'design-tender'   : '🟢 Design tender open',
   'design-underway' : '🟡 Design in progress',
@@ -191,10 +195,24 @@ For each result return an object with:
   score     - 1-10
   project   - short project name, or null
   location  - state/city/region, or null
-  funder    - funding body, or null
+  funder    - the body providing the money (World Bank, AfDB, KfW, state government), or null
+  agency    - the government ministry, authority, agency or unit RUNNING this procurement and
+              receiving submissions. This is usually different from the funder: the World Bank may
+              fund it while a Federal Ministry of Water Resources, a state Ministry of Environment,
+              KeNHA, KERRA or a project implementation unit actually runs it. Give the specific body
+              named in the notice, not the country. null if genuinely not stated.
+  contact   - any enquiry contact given: named officer, office, email, phone, or the address for
+              collecting or submitting documents. Quote it as written. null if none.
   work      - the erosion work involved in a few words, or null
   deadline  - submission deadline in YYYY-MM-DD if one is stated, else null. Do NOT put project durations or start dates here.
+  approved_date  - date the project was approved, financed or the loan/credit signed, as YYYY-MM-DD or YYYY-MM, else null
+  published_date - date THIS notice, tender or EOI was published, as YYYY-MM-DD or YYYY-MM, else null
+  awarded_date   - date a design consultant was appointed or the contract signed, as YYYY-MM-DD or YYYY-MM, else null
   spec      - any lining method named (stone pitching, gabions, riprap, concrete lining), or null
+
+Timing matters more than anything else here, so extract those three dates whenever the snippet gives
+them, even approximately to the month. Never invent a date, and never carry one field's date into
+another — a project approved in 2023 whose tender published in 2026 must show both, not one repeated.
   why       - one short clause on why it scored that way
 
 Return ONLY a JSON array, no prose, no code fences.
@@ -245,6 +263,107 @@ ${listing}`;
   }
 }
 
+// ── Timing ─────────────────────────────────────────────────────────────────
+// Where a project sits in time decides whether it is worth a call today.
+// A design tender closing in 10 days needs acting on now; a consultant
+// appointed last month is the single best moment to approach, because the
+// firm is known and the specification is not yet written.
+
+const DAY = 86_400_000;
+
+/** Accepts YYYY-MM-DD, YYYY-MM, or anything Date.parse handles. */
+function parseLooseDate(s) {
+  if (!s) return null;
+  const str = String(s).trim();
+  const m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(str);
+  if (m) {
+    const t = Date.UTC(+m[1], +m[2] - 1, m[3] ? +m[3] : 1);
+    return Number.isNaN(t) ? null : { t, monthOnly: !m[3] };
+  }
+  const t = Date.parse(str);
+  return Number.isNaN(t) ? null : { t, monthOnly: false };
+}
+
+const daysUntil = t => Math.round((t - Date.now()) / DAY);
+const daysSince = t => Math.round((Date.now() - t) / DAY);
+
+function fmtDate(p) {
+  if (!p) return null;
+  return new Date(p.t).toLocaleDateString('en-GB', p.monthOnly
+    ? { year: 'numeric', month: 'short', timeZone: 'UTC' }
+    : { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+/** One-line project chronology, only including the dates we actually have. */
+function timelineLine(h) {
+  const parts = [];
+  const ap = parseLooseDate(h.approved_date);
+  const pu = parseLooseDate(h.published_date);
+  const aw = parseLooseDate(h.awarded_date);
+  const dl = parseLooseDate(h.deadline);
+
+  if (ap) parts.push(`approved ${fmtDate(ap)}`);
+  if (pu) {
+    const d = daysSince(pu.t);
+    parts.push(`published ${fmtDate(pu)}${d >= 0 ? ` _(${d}d ago)_` : ''}`);
+  }
+  if (aw) {
+    const d = daysSince(aw.t);
+    parts.push(`consultant appointed ${fmtDate(aw)}${d >= 0 ? ` _(${d}d ago)_` : ''}`);
+  }
+  if (dl) {
+    const d = daysUntil(dl.t);
+    parts.push(d >= 0 ? `**closes ${fmtDate(dl)} — ${d} days left**` : `closed ${fmtDate(dl)}`);
+  }
+  return parts.length ? parts.join(' · ') : null;
+}
+
+/**
+ * Ranks how time-critical a hit is. rank 0 sorts to the very top.
+ *
+ * Pre-award beats post-award. While a tender is still open the procuring
+ * agency is contactable, knows the field, and can often say which consultant
+ * is likely to win — and a relationship formed then carries over to whoever
+ * does. After the award you are down to one firm and one conversation.
+ */
+const PRE_AWARD = new Set(['design-tender', 'project-funded']);
+
+function urgency(h) {
+  const dl = parseLooseDate(h.deadline);
+  const aw = parseLooseDate(h.awarded_date);
+  const pu = parseLooseDate(h.published_date);
+  const preAward = PRE_AWARD.has(h.stage);
+
+  // Open tender about to close — the agency is live and reachable right now.
+  if (preAward && dl) {
+    const d = daysUntil(dl.t);
+    if (d >= 0 && d <= 21) return { rank: 0, tag: `⏳ CLOSES IN ${d} DAYS — CONTACT THE AGENCY NOW` };
+  }
+  // Open tender with runway, or one whose deadline isn't stated. Still
+  // pre-award, so still the best moment to build the relationship.
+  if (h.stage === 'design-tender') {
+    if (dl) {
+      const d = daysUntil(dl.t);
+      if (d >= 0) return { rank: 1, tag: `📋 TENDER OPEN — ${d} days to award` };
+    }
+    return { rank: 1, tag: `📋 TENDER OPEN — contact the agency` };
+  }
+  // Funded but not yet tendered — earliest possible approach.
+  if (h.stage === 'project-funded') {
+    return { rank: 2, tag: `🌱 PRE-TENDER — agency reachable before the process starts` };
+  }
+  // Award already made. Useful, but now it is one firm rather than the agency.
+  if (aw) {
+    const d = daysSince(aw.t);
+    if (d >= 0 && d <= 90) return { rank: 3, tag: `🆕 designer appointed ${d}d ago — approach the firm` };
+  }
+  if (pu) {
+    const d = daysSince(pu.t);
+    if (d >= 0 && d <= 30) return { rank: 4, tag: `📰 published ${d}d ago` };
+  }
+  return { rank: 5, tag: null };
+}
+
 // ── Post-filters ───────────────────────────────────────────────────────────
 
 /**
@@ -258,6 +377,15 @@ function isExpired(deadline) {
   const t = Date.parse(deadline);
   if (Number.isNaN(t)) return false;
   return t < Date.now() - 14 * 86_400_000;
+}
+
+/** Time-critical first, then lifecycle position, then score. */
+function compareHits(a, b) {
+  const u = urgency(a).rank - urgency(b).rank;
+  if (u !== 0) return u;
+  const s = STAGE_ORDER.indexOf(a.stage ?? 'unknown') - STAGE_ORDER.indexOf(b.stage ?? 'unknown');
+  if (s !== 0) return s;
+  return b.score - a.score;
 }
 
 /**
@@ -287,22 +415,43 @@ function buildDigest(hits, dropped) {
   let md = `**${hits.length} opportunit${hits.length === 1 ? 'y' : 'ies'}** — `;
   md += `**${actionable} at design stage**, where the specification is still open.\n\n`;
   md += `Scored on procurement stage, not contract value: a consultancy EOI for detailed design outranks a billion-naira works award, because by award the lining method is already fixed.\n\n`;
+
+  // Anything time-critical goes above the fold — a tender closing in a
+  // fortnight or a designer appointed last month is worth acting on today,
+  // and shouldn't be buried three countries down the page.
+  const urgent = hits.map(h => ({ h, u: urgency(h) }))
+                     .filter(x => x.u.rank <= 2)
+                     .sort((a, b) => a.u.rank - b.u.rank);
+  if (urgent.length) {
+    md += `## ⚡ Pre-award — agency still reachable\n\n`;
+    md += `The award has not been made on these, so the procuring agency is the contact. They run the process, they know the field, and a relationship formed now carries over to whoever wins.\n\n`;
+    for (const { h, u } of urgent) {
+      md += `- **${u.tag}** — ${h.project || h.title} _(${h.country})_\n`;
+      if (h.agency) md += `  ☎️ **${h.agency}**${h.contact ? ` · ${h.contact}` : ''}\n`;
+      const tl = timelineLine(h);
+      if (tl) md += `  ${tl}\n`;
+    }
+    md += `\n`;
+  }
+
   md += `Only results scoring ${SCORE_THRESHOLD}+ are shown.\n\n---\n\n`;
 
   for (const country of Object.keys(byCountry).sort()) {
     md += `## ${country}\n\n`;
-    const sorted = byCountry[country].sort((a, b) => {
-      const s = STAGE_ORDER.indexOf(a.stage ?? 'unknown') - STAGE_ORDER.indexOf(b.stage ?? 'unknown');
-      return s !== 0 ? s : b.score - a.score;
-    });
+    const sorted = byCountry[country].sort(compareHits);
     for (const h of sorted) {
       const rel = h.relevance === 'adjacent' ? ' · _adjacent scope_' : '';
+      const u   = urgency(h);
       md += `### ${STAGE_LABEL[h.stage] ?? STAGE_LABEL.unknown} · ${h.score}/10 — ${h.project || h.title}${rel}\n\n`;
+      if (u.tag)      md += `> **${u.tag}**\n\n`;
+      const tl = timelineLine(h);
+      if (tl)         md += `- **Timeline:** ${tl}\n`;
+      if (h.agency)   md += `- **☎️ Procuring agency:** ${h.agency}${PRE_AWARD.has(h.stage) ? ' — reachable now, pre-award' : ''}\n`;
+      if (h.contact)  md += `- **Contact:** ${h.contact}\n`;
       if (h.location) md += `- **Location:** ${h.location}\n`;
       if (h.funder)   md += `- **Funder:** ${h.funder}\n`;
       if (h.work)     md += `- **Work:** ${h.work}\n`;
       if (h.spec)     md += `- **Lining specified:** ${h.spec} ← displacement opportunity\n`;
-      if (h.deadline) md += `- **Deadline:** ${h.deadline}\n`;
       if (h.why)      md += `- **Why it scored:** ${h.why}\n`;
       md += `- **Source:** ${h.url}\n\n`;
     }
@@ -415,10 +564,7 @@ async function main() {
   let final = dedupeByProject(live);
   dropped.duplicate = beforeDedupe - final.length;
 
-  final.sort((a, b) => {
-    const s = STAGE_ORDER.indexOf(a.stage ?? 'unknown') - STAGE_ORDER.indexOf(b.stage ?? 'unknown');
-    return s !== 0 ? s : b.score - a.score;
-  });
+  final.sort(compareHits);
 
   const atDesign = final.filter(h => h.stage === 'design-tender' || h.stage === 'design-underway').length;
   console.log(`${hits.length} scored at or above ${SCORE_THRESHOLD}.`);
