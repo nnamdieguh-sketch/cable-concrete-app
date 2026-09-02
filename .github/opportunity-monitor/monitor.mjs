@@ -37,7 +37,9 @@ const MODEL             = 'claude-haiku-4-5-20251001';
 const MARKETS           = ['Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique'];
 const MAX_SPEND_USD     = 1.50;   // hard ceiling per run
 const SCORE_THRESHOLD   = 6;      // 1-10; below this we don't report it
-const BATCH_SIZE        = 10;     // results per model call
+const BATCH_SIZE        = 6;      // results per model call — the extraction
+                                  // schema is ~14 fields wide, so keep responses
+                                  // well clear of max_tokens
 const RESULTS_PER_QUERY = 10;
 const SEEN_RETENTION    = 2000;   // URLs to remember before trimming oldest
 
@@ -325,6 +327,42 @@ async function fetchWorldBankDocs() {
   return out.filter(o => o.url);
 }
 
+/**
+ * Parse a JSON array, recovering whatever is intact if the response was cut
+ * short. Run #6 lost twelve batches — roughly 250 candidates including 55
+ * World Bank pipeline projects — because max_tokens truncated the array and a
+ * single JSON.parse failure discarded everything in it. Scanning for balanced
+ * top-level objects means a truncation now costs the final partial record
+ * rather than the whole batch.
+ */
+function parseMaybeTruncated(text) {
+  try { return JSON.parse(text); } catch { /* fall through to salvage */ }
+
+  const objects = [];
+  let depth = 0, start = -1, inString = false, escaped = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped)        escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"')  inString = false;
+      continue;
+    }
+    if (ch === '"') { inString = true; continue; }
+    if (ch === '{') { if (depth === 0) start = i; depth++; continue; }
+    if (ch === '}') {
+      depth--;
+      if (depth === 0 && start >= 0) {
+        try { objects.push(JSON.parse(text.slice(start, i + 1))); } catch { /* skip */ }
+        start = -1;
+      }
+    }
+  }
+  if (objects.length) console.warn(`    salvaged ${objects.length} record(s) from a truncated response`);
+  return objects;
+}
+
 // ── Claude batch extraction ────────────────────────────────────────────────
 async function scoreBatch(batch, country) {
   const listing = batch.map((r, i) =>
@@ -435,7 +473,7 @@ ${listing}`;
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 1500,
+        max_tokens: 8000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -456,8 +494,8 @@ ${listing}`;
                + (u.output_tokens ?? 0) * OUT_COST_PER_TOKEN;
 
     let text = (data.content?.[0]?.text ?? '').trim().replace(/```json|```/g, '').trim();
-    const arr = JSON.parse(text);
-    if (!Array.isArray(arr)) return [];
+    const arr = parseMaybeTruncated(text);
+    if (!Array.isArray(arr) || arr.length === 0) return [];
 
     return arr
       .filter(o => o && typeof o.i === 'number' && batch[o.i])
