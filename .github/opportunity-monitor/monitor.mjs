@@ -57,6 +57,56 @@ const QUERIES = [
   'World Bank AfDB consultant selection flood protection revetment design {country}'
 ];
 
+// Multilateral pipeline sweep — run once across Africa rather than per market,
+// because the World Bank and AfDB project databases are continent-wide and the
+// country falls out of the document itself.
+//
+// These target concept-stage paperwork: Project Information Documents,
+// Environmental and Social Review Summaries, appraisal reports. They surface
+// projects while scope is still being discussed, often a year or two before a
+// design tender exists — the widest relationship window there is.
+const PIPELINE_QUERIES = [
+  'World Bank project information document erosion flood embankment Africa',
+  'World Bank environmental social review summary concept stage drainage channel Africa',
+  'African Development Bank project appraisal report erosion flood protection Africa',
+  'World Bank pipeline project watershed erosion management Sub-Saharan Africa',
+  'AfDB World Bank proposed project gully erosion slope protection preparation Africa'
+];
+
+// Country from the document, not from whichever search surfaced it. Run #4
+// filed a Malawian tender under Mozambique purely because that search found it.
+const TLD_COUNTRY = {
+  ng:'Nigeria', gh:'Ghana', ke:'Kenya', tz:'Tanzania', et:'Ethiopia', ug:'Uganda',
+  zm:'Zambia', mz:'Mozambique', mw:'Malawi', za:'South Africa', rw:'Rwanda',
+  bw:'Botswana', na:'Namibia', zw:'Zimbabwe', sn:'Senegal', ci:'Côte d’Ivoire',
+  cm:'Cameroon', ao:'Angola', bj:'Benin', bf:'Burkina Faso', ml:'Mali', ne:'Niger',
+  td:'Chad', sd:'Sudan', ss:'South Sudan', so:'Somalia', dj:'Djibouti', er:'Eritrea',
+  mg:'Madagascar', ls:'Lesotho', sz:'Eswatini', gm:'Gambia', gn:'Guinea', lr:'Liberia',
+  sl:'Sierra Leone', tg:'Togo', cd:'DR Congo', cg:'Congo', ga:'Gabon', bi:'Burundi'
+};
+
+function resolveCountry(h, searchCountry) {
+  const named = String(h.country_named || '').trim();
+  if (named && !/^(africa|sub-saharan africa|multiple|various|n\/a)$/i.test(named)) return named;
+  try {
+    const m = /\.([a-z]{2})$/.exec(new URL(h.url).hostname);
+    if (m && TLD_COUNTRY[m[1]]) return TLD_COUNTRY[m[1]];
+  } catch { /* malformed url */ }
+  return searchCountry === PIPELINE_SCOPE ? 'Africa — country unstated' : searchCountry;
+}
+
+const PIPELINE_SCOPE = '__pipeline__';
+
+// Concept-stage documents rarely say "tender" or "bid", so the procurement
+// gate would throw them away. Gate the pipeline sweep on the vocabulary those
+// documents actually use.
+const PIPELINE_HINTS = [
+  'project information document','pid','concept note','concept stage',
+  'environmental and social review','esrs','appraisal report','appraisal document',
+  'country strategy','pipeline','proposed project','project preparation',
+  'identification','pre-appraisal','worldbank.org','afdb.org','documents.worldbank'
+];
+
 // Cheap pre-filter so we only pay the model for plausible candidates.
 // Weighted toward design-stage vocabulary.
 const PROCUREMENT_HINTS = [
@@ -73,11 +123,12 @@ const PROCUREMENT_HINTS = [
 // agency is the lever — they run the process, they often know which consultant
 // is likely to win, and a relationship built with them survives whoever gets
 // it. Once the award is made you are talking to one firm about one job.
-const STAGE_ORDER = ['design-tender','project-funded','design-underway','works-tender','works-awarded','unknown'];
+const STAGE_ORDER = ['design-tender','project-funded','pipeline','design-underway','works-tender','works-awarded','unknown'];
 const STAGE_LABEL = {
   'design-tender'   : '🟢 Design tender open',
-  'design-underway' : '🟡 Design in progress',
   'project-funded'  : '🔵 Funded, design upcoming',
+  'pipeline'        : '🟣 Pipeline — under preparation',
+  'design-underway' : '🟡 Design in progress',
   'works-tender'    : '🟠 Works tender (spec locked)',
   'works-awarded'   : '🔴 Awarded (too late)',
   'unknown'         : '⚪ Stage unclear'
@@ -164,12 +215,20 @@ open-cell CC G2 block at 40% open area is a paving product).
                job adverts, directories, academic papers
 
 STEP 2 — classify STAGE:
+  "pipeline"         project under identification, preparation, appraisal or discussion — a World Bank
+                     Project Information Document (PID), Project Concept Note, Environmental and Social
+                     Review Summary (ESRS), AfDB appraisal report, country strategy paper, or any
+                     document describing a proposed intervention not yet approved or financed
+  "project-funded"   project approved or financed, design not yet procured
   "design-tender"    EOI, RFP, ToR or consultant shortlisting for feasibility study, detailed engineering design, ESIA+design, or technical design services
   "design-underway"  a design consultant has been appointed, or design/feasibility work is in progress
-  "project-funded"   project approved or financed, design not yet procured
   "works-tender"     construction/works tender advertised, bidding documents issued for physical works
   "works-awarded"    works contract awarded, contractor named, or construction begun
   "unknown"          cannot tell
+
+Pipeline documents matter. A World Bank PID or ESRS naming erosion, drainage, embankment or flood
+works describes a project whose scope is still being discussed, often a year or two before any tender
+exists. Classify these as "pipeline" rather than "unknown" — they are wanted, not noise.
 
 STEP 3 — score 1-10. RELEVANCE IS A HARD CEILING, applied before stage:
   - "unrelated" scores 1-2. Never above 2, no matter how good the procurement stage is. A perfect
@@ -179,8 +238,9 @@ STEP 3 — score 1-10. RELEVANCE IS A HARD CEILING, applied before stage:
 
 Within those ceilings, rank by stage:
   9-10  direct relevance + design-tender — the specification is still open, this is the target
-  7-8   direct relevance + design-underway, or direct + design-tender with some scope ambiguity
-  5-6   project-funded with direct relevance, or any adjacent-relevance result
+  7-8   direct relevance + pipeline or project-funded — early, but scope is still being shaped and
+        the agency and funder task team are both reachable; also direct + design-underway
+  5-6   any adjacent-relevance result, or direct relevance with significant scope ambiguity
   3-4   works-tender — specification already written, useful only if it names a lining method to challenge
   1-2   works-awarded, unrelated relevance, or not a real opportunity (directory, job advert, academic paper, marketing)
 
@@ -189,10 +249,13 @@ rather than guessing "direct". Reserve "unrelated" for work that genuinely has n
 channel or water-control element — not merely for scope that is vaguely described.
 
 For each result return an object with:
-  i         - the index number given
-  relevance - one of the relevance strings above
-  stage     - one of the stage strings above
-  score     - 1-10
+  i             - the index number given
+  relevance     - one of the relevance strings above
+  stage         - one of the stage strings above
+  score         - 1-10
+  country_named - the country this project is actually in, read from the document itself. Not the
+                  region. If the document covers several countries or names none, use null. Do not
+                  guess from the search terms.
   project   - short project name, or null
   location  - state/city/region, or null
   funder    - the body providing the money (World Bank, AfDB, KfW, state government), or null
@@ -326,16 +389,35 @@ function timelineLine(h) {
  * is likely to win — and a relationship formed then carries over to whoever
  * does. After the award you are down to one firm and one conversation.
  */
-const PRE_AWARD = new Set(['design-tender', 'project-funded']);
+const PRE_AWARD = new Set(['design-tender', 'project-funded', 'pipeline']);
+const STALE_AFTER_DAYS = 180;
+
+/**
+ * A notice published long ago with no future deadline is almost certainly
+ * closed, whatever its wording says. Run #4 surfaced a Malawian ToR published
+ * 854 days earlier and labelled it TENDER OPEN — the expired-deadline filter
+ * missed it because the document stated no deadline at all, only a
+ * publication date.
+ *
+ * Pipeline documents are exempt: a PID or ESRS describes a project under
+ * preparation, and preparation legitimately runs for years, so age says
+ * nothing about whether it is still live.
+ */
+function isStale(h) {
+  if (h.stage === 'pipeline') return false;
+  const dl = parseLooseDate(h.deadline);
+  if (dl && daysUntil(dl.t) >= 0) return false;   // a future deadline means it's live
+  const pu = parseLooseDate(h.published_date);
+  return !!(pu && daysSince(pu.t) > STALE_AFTER_DAYS);
+}
 
 function urgency(h) {
   const dl = parseLooseDate(h.deadline);
   const aw = parseLooseDate(h.awarded_date);
   const pu = parseLooseDate(h.published_date);
-  const preAward = PRE_AWARD.has(h.stage);
 
   // Open tender about to close — the agency is live and reachable right now.
-  if (preAward && dl) {
+  if (PRE_AWARD.has(h.stage) && dl) {
     const d = daysUntil(dl.t);
     if (d >= 0 && d <= 21) return { rank: 0, tag: `⏳ CLOSES IN ${d} DAYS — CONTACT THE AGENCY NOW` };
   }
@@ -346,11 +428,18 @@ function urgency(h) {
       const d = daysUntil(dl.t);
       if (d >= 0) return { rank: 1, tag: `📋 TENDER OPEN — ${d} days to award` };
     }
-    return { rank: 1, tag: `📋 TENDER OPEN — contact the agency` };
+    const age = pu ? ` · published ${daysSince(pu.t)}d ago` : '';
+    return { rank: 1, tag: `📋 TENDER OPEN — contact the agency${age}` };
   }
   // Funded but not yet tendered — earliest possible approach.
   if (h.stage === 'project-funded') {
     return { rank: 2, tag: `🌱 PRE-TENDER — agency reachable before the process starts` };
+  }
+  // Under preparation. Longest runway of all, and both the agency and the
+  // funder's task team are still shaping what gets specified.
+  if (h.stage === 'pipeline') {
+    const age = pu ? ` · doc published ${daysSince(pu.t)}d ago` : '';
+    return { rank: 2, tag: `🟣 IN PREPARATION — scope still under discussion${age}` };
   }
   // Award already made. Useful, but now it is one firm rather than the agency.
   if (aw) {
@@ -465,6 +554,7 @@ function buildDigest(hits, dropped) {
   md += `| Model calls | ${spend.modelCalls} |\n`;
   md += `| Tokens | ${spend.inTokens.toLocaleString()} in / ${spend.outTokens.toLocaleString()} out |\n`;
   md += `| Dropped — expired deadline | ${dropped.expired} |\n`;
+  md += `| Dropped — stale (>${STALE_AFTER_DAYS}d, no live deadline) | ${dropped.stale} |\n`;
   md += `| Dropped — duplicate project | ${dropped.duplicate} |\n`;
   md += `\nToken counts are read from the API response, so this figure is actual, not estimated.\n\n`;
   md += `</details>\n\n`;
@@ -538,6 +628,27 @@ async function main() {
     }
   }
 
+  // Multilateral pipeline sweep — Africa-wide, run once rather than per market.
+  console.log('\nSweeping World Bank / AfDB pipeline…');
+  for (const q of PIPELINE_QUERIES) {
+    if (budgetLeft() <= 0) { console.log('Budget cap reached — stopping pipeline sweep.'); break; }
+    const results = await braveSearch(q);
+    for (const item of results) {
+      const url = item.url;
+      if (!url || seenSet.has(url)) continue;
+      seenSet.add(url);
+      freshUrls.push(url);
+      const title   = item.title || '';
+      const snippet = item.description || '';
+      const haystack = `${title} ${snippet} ${url}`.toLowerCase();
+      // Concept-stage paperwork rarely uses tender vocabulary, so the
+      // procurement gate would reject it. Gate on pipeline vocabulary instead.
+      if (!PIPELINE_HINTS.some(k => haystack.includes(k))) continue;
+      candidates.push({ title, url, snippet: snippet.slice(0, 400), country: PIPELINE_SCOPE });
+    }
+    await new Promise(r => setTimeout(r, 300));
+  }
+
   console.log(`\n${freshUrls.length} new URLs, ${candidates.length} passed the procurement filter.\n`);
 
   const hits = [];
@@ -548,15 +659,21 @@ async function main() {
     for (let i = 0; i < list.length; i += BATCH_SIZE) {
       if (budgetLeft() <= 0) { console.log('Budget cap reached — stopping scoring.'); break; }
       const batch = list.slice(i, i + BATCH_SIZE).map((c, idx) => ({ ...c, _idx: idx }));
-      const scored = await scoreBatch(batch, country);
-      hits.push(...scored.filter(s => (s.score ?? 0) >= SCORE_THRESHOLD));
+      const label = country === PIPELINE_SCOPE ? 'World Bank / AfDB pipeline' : country;
+      const scored = await scoreBatch(batch, label);
+      // Re-home each hit to the country its document actually names, rather
+      // than whichever search happened to surface it.
+      hits.push(...scored
+        .filter(s => (s.score ?? 0) >= SCORE_THRESHOLD)
+        .map(s => ({ ...s, country: resolveCountry(s, country) })));
     }
   }
 
-  const dropped = { expired: 0, duplicate: 0 };
+  const dropped = { expired: 0, stale: 0, duplicate: 0 };
 
   const live = hits.filter(h => {
     if (isExpired(h.deadline)) { dropped.expired++; return false; }
+    if (isStale(h))            { dropped.stale++;   return false; }
     return true;
   });
 
@@ -568,7 +685,7 @@ async function main() {
 
   const atDesign = final.filter(h => h.stage === 'design-tender' || h.stage === 'design-underway').length;
   console.log(`${hits.length} scored at or above ${SCORE_THRESHOLD}.`);
-  console.log(`  dropped ${dropped.expired} expired, ${dropped.duplicate} duplicate → ${final.length} reported`);
+  console.log(`  dropped ${dropped.expired} expired, ${dropped.stale} stale, ${dropped.duplicate} duplicate → ${final.length} reported`);
   console.log(`  of which ${atDesign} are at design stage (spec still open)`);
   console.log(`Run cost: $${spend.usd.toFixed(4)} (${spend.braveCalls} searches, ${spend.modelCalls} model calls)\n`);
 
