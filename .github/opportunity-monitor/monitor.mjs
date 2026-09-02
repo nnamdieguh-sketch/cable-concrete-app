@@ -29,6 +29,9 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const GH_TOKEN      = process.env.GITHUB_TOKEN;
 const GH_REPO       = process.env.GITHUB_REPOSITORY;
 
+const DAY = 86_400_000;
+const PIPELINE_SCOPE = '__pipeline__';
+
 // ── Tuning ─────────────────────────────────────────────────────────────────
 const MODEL             = 'claude-haiku-4-5-20251001';
 const MARKETS           = ['Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique'];
@@ -95,7 +98,42 @@ function resolveCountry(h, searchCountry) {
   return searchCountry === PIPELINE_SCOPE ? 'Africa — country unstated' : searchCountry;
 }
 
-const PIPELINE_SCOPE = '__pipeline__';
+// Brave ranks by authority, not recency, so an old well-linked PDF beats a
+// fresh notice. Constrain every web search to the last month; the MDB APIs
+// below cover anything older that still matters.
+const BRAVE_FRESHNESS = 'pm';
+
+// Where the early signal actually lives. Web search is an index of what is
+// popular; these are the registries themselves, queryable by status and date.
+const WB_PROJECTS_API = 'https://search.worldbank.org/api/v3/projects';
+const WB_DOCS_API     = 'https://search.worldbank.org/api/v3/wds';
+
+// How far back to look for newly-published documents each run.
+const DOC_LOOKBACK_DAYS = 45;
+
+// Scope is all of Sub-Saharan Africa, not just the eight priority markets.
+// The MDB APIs are queried continent-wide at no extra cost per country, so
+// widening here is free — only the per-country Brave searches are metered.
+const AFRICA_COUNTRIES = new Set([
+  'Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique',
+  'Malawi','Rwanda','Burundi','South Sudan','Sudan','Somalia','Djibouti','Eritrea',
+  'Madagascar','Zimbabwe','Botswana','Namibia','Lesotho','Eswatini','Angola',
+  'Cameroon','Senegal','Mali','Burkina Faso','Niger','Chad','Benin','Togo',
+  'Guinea','Sierra Leone','Liberia','Gambia','Côte d\'Ivoire','Cote d\'Ivoire',
+  'Congo, Democratic Republic of','Congo, Republic of','Gabon','Mauritania',
+  'Central African Republic','South Africa','Comoros','Cabo Verde','Guinea-Bissau'
+]);
+
+// Terms that make a project or document worth scoring. Applied to the
+// project objective / document title before we pay the model.
+const MDB_RELEVANCE_TERMS = [
+  'erosion','gully','channel','drainage','embankment','slope','revetment',
+  'flood','watershed','riverbank','coastal','shoreline','spillway','scour',
+  'dam','irrigation','canal','levee','stormwater','landslide','resilience'
+];
+
+const matchesRelevance = text =>
+  MDB_RELEVANCE_TERMS.some(t => String(text || '').toLowerCase().includes(t));
 
 // Concept-stage documents rarely say "tender" or "bid", so the procurement
 // gate would throw them away. Gate the pipeline sweep on the vocabulary those
@@ -158,10 +196,17 @@ function saveSeen(urls) {
 }
 
 // ── Brave search ───────────────────────────────────────────────────────────
-async function braveSearch(query) {
+/**
+ * @param freshness Brave recency filter: pd/pw/pm/py, or a YYYY-MM-DDtoYYYY-MM-DD
+ *   range. Without it Brave ranks by authority, which means a heavily-linked
+ *   2016 PDF outranks last week's notice every time — the reason early runs
+ *   kept surfacing finished projects.
+ */
+async function braveSearch(query, freshness = BRAVE_FRESHNESS) {
   if (budgetLeft() < BRAVE_COST_PER_SEARCH) return [];
   const url = 'https://api.search.brave.com/res/v1/web/search'
-    + `?q=${encodeURIComponent(query)}&count=${RESULTS_PER_QUERY}`;
+    + `?q=${encodeURIComponent(query)}&count=${RESULTS_PER_QUERY}`
+    + (freshness ? `&freshness=${encodeURIComponent(freshness)}` : '');
   try {
     const r = await fetch(url, {
       headers: {
@@ -181,6 +226,103 @@ async function braveSearch(query) {
     console.warn(`  Brave threw for "${query}": ${err.message}`);
     return [];
   }
+}
+
+// ── Multilateral registries ────────────────────────────────────────────────
+// These are the authoritative sources. Unlike web search they can be filtered
+// by status and date, which is the whole point: we want projects that are
+// under preparation now, not the ones the web has had years to link to.
+
+/** Fetch JSON, logging enough of the shape that a mismatch is diagnosable. */
+async function fetchJson(url, label) {
+  try {
+    const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!r.ok) { console.warn(`  ${label}: HTTP ${r.status}`); return null; }
+    const j = await r.json();
+    console.log(`  ${label}: top-level keys = ${Object.keys(j).join(', ')}`);
+    return j;
+  } catch (err) {
+    console.warn(`  ${label} threw: ${err.message}`);
+    return null;
+  }
+}
+
+/**
+ * World Bank projects at Pipeline status — approved for preparation but not
+ * yet financed, so scope is still being written. This is the earliest point
+ * at which a project is publicly identifiable.
+ */
+async function fetchWorldBankPipeline() {
+  const fields = 'id,project_name,countryshortname,regionname,status,boardapprovaldate,url,pdo,sector1,theme1';
+  const url = `${WB_PROJECTS_API}?format=json&rows=500&status=Pipeline&fl=${encodeURIComponent(fields)}`;
+  const data = await fetchJson(url, 'WB Projects (Pipeline)');
+  if (!data) return [];
+
+  // The API returns { projects: { P123: {...}, ... } }; tolerate an array too.
+  const raw = data.projects ?? data.docs ?? {};
+  const list = Array.isArray(raw) ? raw : Object.values(raw);
+  console.log(`  WB Projects: ${list.length} pipeline records returned`);
+
+  const out = [];
+  for (const p of list) {
+    const country = p.countryshortname || p.countryname || '';
+    const region  = String(p.regionname || '');
+    if (!AFRICA_COUNTRIES.has(country) && !/africa/i.test(region)) continue;
+
+    const name = p.project_name || p.projectname || '';
+    const pdo  = p.pdo || p.project_abstract?.cdata || '';
+    if (!matchesRelevance(`${name} ${pdo}`)) continue;
+
+    out.push({
+      title:   name,
+      url:     p.url || `https://projects.worldbank.org/en/projects-operations/project-detail/${p.id}`,
+      snippet: `Status: Pipeline. ${String(pdo).slice(0, 350)}`,
+      country,
+      _source: 'wb-pipeline',
+      _approved: p.boardapprovaldate || null
+    });
+  }
+  console.log(`  WB Projects: ${out.length} African + erosion-relevant`);
+  return out;
+}
+
+/**
+ * Recently published World Bank project documents. Concept notes, PIDs and
+ * ESRS appear here the week they are disclosed, which is months to years
+ * before any tender. Date-filtered so we only ever see new disclosures.
+ */
+async function fetchWorldBankDocs() {
+  const since = new Date(Date.now() - DOC_LOOKBACK_DAYS * DAY).toISOString().slice(0, 10);
+  const until = new Date().toISOString().slice(0, 10);
+  const qterm = 'erosion OR gully OR embankment OR drainage OR "flood protection" OR revetment';
+  const url = `${WB_DOCS_API}?format=json&rows=100&strdate=${since}&enddate=${until}`
+            + `&qterm=${encodeURIComponent(qterm)}`;
+  const data = await fetchJson(url, `WB Documents (since ${since})`);
+  if (!data) return [];
+
+  const raw = data.documents ?? data.docs ?? {};
+  const list = (Array.isArray(raw) ? raw : Object.values(raw))
+    .filter(d => d && typeof d === 'object' && (d.docdt || d.display_title || d.docna));
+  console.log(`  WB Documents: ${list.length} records in window`);
+
+  const out = [];
+  for (const d of list) {
+    const title = d.display_title || d.docna || d.doc_name || '';
+    const country = d.count || d.countryname || '';
+    if (country && !AFRICA_COUNTRIES.has(country) && !/africa/i.test(String(d.admreg || ''))) continue;
+    if (!matchesRelevance(title)) continue;
+
+    out.push({
+      title,
+      url:     d.pdfurl || d.url || d.guid || '',
+      snippet: `${d.docty || 'World Bank document'} · disclosed ${String(d.docdt || '').slice(0, 10)}. ${String(d.abstracts?.cdata || '').slice(0, 300)}`,
+      country: country || PIPELINE_SCOPE,
+      _source: 'wb-docs',
+      _published: String(d.docdt || '').slice(0, 10) || null
+    });
+  }
+  console.log(`  WB Documents: ${out.length} African + erosion-relevant`);
+  return out.filter(o => o.url);
 }
 
 // ── Claude batch extraction ────────────────────────────────────────────────
@@ -319,7 +461,18 @@ ${listing}`;
 
     return arr
       .filter(o => o && typeof o.i === 'number' && batch[o.i])
-      .map(o => ({ ...o, ...batch[o.i], country }));
+      // batch fields first so model output wins on conflicts, but keep the
+      // registry's own dates when the snippet didn't restate them.
+      .map(o => {
+        const src = batch[o.i];
+        return {
+          ...src,
+          ...o,
+          country,
+          published_date: o.published_date || src._published || null,
+          approved_date:  o.approved_date  || src._approved  || null
+        };
+      });
   } catch (err) {
     console.warn(`  Scoring threw: ${err.message}`);
     return [];
@@ -331,8 +484,6 @@ ${listing}`;
 // A design tender closing in 10 days needs acting on now; a consultant
 // appointed last month is the single best moment to approach, because the
 // firm is known and the specification is not yet written.
-
-const DAY = 86_400_000;
 
 /** Accepts YYYY-MM-DD, YYYY-MM, or anything Date.parse handles. */
 function parseLooseDate(s) {
@@ -600,6 +751,18 @@ async function main() {
 
   const candidates = [];
   const freshUrls  = [];
+
+  // Registries first. These are free, cover the whole continent, and are the
+  // only sources that can be filtered by status and disclosure date.
+  console.log('Querying multilateral registries…');
+  const mdb = [...await fetchWorldBankPipeline(), ...await fetchWorldBankDocs()];
+  for (const item of mdb) {
+    if (!item.url || seenSet.has(item.url)) continue;
+    seenSet.add(item.url);
+    freshUrls.push(item.url);
+    candidates.push({ ...item, snippet: String(item.snippet).slice(0, 400) });
+  }
+  console.log(`  ${candidates.length} registry candidates after dedup\n`);
 
   for (const country of MARKETS) {
     if (budgetLeft() <= 0) { console.log('Budget cap reached — stopping search.'); break; }
