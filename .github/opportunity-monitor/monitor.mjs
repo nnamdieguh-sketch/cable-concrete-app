@@ -480,7 +480,7 @@ ${listing}`;
 
     if (!r.ok) {
       console.warn(`  Model ${r.status}: ${(await r.text()).slice(0, 200)}`);
-      return [];
+      return null;   // call failed — caller must not burn these URLs
     }
 
     const data = await r.json();
@@ -513,7 +513,7 @@ ${listing}`;
       });
   } catch (err) {
     console.warn(`  Scoring threw: ${err.message}`);
-    return [];
+    return null;     // call failed — caller must not burn these URLs
   }
 }
 
@@ -789,14 +789,17 @@ async function main() {
 
   const candidates = [];
   const freshUrls  = [];
+  // URLs awaiting scoring. Kept out of seenSet until a batch actually
+  // succeeds, so a failed call leaves them retryable on the next run.
+  const queued     = new Set();
 
   // Registries first. These are free, cover the whole continent, and are the
   // only sources that can be filtered by status and disclosure date.
   console.log('Querying multilateral registries…');
   const mdb = [...await fetchWorldBankPipeline(), ...await fetchWorldBankDocs()];
   for (const item of mdb) {
-    if (!item.url || seenSet.has(item.url)) continue;
-    seenSet.add(item.url);
+    if (!item.url || seenSet.has(item.url) || queued.has(item.url)) continue;
+    queued.add(item.url);
     freshUrls.push(item.url);
     candidates.push({ ...item, snippet: String(item.snippet).slice(0, 400) });
   }
@@ -812,17 +815,18 @@ async function main() {
 
       for (const item of results) {
         const url = item.url;
-        if (!url || seenSet.has(url)) continue;
-        seenSet.add(url);
+        if (!url || seenSet.has(url) || queued.has(url)) continue;
         freshUrls.push(url);
 
         const title   = item.title || '';
         const snippet = item.description || '';
         const haystack = `${title} ${snippet} ${url}`.toLowerCase();
 
-        // Cheap keyword gate before we pay the model for anything.
-        if (!PROCUREMENT_HINTS.some(h => haystack.includes(h))) continue;
+        // Cheap keyword gate before we pay the model for anything. A reject
+        // here is a completed evaluation, so it is safe to mark seen.
+        if (!PROCUREMENT_HINTS.some(h => haystack.includes(h))) { seenSet.add(url); continue; }
 
+        queued.add(url);
         candidates.push({ title, url, snippet: snippet.slice(0, 400), country });
       }
       await new Promise(r => setTimeout(r, 300));  // be polite to Brave
@@ -836,15 +840,15 @@ async function main() {
     const results = await braveSearch(q);
     for (const item of results) {
       const url = item.url;
-      if (!url || seenSet.has(url)) continue;
-      seenSet.add(url);
+      if (!url || seenSet.has(url) || queued.has(url)) continue;
       freshUrls.push(url);
       const title   = item.title || '';
       const snippet = item.description || '';
       const haystack = `${title} ${snippet} ${url}`.toLowerCase();
       // Concept-stage paperwork rarely uses tender vocabulary, so the
       // procurement gate would reject it. Gate on pipeline vocabulary instead.
-      if (!PIPELINE_HINTS.some(k => haystack.includes(k))) continue;
+      if (!PIPELINE_HINTS.some(k => haystack.includes(k))) { seenSet.add(url); continue; }
+      queued.add(url);
       candidates.push({ title, url, snippet: snippet.slice(0, 400), country: PIPELINE_SCOPE });
     }
     await new Promise(r => setTimeout(r, 300));
@@ -853,6 +857,7 @@ async function main() {
   console.log(`\n${freshUrls.length} new URLs, ${candidates.length} passed the procurement filter.\n`);
 
   const hits = [];
+  let failedBatches = 0;
   const byCountry = {};
   for (const c of candidates) (byCountry[c.country] ??= []).push(c);
 
@@ -862,6 +867,16 @@ async function main() {
       const batch = list.slice(i, i + BATCH_SIZE).map((c, idx) => ({ ...c, _idx: idx }));
       const label = country === PIPELINE_SCOPE ? 'World Bank / AfDB pipeline' : country;
       const scored = await scoreBatch(batch, label);
+      if (scored === null) {
+        // The call failed. Leave every URL in this batch unmarked so the
+        // next run retries it. Run #6 burned 55 World Bank pipeline
+        // projects by marking them seen before scoring, then losing them
+        // to a truncated response — they were never retried.
+        failedBatches++;
+        continue;
+      }
+      // The call succeeded, so these are evaluated whatever the scores.
+      for (const c of batch) seenSet.add(c.url);
       // Re-home each hit to the country its document actually names, rather
       // than whichever search happened to surface it.
       hits.push(...scored
@@ -888,6 +903,7 @@ async function main() {
   console.log(`${hits.length} scored at or above ${SCORE_THRESHOLD}.`);
   console.log(`  dropped ${dropped.expired} expired, ${dropped.stale} stale, ${dropped.duplicate} duplicate → ${final.length} reported`);
   console.log(`  of which ${atDesign} are at design stage (spec still open)`);
+  if (failedBatches) console.log(`  ${failedBatches} batch(es) failed — their URLs stay retryable next run`);
   console.log(`Run cost: $${spend.usd.toFixed(4)} (${spend.braveCalls} searches, ${spend.modelCalls} model calls)\n`);
 
   saveSeen([...seenSet]);
