@@ -12,8 +12,8 @@
 const B = {
   CCG2: { name: "CC G2", sub: "Permeable Paving & Gentle Slopes", h: "80–88 mm", wt: "25–28 lbs/sf", vel: "4.0 m/s (good)", oa: "40%", ms: "2.44m × 4.88m", ma: 11.9, c: "#4ade80", sh: "182 N/m²", nc: "0.019–0.022", nb: "0.03–0.035", bh: '2.5"', cb: "302/304 SS or polyester braided" },
   CC35: { name: "CC 35", sub: "Channel Lining & Moderate Slopes", h: '114–127 mm (4.5")', wt: "37–40 lbs/sf", vel: "5.2 m/s (good) / 2.7 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#60a5fa", sh: "325 N/m²", nc: "0.022–0.027", nb: "0.03–0.035", bh: '4.5"', cb: 'SS 1×19 5/32"/4mm' },
-  CC45: { name: "CC 45", sub: "Steep Slopes & High Velocity", h: '140–152 mm (5.5")', wt: "45–52 lbs/sf", vel: "6.1 m/s (good) / 3.5 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f59e0b", sh: "390 N/m²", nc: "0.024–0.029", nb: "0.03–0.035", bh: '5.5"', cb: 'SS 1×19 5/32"/4mm' },
-  CC70: { name: "CC 70", sub: "Shoreline, Coastal & Extreme Flow", h: '216–229 mm (8.5")', wt: "70–78 lbs/sf", vel: "7.6 m/s (good) / 4.0 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f87171", sh: "625 N/m²", nc: "0.028–0.033", nb: "0.03–0.035", bh: '8.5"', cb: 'SS 1×19 3/16"/4.8mm' },
+  CC45: { name: "CC 45", sub: "Steep Slopes & High Velocity", h: '140–152 mm (5.5")', wt: "47–52 lbs/sf", vel: "6.1 m/s (good) / 3.5 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f59e0b", sh: "390 N/m²", nc: "0.024–0.029", nb: "0.03–0.035", bh: '5.5"', cb: 'SS 1×19 5/32"/4mm' },
+  CC70: { name: "CC 70", sub: "Shoreline, Coastal & Extreme Flow", h: '216–229 mm (8.5")', wt: "72–78 lbs/sf", vel: "7.6 m/s (good) / 4.0 (poor)", oa: "20%", ms: "2.44m × 4.88m", ma: 11.9, c: "#f87171", sh: "625 N/m²", nc: "0.028–0.033", nb: "0.03–0.035", bh: '8.5"', cb: 'SS 1×19 3/16"/4.8mm' },
 };
 
 const MILD = [
