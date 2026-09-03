@@ -554,7 +554,17 @@ function timelineLine(h) {
   const aw = parseLooseDate(h.awarded_date);
   const dl = parseLooseDate(h.deadline);
 
-  if (ap) parts.push(`approved ${fmtDate(ap)}`);
+  // On a Pipeline project the World Bank's boardapprovaldate is the date the
+  // board is *scheduled* to sit, not a past approval. Calling that "approved"
+  // reads as finished business when it is the opposite: the money has not been
+  // committed yet, so the scope is still genuinely open. Days-to-board is the
+  // single most useful number in the digest — it is the window closing.
+  if (ap) {
+    const d = daysUntil(ap.t);
+    parts.push(d > 0
+      ? `**board sits ${fmtDate(ap)} — ${d} days to influence scope**`
+      : `approved ${fmtDate(ap)}`);
+  }
   if (pu) {
     const d = daysSince(pu.t);
     parts.push(`published ${fmtDate(pu)}${d >= 0 ? ` _(${d}d ago)_` : ''}`);
