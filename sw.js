@@ -1,7 +1,7 @@
 // Cable Concrete® Block Selection Tool — service worker
 // Stale-while-revalidate: serve from cache instantly so the PWA opens fast,
 // then refresh in the background so the next launch has the latest.
-const CACHE = 'cc-tool-v4';
+const CACHE = 'cc-tool-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -26,6 +26,19 @@ self.addEventListener('activate', e => {
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
+  );
+});
+
+// A forced update needs the page to be able to empty this worker's cache and
+// then have the worker step aside, so the reload that follows is served from
+// the network rather than from whatever this worker was still holding.
+self.addEventListener('message', e => {
+  if (!e.data || e.data.type !== 'CC_PURGE') return;
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => { if (e.source) e.source.postMessage({ type: 'CC_PURGED' }); })
+      .catch(() => { if (e.source) e.source.postMessage({ type: 'CC_PURGED' }); })
   );
 });
 
