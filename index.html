@@ -290,10 +290,12 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
   </div>
 
-  <!-- Share button (outside install-wrap so it stays visible after install) -->
-  <div style="margin-top:14px;text-align:center">
+  <!-- Share and Refresh (outside install-wrap so they stay visible after install) -->
+  <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
     <button class="bs" onclick="shareApp()" aria-label="Share this app with colleagues" style="display:inline-flex;align-items:center;gap:8px;font-size:13px">📤 Share with Colleagues</button>
+    <button class="bs" id="refresh-cta" onclick="manualRefresh()" aria-label="Check for updates and reload the app" style="display:inline-flex;align-items:center;gap:8px;font-size:13px">🔄 Refresh App</button>
   </div>
+  <div id="refresh-status" role="status" aria-live="polite" style="margin-top:7px;font-size:11px;color:#9aa9bd;text-align:center;min-height:15px;line-height:1.5"></div>
 
   <!-- Resources on intro page -->
   <div style="margin-top:36px;border-top:1px solid #1e2d42;padding-top:28px">
@@ -2304,6 +2306,50 @@ function checkForUpdate(){
       _showUpdateBanner(d.force!==false,live);
     })
     .catch(function(){}); // offline → silent
+}
+
+// Manual refresh, from the button on the landing page.
+//
+// The automatic check already runs on open, on resume and every half hour, but
+// all of that is invisible. Someone who suspects they are looking at something
+// stale has nothing to reach for, and a visible control is also a standing
+// reminder that the app is maintained rather than something fixed in amber.
+//
+// Already current  — a plain reload. That is what the button says it does, and
+//                    it clears any transient oddness without touching the cache
+//                    the device depends on offline.
+// Behind           — the full update path: caches emptied, then reloaded.
+// Offline          — say so and change nothing. Emptying the cache with no way
+//                    to refill it is the one outcome worth avoiding.
+function manualRefresh(){
+  if(_ccUpdating) return;
+  var btn=document.getElementById('refresh-cta');
+  var out=document.getElementById('refresh-status');
+  var say=function(t,c){ if(out){ out.textContent=t; out.style.color=c||'#9aa9bd'; } };
+  var release=function(){ if(btn) btn.disabled=false; };
+
+  if(btn) btn.disabled=true;
+  say('Checking for updates…');
+
+  fetch('/api/version',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){
+      if(!d||!d.v) throw new Error('no version');
+      var stored=null;
+      try{ stored=localStorage.getItem('cc_app_version'); }catch(e){}
+      if(stored&&stored===d.v){
+        say('✓ Already the latest version — reloading…','#86efac');
+        setTimeout(function(){ location.reload(); },700);
+        return;
+      }
+      say('New version found — updating…','#86efac');
+      _triggerUpdateRefresh(d.v);
+    })
+    .catch(function(){
+      say('No connection — try again once you are back online','#fbbf24');
+      release();
+      setTimeout(function(){ say(''); },5000);
+    });
 }
 
 checkForUpdate();
