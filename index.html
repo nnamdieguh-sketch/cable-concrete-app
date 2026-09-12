@@ -2069,7 +2069,13 @@ function sendToSheets(payload,onDone){
 // Falls back silently (e.g. when opened from file://) without affecting the app.
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
-    navigator.serviceWorker.register('sw.js').catch(function(){});
+    // updateViaCache:'none' stops the browser serving sw.js itself out of its
+    // own HTTP cache, which it will otherwise do for up to 24 hours — long
+    // enough for a device to keep running the previous worker for a full day
+    // after a deploy has gone out.
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'})
+      .then(function(reg){ window.__ccSWReg=reg; })
+      .catch(function(){});
   });
 }
 
@@ -2175,52 +2181,114 @@ function dismissAcbsBanner(){
 }
 showAcbsBannerIfNeeded();
 
-// PWA update prompt.
-// Reads the live deployment SHA from /api/version on every load. If it
-// differs from the one we last stored on this device, we show a green
-// banner pinned to the top of the viewport: "🆕 New version ready —
-// Refresh now" with an 8-second countdown that auto-refreshes if the
-// user doesn't tap. First load on each device just records the version
-// (no banner). Offline or API failure is silent.
-function _showUpdateBanner(){
+// PWA update enforcement.
+//
+// There is no way to push a refresh into an app that is closed — nothing runs
+// on the device until someone opens it. What we can control is that the moment
+// the app is opened, or brought back from the background, it notices it is
+// behind and brings itself up to date before it can be used.
+//
+// The probe used to run once, at cold start. On Android an installed PWA is
+// normally resumed rather than restarted, so a device could stay on an old
+// build for days without ever cold-starting and never see the banner. It now
+// re-checks on resume, on window focus, and every half hour while left open.
+var CC_CHECK_GAP  = 60 * 1000;        // never probe more than once a minute
+var CC_CHECK_POLL = 30 * 60 * 1000;   // probe this often while the app stays open
+var _ccLastCheck  = 0;
+var _ccUpdating   = false;
+
+function _showUpdateBanner(force,live){
+  if(document.getElementById('cc-update-banner')) return;
+  var seconds=force?3:8;
   var b=document.createElement('div');
   b.id='cc-update-banner';
   b.style.cssText='position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;padding:12px 16px;z-index:1100;box-shadow:0 4px 18px rgba(0,0,0,.45);display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600';
   b.innerHTML=
     '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">'+
       '<span style="font-size:20px;flex-shrink:0">🆕</span>'+
-      '<span style="line-height:1.4">New features available — refreshing in <span id="cc-update-countdown" style="font-family:monospace">8</span>s…</span>'+
+      '<span style="line-height:1.4">'+(force?'Updating to the latest version':'New features available')+
+        ' — <span id="cc-update-countdown" style="font-family:monospace">'+seconds+'</span>s…</span>'+
     '</div>'+
-    '<button onclick="_triggerUpdateRefresh()" style="background:#fff;color:#16a34a;border:none;border-radius:7px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0">Refresh now</button>';
+    '<button id="cc-update-now" style="background:#fff;color:#16a34a;border:none;border-radius:7px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0">Refresh now</button>';
   document.body.appendChild(b);
   // Push existing content down so the banner doesn't cover the header
   document.body.style.paddingTop=(b.offsetHeight||56)+'px';
 
-  var seconds=8;
+  var btn=b.querySelector('#cc-update-now');
+  if(btn) btn.onclick=function(){ _triggerUpdateRefresh(live); };
+
   var el=b.querySelector('#cc-update-countdown');
   window.__ccUpdateInterval=setInterval(function(){
     seconds--;
     if(el) el.textContent=String(Math.max(seconds,0));
     if(seconds<=0){
       clearInterval(window.__ccUpdateInterval);
-      _triggerUpdateRefresh();
+      _triggerUpdateRefresh(live);
     }
   },1000);
 }
-function _triggerUpdateRefresh(){
+
+// Empties every cache, both from here and from inside the worker, so the
+// reload that follows is answered by the network instead of by whatever the
+// worker was still holding.
+function _ccPurge(){
+  var jobs=[];
+  if(window.caches&&caches.keys){
+    jobs.push(caches.keys().then(function(keys){
+      return Promise.all(keys.map(function(k){ return caches.delete(k); }));
+    }).catch(function(){}));
+  }
+  var sw=navigator.serviceWorker;
+  if(sw&&sw.controller){
+    jobs.push(new Promise(function(resolve){
+      var t=setTimeout(resolve,1500);   // never hang the refresh on a silent worker
+      var onMsg=function(e){
+        if(e.data&&e.data.type==='CC_PURGED'){
+          clearTimeout(t); sw.removeEventListener('message',onMsg); resolve();
+        }
+      };
+      sw.addEventListener('message',onMsg);
+      try{ sw.controller.postMessage({type:'CC_PURGE'}); }
+      catch(e){ clearTimeout(t); resolve(); }
+    }));
+  }
+  return Promise.all(jobs);
+}
+
+function _triggerUpdateRefresh(live){
+  if(_ccUpdating) return;
+  _ccUpdating=true;
   if(window.__ccUpdateInterval) clearInterval(window.__ccUpdateInterval);
   var b=document.getElementById('cc-update-banner');
-  if(b){
-    b.innerHTML='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">↻</span><span>Refreshing…</span></div>';
-  }
-  var done=function(){ location.reload(); };
-  if(window.caches&&caches.keys){
-    caches.keys().then(function(keys){
-      return Promise.all(keys.map(function(k){ return caches.delete(k); }));
-    }).then(done,done);
-  } else { done(); }
+  if(b) b.innerHTML='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">↻</span><span>Refreshing…</span></div>';
+
+  // Record the new version only now, at the moment the refresh actually runs.
+  // Stamping it at detection time meant anyone who closed the app during the
+  // countdown was marked up to date while still running the old build — and,
+  // because the stored version then matched, was never prompted again.
+  var reload=function(){
+    try{ if(live) localStorage.setItem('cc_app_version',live); }catch(e){}
+    location.reload();
+  };
+
+  // Only empty the cache if the network is reachable right now. Purging while
+  // offline would leave the device with no cached copy and no reachable server
+  // — a blank app instead of a slightly stale one.
+  fetch('/api/version',{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('probe failed'); return _ccPurge(); })
+    .then(reload,reload);
 }
+
 function checkForUpdate(){
+  if(_ccUpdating) return;
+  var now=Date.now();
+  if(now-_ccLastCheck<CC_CHECK_GAP) return;
+  _ccLastCheck=now;
+
+  // Ask the browser to re-examine sw.js at the same moment, so a new worker is
+  // picked up on resume rather than whenever the browser next gets round to it.
+  try{ if(window.__ccSWReg&&window.__ccSWReg.update) window.__ccSWReg.update(); }catch(e){}
+
   fetch('/api/version',{cache:'no-store'})
     .then(function(r){ return r.ok?r.json():null; })
     .then(function(d){
@@ -2233,14 +2301,16 @@ function checkForUpdate(){
         return;
       }
       if(stored===live) return;
-      // New deploy detected — record the new version so the banner
-      // doesn't re-fire after the reload, then prompt the user.
-      try{ localStorage.setItem('cc_app_version',live); }catch(e){}
-      _showUpdateBanner();
+      _showUpdateBanner(d.force!==false,live);
     })
     .catch(function(){}); // offline → silent
 }
+
 checkForUpdate();
+document.addEventListener('visibilitychange',function(){ if(!document.hidden) checkForUpdate(); });
+window.addEventListener('focus',checkForUpdate);
+window.addEventListener('pageshow',function(e){ if(e.persisted) checkForUpdate(); });
+setInterval(checkForUpdate,CC_CHECK_POLL);
 </script>
 
 <!-- iOS Add-to-Home-Screen banner — shown on iOS Safari only, until dismissed -->
