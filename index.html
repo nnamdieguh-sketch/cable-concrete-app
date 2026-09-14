@@ -231,6 +231,20 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
+
+<!-- Microsoft Clarity — session replay and heatmaps.
+     Loads async from clarity.ms, so it never blocks first paint. The service
+     worker ignores cross-origin requests, and isOurError() above drops any
+     error raised outside our own origin, so a fault inside Clarity cannot
+     reach the Apps Script alert pipeline the way the Vercel Analytics error
+     once did. -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yi1rwnuz8x");
+</script>
 </head>
 <body>
 
@@ -290,10 +304,12 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
     <div id="install-hint" style="display:none;font-size:12px;color:#86efac;text-align:center;max-width:320px;line-height:1.6"></div>
   </div>
 
-  <!-- Share button (outside install-wrap so it stays visible after install) -->
-  <div style="margin-top:14px;text-align:center">
+  <!-- Share and Refresh (outside install-wrap so they stay visible after install) -->
+  <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
     <button class="bs" onclick="shareApp()" aria-label="Share this app with colleagues" style="display:inline-flex;align-items:center;gap:8px;font-size:13px">📤 Share with Colleagues</button>
+    <button class="bs" id="refresh-cta" onclick="manualRefresh()" aria-label="Check for updates and reload the app" style="display:inline-flex;align-items:center;gap:8px;font-size:13px">🔄 Refresh App</button>
   </div>
+  <div id="refresh-status" role="status" aria-live="polite" style="margin-top:7px;font-size:11px;color:#9aa9bd;text-align:center;min-height:15px;line-height:1.5"></div>
 
   <!-- Resources on intro page -->
   <div style="margin-top:36px;border-top:1px solid #1e2d42;padding-top:28px">
@@ -468,7 +484,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
       </div>
       <div style="background:#0a0e14;border:1px solid #1e3a5f;border-radius:6px;padding:10px 12px">
         <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">University of Windsor — Hydraulics Laboratory</div>
-        <div style="font-size:11px;color:#9aa9bd;line-height:1.6">1988 — CC 70 channel-flow testing (1:10 scale, 40 ft flume). 2004 — CC 65 / CC 90 / CC 95 wave-flume testing.</div>
+        <div style="font-size:11px;color:#9aa9bd;line-height:1.6">1988 — CC 70 channel-flow testing (1:10 scale, 40 ft flume). Wave impact — 1:4 scale, 50 ft wave flume, bed slopes 1.5H:1V, 2.0H:1V and 3.0H:1V. 2004 — CC 65 / CC 90 / CC 95 wave-flume testing.</div>
       </div>
     </div>
   </div>
@@ -486,7 +502,7 @@ td.hi{color:#86efac;font-weight:600}td.ok{color:#4ade80}td.wa{color:#fbbf24}
         <thead><tr><th>Parameter</th><th>Measured peak</th><th>Test conditions</th></tr></thead>
         <tbody>
           <tr><td class="hi">Shear stress</td><td class="hi">38.5 lb/ft² (1,843 N/m²)</td><td>Continuous 4-hour overtopping</td></tr>
-          <tr><td class="hi">Velocity</td><td class="hi">19.0 ft/s (5.79 m/s)</td><td>Bed slopes 1.5H:1V–3.0H:1V</td></tr>
+          <tr><td class="hi">Velocity</td><td class="hi">19.0 ft/s (5.79 m/s)</td><td>Horizontal bed and 2.0H:1V</td></tr>
           <tr><td class="hi">Bed</td><td>Silty clay (CL)</td><td>Non-woven 6.1 oz/yd² polypropylene geotextile</td></tr>
           <tr><td class="hi">Outcome</td><td class="ok">No failure</td><td>No geotextile failure, no block displacement</td></tr>
         </tbody>
@@ -2304,6 +2320,50 @@ function checkForUpdate(){
       _showUpdateBanner(d.force!==false,live);
     })
     .catch(function(){}); // offline → silent
+}
+
+// Manual refresh, from the button on the landing page.
+//
+// The automatic check already runs on open, on resume and every half hour, but
+// all of that is invisible. Someone who suspects they are looking at something
+// stale has nothing to reach for, and a visible control is also a standing
+// reminder that the app is maintained rather than something fixed in amber.
+//
+// Already current  — a plain reload. That is what the button says it does, and
+//                    it clears any transient oddness without touching the cache
+//                    the device depends on offline.
+// Behind           — the full update path: caches emptied, then reloaded.
+// Offline          — say so and change nothing. Emptying the cache with no way
+//                    to refill it is the one outcome worth avoiding.
+function manualRefresh(){
+  if(_ccUpdating) return;
+  var btn=document.getElementById('refresh-cta');
+  var out=document.getElementById('refresh-status');
+  var say=function(t,c){ if(out){ out.textContent=t; out.style.color=c||'#9aa9bd'; } };
+  var release=function(){ if(btn) btn.disabled=false; };
+
+  if(btn) btn.disabled=true;
+  say('Checking for updates…');
+
+  fetch('/api/version',{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){
+      if(!d||!d.v) throw new Error('no version');
+      var stored=null;
+      try{ stored=localStorage.getItem('cc_app_version'); }catch(e){}
+      if(stored&&stored===d.v){
+        say('✓ Already the latest version — reloading…','#86efac');
+        setTimeout(function(){ location.reload(); },700);
+        return;
+      }
+      say('New version found — updating…','#86efac');
+      _triggerUpdateRefresh(d.v);
+    })
+    .catch(function(){
+      say('No connection — try again once you are back online','#fbbf24');
+      release();
+      setTimeout(function(){ say(''); },5000);
+    });
 }
 
 checkForUpdate();
