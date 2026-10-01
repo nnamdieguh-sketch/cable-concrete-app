@@ -5,14 +5,31 @@
 
 const ORIGIN = 'https://www.cableconcrete.app';
 
+// No probe may outlive this. Without it a single unresponsive upstream holds
+// the whole handler open until the platform kills it, and the Apps Script
+// trigger waiting on the other end dies with it — before it reaches the line
+// that would have emailed the alert. A monitor that can hang is a monitor that
+// fails silently, which is worse than no monitor at all.
+const PROBE_TIMEOUT_MS = 5000;
+
 async function probe(name, url, init) {
   const start = Date.now();
   try {
-    const r = await fetch(url, init || {});
+    const r = await fetch(url, Object.assign({
+      signal: AbortSignal.timeout(PROBE_TIMEOUT_MS)
+    }, init || {}));
     const ms = Date.now() - start;
     return { name, ok: r.ok, status: r.status, ms };
   } catch (e) {
-    return { name, ok: false, error: (e && e.message) || String(e), ms: Date.now() - start };
+    const timedOut = e && (e.name === 'TimeoutError' || e.name === 'AbortError');
+    return {
+      name,
+      ok: false,
+      error: timedOut
+        ? `no response within ${PROBE_TIMEOUT_MS} ms`
+        : (e && e.message) || String(e),
+      ms: Date.now() - start
+    };
   }
 }
 
