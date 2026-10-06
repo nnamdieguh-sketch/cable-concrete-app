@@ -34,7 +34,7 @@ const PIPELINE_SCOPE = '__pipeline__';
 
 // ── Tuning ─────────────────────────────────────────────────────────────────
 const MODEL             = 'claude-haiku-4-5-20251001';
-const MARKETS           = ['Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique'];
+const MARKETS           = ['Nigeria','Ghana','Kenya','Tanzania','Ethiopia','Uganda','Zambia','Mozambique','Rwanda'];
 const MAX_SPEND_USD     = 1.50;   // hard ceiling per run
 const SCORE_THRESHOLD   = 6;      // 1-10; below this we don't report it
 const BATCH_SIZE        = 6;      // results per model call — the extraction
@@ -223,11 +223,30 @@ async function braveSearch(query, freshness = BRAVE_FRESHNESS) {
       return [];
     }
     const data = await r.json();
-    return data?.web?.results ?? [];
+    return dropOwnDigests(data?.web?.results ?? []);
   } catch (err) {
     console.warn(`  Brave threw for "${query}": ${err.message}`);
     return [];
   }
+}
+
+// The digests are public GitHub issues, and they are written in exactly the
+// vocabulary these queries use — so the search engine has started ranking them
+// for our own searches. Run 13 cited issue #57 as the "source" for the Ondo
+// tender, having rediscovered its own report from the week before.
+//
+// That is worse than an odd-looking citation. A digest arrives under a URL the
+// dedup store has never seen, so an opportunity already reported resurfaces as
+// new, the real notice URL is lost, and the model scores our own prose instead
+// of a procurement notice. Nothing downstream can detect it, because by then
+// the entry looks like any other result.
+function dropOwnDigests(results) {
+  if (!GH_REPO) return results;
+  const own = `github.com/${GH_REPO}`.toLowerCase();
+  const kept = results.filter(r => !String(r?.url || '').toLowerCase().includes(own));
+  const dropped = results.length - kept.length;
+  if (dropped) console.log(`  dropped ${dropped} self-citation(s) to our own digests`);
+  return kept;
 }
 
 // ── Multilateral registries ────────────────────────────────────────────────
